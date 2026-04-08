@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>სიცილის ოთახი 😂</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle, #ffe082, #ffb74d);
+    font-family: Arial;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+h1 {
+    margin-top: 10px;
+    color: #e65100;
+}
+
+.logo {
+    font-size: 50px;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+button {
+    padding: 12px 30px;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    background: orange;
+    cursor: pointer;
+    margin: 5px;
+}
+
+/* CARD */
+#card {
+    width: 300px;
+    height: 320px;
+    margin-top: 20px;
+    perspective: 1000px;
+}
+
+.inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.2s;
+}
+
+.front, .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    backface-visibility: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.back {
+    background: #fff3e0;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    font-size: 16px;
+}
+
+/* LIKE */
+.like {
+    margin-top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.count {
+    font-size: 14px;
+}
+
+/* FIREWORKS */
+.firework {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: explode 0.8s linear forwards;
+}
+@keyframes explode {
+    0% { transform: scale(1) translate(0,0); opacity:1;}
+    100% { transform: scale(2) translate(var(--x), var(--y)); opacity:0;}
+}
+
+audio {
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="logo">😂</div>
+<h1>სიცილის ოთახი</h1>
+
+<button onclick="nextJoke()">შემდეგი 😂</button>
+
+<div id="card">
+    <div class="inner" id="inner">
+        <div class="front">
+            <img id="img" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2">
+        </div>
+        <div class="back">
+            <div id="joke">დააჭირე ღილაკს 😄</div>
+            <div class="like" onclick="likeJoke()">❤️ Like</div>
+            <div class="count" id="likeCount">Likes: 0</div>
+        </div>
+    </div>
+</div>
+
+<audio id="bgMusic" loop autoplay>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// 100 რეალური ხუმრობა
+const jokes = [
+"რატომ არ მუშაობს კომპიუტერი? – Wi-Fi დაიძინა!",
+"რატომ არ დადის ქათამი ფიტნესზე? – კვერცხებს უფრთხილდება!",
+"რატომ არ იცინის პროგრამისტი? – error!",
+"რატომ არ მიდის სტუდენტი ლექციაზე? – Zoom-შია!",
+"რატომ არ ჭამს კატა? – boss-ია!",
+"რატომ არ მუშაობს აპი? – bug!",
+"რატომ არ წერს ფანქარი? – გატეხილია!",
+"რატომ არ მიდის დრო? – მიდის 😄",
+"რატომ არ უყვარს პროგრამისტს მზე? – dark mode!",
+"რატომ არ ცივდება კომპიუტერი? – fan მუშაობს!",
+"რატომ არ მუშაობს ინტერნეტი? – გათიშულია!",
+"რატომ არ წერს სტუდენტი? – გამოცდაა!",
+"რატომ არ დადის ქარი? – უბერავს!",
+"რატომ არ იცინის ზღვა? – ტალღებს უშვებს!",
+"რატომ არ ჭამს ძაღლი? – სავსეა!",
+"რატომ არ მიდის მანქანა? – ბენზინი არ აქვს!",
+"რატომ არ მუშაობს ტელევიზორი? – დენი არ არის!",
+"რატომ არ წერს პროგრამისტი? – coffee break!",
+"რატომ არ დადის ბურთი? – გორავს!",
+"რატომ არ იცინის მზე? – ანათებს!",
+"რატომ არ მიდის მატარებელი? – გაჩერებულია!",
+"რატომ არ წერს წიგნი? – დასრულებულია!",
+"რატომ არ ჭამს ლომი სალათს? – მეფეა!",
+"რატომ არ მუშაობს საათი? – დრო დაიკარგა!",
+"რატომ არ დადის მთვარე? – ბრუნავს!",
+"რატომ არ წერს ფოსტა? – დაგვიანებულია!",
+"რატომ არ ჭამს ბავშვი? – ტკბილეული უნდა!",
+"რატომ არ იცინის კატა? – boss-ია!",
+"რატომ არ მუშაობს ბანკი? – დახურულია!",
+"რატომ არ წერს სკოლა? – არდადეგებია!",
+"რატომ არ დადის გზა? – იქ არის!",
+"რატომ არ ჭამს მეფე? – სუფრა ელოდება!",
+"რატომ არ იცინის საათი? – ticking!",
+"რატომ არ მუშაობს ბაზარი? – კვირაა!",
+"რატომ არ წერს კაცი? – ტელეფონზეა!",
+"რატომ არ დადის კუ? – ნელია!",
+"რატომ არ ჭამს თევზი? – წყალშია!",
+"რატომ არ იცინის ბაღი? – ყვავილობს!",
+"რატომ არ მუშაობს საიტი? – down!",
+"რატომ არ წერს დრო? – გადის!",
+"რატომ არ მიდის ცხოვრება? – მიდის!",
+"რატომ არ ჭამს მზე? – ანათებს!",
+"რატომ არ იცინის ძაღლი? – serious!",
+"რატომ არ მუშაობს სისტემა? – crash!",
+"რატომ არ წერს მელანი? – დამთავრდა!",
+"რატომ არ დადის ქვა? – მძიმეა!",
+"რატომ არ ჭამს ქათამი? – უკვე შეჭამა!",
+"რატომ არ იცინის მთვარე? – ანათებს!",
+"რატომ არ მუშაობს აპლიკაცია? – bug!",
+"რატომ არ წერს ადამიანი? – ფიქრობს!",
+"რატომ არ დადის ზღვა? – ტალღებს უშვებს!",
+"რატომ არ ჭამს კატა? – ნაჭამია!",
+"რატომ არ იცინის მეფე? – სერიოზულია!",
+"რატომ არ მუშაობს ტელეფონი? – დატენილი არაა!",
+"რატომ არ წერს პროგრამა? – error!",
+"რატომ არ დადის ვარსკვლავი? – ანათებს!",
+"რატომ არ ჭამს ძაღლი? – უკვე ნაჭამია!",
+"რატომ არ იცინის ბავშვი? – სერიოზული გახდა!",
+"რატომ არ მუშაობს ბატარეა? – დაცლილია!",
+"რატომ არ წერს ფანქარი? – მოკლდა!",
+"რატომ არ დადის ქარი? – უბერავს!",
+"რატომ არ ჭამს თევზი? – წყალშია!",
+"რატšto არ იცინის ზღვა? – ტალღები აქვს!",
+"რატომ არ მუშაობს კომპიუტერი? – restart უნდა!",
+"რატომ არ წერს სტუდენტი? – ზარმაცია!",
+"რატომ არ დადის მანქანა? – გაჩერებულია!",
+"რატომ არ ჭამს კატა? – დიეტაზეა!",
+"რატომ არ იცინის პროგრამისტი? – debug-შია!",
+"რატომ არ მუშაობს ინტერნეტი? – lag!",
+"რატომ არ წერს წიგნი? – დახურულია!",
+"რატომ არ დადის კაცი? – ზის!",
+"რატომ არ ჭამს ბავშვი? – თამაში უნდა!",
+"რატომ არ იცინის ტელევიზორი? – ხმა გამორთულია!",
+"რატომ არ მუშაობს თამაში? – bug!",
+"რატომ არ წერს დრო? – გადის!",
+"რატომ არ დადის კუ? – ნელია!",
+"რატომ არ ჭამს ძაღლი? – დაღლილია!",
+"რატომ არ იცინის მზე? – ანათებს!",
+"რატომ არ მუშაობს სისტემა? – error!",
+"რატომ არ წერს ადამიანი? – ფიქრობს!",
+"რატომ არ დადის ზღვა? – ტალღებს უშვებს!",
+"რატომ არ ჭამს კატა? – ნაჭამია!",
+"რატომ არ იცინის ბატონი უჩა? – უკვე მაგარია 😄",
+"რატომ არ მუშაობს აპი? – update უნდა!",
+"რატომ არ წერს პროგრამისტი? – კოდი იწერება!",
+"რატომ არ დადის ბურთი? – გორავს!",
+"რატომ არ ჭამს მზე? – ანათებს!",
+"რატომ არ იცინის მთვარე? – ღამეა!",
+"რატომ არ მუშაობს ბანკი? – არდადეგებია!",
+"რატომ არ წერს სკოლა? – შვებულებაა!",
+"რატომ არ დადის გზა? – იქ არის!",
+"რატომ არ ჭამს მეფე? – ელოდება!",
+"რატომ არ იცინის საათი? – ticking!"
+];
+
+// გოგოების ფოტოები
+const images = [
+"https://images.unsplash.com/photo-1544005313-94ddf0286df2",
+"https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
+"https://images.unsplash.com/photo-1502685104226-ee32379fefbe",
+"https://images.unsplash.com/photo-1487412720507-e7ab37603c6f",
+"https://images.unsplash.com/photo-1517841905240-472988babdf9"
+];
+
+let currentIndex = 0;
+let isFlipped = false;
+let likes = JSON.parse(localStorage.getItem("likes")) || {};
+
+function nextJoke() {
+    const inner = document.getElementById("inner");
+    isFlipped = !isFlipped;
+    inner.style.transform = isFlipped ? "rotateY(180deg)" : "rotateY(0deg)";
+
+    setTimeout(() => {
+        currentIndex = Math.floor(Math.random() * jokes.length);
+        document.getElementById("joke").textContent = jokes[currentIndex];
+        document.getElementById("img").src = images[Math.floor(Math.random()*images.length)];
+        updateLikes();
+    }, 400);
+}
+
+function likeJoke() {
+    if (!likes[currentIndex]) likes[currentIndex] = 0;
+    likes[currentIndex]++;
+    localStorage.setItem("likes", JSON.stringify(likes));
+    updateLikes();
+    triggerFireworks();
+}
+
+function updateLikes() {
+    document.getElementById("likeCount").textContent =
+        "Likes: " + (likes[currentIndex] || 0);
+}
+
+// FIREWORKS
+function triggerFireworks() {
+    for(let i=0;i<15;i++){
+        const f = document.createElement("div");
+        f.classList.add("firework");
+        f.style.setProperty("--x",(Math.random()*200-100)+"px");
+        f.style.setProperty("--y",(Math.random()*-200)+"px");
+        f.style.background = `hsl(${Math.random()*360},100%,50%)`;
+        f.style.left = (window.innerWidth/2 + Math.random()*50 -25)+"px";
+        f.style.top = (window.innerHeight/2 + Math.random()*50 -25)+"px";
+        document.body.appendChild(f);
+        setTimeout(()=>f.remove(),800);
+    }
+}
+
+// 3D Mouse
+const card = document.getElementById("card");
+const inner = document.getElementById("inner");
+
+card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const rotateY = (x / rect.width - 0.5) * 20;
+    const rotateX = (y / rect.height - 0.5) * -20;
+
+    inner.style.transform = `
+        rotateX(${rotateX}deg)
+        rotateY(${rotateY + (isFlipped ? 180 : 0)}deg)
+    `;
+});
+
+card.addEventListener("mouseleave", () => {
+    inner.style.transform = isFlipped ? "rotateY(180deg)" : "rotateY(0deg)";
+});
+</script>
+
+</body>
+</html>
