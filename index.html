@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SWAP.GE - პროფესიონალური გაცვლა</title>
+    <script src="https://tailwindcss.com"></script>
+    <style>
+        @import url('https://googleapis.com');
+        
+        body { 
+            background-color: #000000; 
+            color: #ffffff; 
+            font-family: 'Fira GO', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .orange-brand { background-color: #FF5F00; }
+        .orange-text { color: #FF5F00; }
+        .border-dark { border-color: #1a1a1a; }
+        
+        /* პროფესიონალური ღილაკის ეფექტი */
+        .btn-iron {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+        .btn-iron:active {
+            transform: scale(0.96);
+            filter: brightness(0.8);
+        }
+
+        /* ბარათების სტილი */
+        .card-iron {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+        }
+
+        /* ნავიგაციის აქტიური ფერი */
+        .nav-active { color: #FF5F00 !important; }
+        
+        .page { display: none; }
+        .page.active { display: block; animation: slideIn 0.3s ease-out; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="pb-24">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-[#FF5F00]/30 p-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <span class="text-3xl drop-shadow-[0_0_8px_#FF5F00]">🤝</span>
+            <h1 class="text-2xl font-black italic tracking-tighter">SWAP<span class="orange-text">.GE</span></h1>
+        </div>
+        <div class="flex gap-5">
+            <button class="btn-iron text-xl">🔍</button>
+            <button class="btn-iron text-xl">🔔</button>
+        </div>
+    </header>
+
+    <!-- მთავარი გვერდი -->
+    <div id="home" class="page active">
+        <!-- Hero Banner -->
+        <section class="p-4">
+            <div class="orange-brand rounded-2xl p-6 text-black relative overflow-hidden shadow-[0_10px_30px_rgba(255,95,0,0.2)]">
+                <h2 class="text-2xl font-black uppercase italic leading-none mb-1">გაცვალე დღესვე</h2>
+                <p class="text-[11px] font-bold opacity-80 mb-5">ნებისმიერი ნივთი რკინის პირობებით</p>
+                <button class="bg-black text-white px-5 py-2.5 rounded-lg font-black text-[10px] uppercase btn-iron">დაამატე ნივთი 🤝</button>
+                <div class="absolute right-[-15px] bottom-[-15px] text-8xl opacity-10 rotate-12">🤝</div>
+            </div>
+        </section>
+
+        <!-- კატეგორიები -->
+        <section class="px-4 mt-2">
+            <h3 class="text-[10px] font-black uppercase tracking-[3px] text-zinc-500 mb-3 ml-1">კატეგორიები</h3>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="card-iron p-4 flex items-center gap-3 btn-iron border-l-4 border-l-[#FF5F00]">
+                    <span class="text-xl">📱</span>
+                    <span class="font-bold text-xs uppercase tracking-tight">ტექნიკა</span>
+                </div>
+                <div class="card-iron p-4 flex items-center gap-3 btn-iron border-l-4 border-l-[#FF5F00]">
+                    <span class="text-xl">🚗</span>
+                    <span class="font-bold text-xs uppercase tracking-tight">ტრანსპორტი</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ტოპ განცხადება -->
+        <section class="p-4 mt-4">
+            <h3 class="text-[10px] font-black uppercase tracking-[3px] text-zinc-500 mb-3 ml-1 text-center">ტოპ შეთავაზებები</h3>
+            <div class="card-iron overflow-hidden shadow-2xl">
+                <div class="h-52 bg-zinc-900 flex items-center justify-center relative">
+                    <span class="text-6xl">💻</span>
+                    <span class="absolute top-3 right-3 orange-brand text-black text-[9px] font-black px-2 py-1 rounded">VIP+</span>
+                </div>
+                <div class="p-5">
+                    <h4 class="font-black text-lg uppercase mb-1">MacBook Pro M3 Max</h4>
+                    <p class="text-[11px] text-zinc-400 font-bold mb-5 italic flex items-center gap-2">
+                        <span class="orange-text">🔄</span> იცვლება: ავტომობილში
+                    </p>
+                    <button onclick="changeTab('chat')" class="w-full orange-brand text-black py-3.5 rounded-xl font-black uppercase text-xs btn-iron shadow-lg shadow-[#FF5F00]/20">
+                        შესთავაზე გაცვლა
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ჩატი გვერდი -->
+    <div id="chat" class="page p-4">
+        <h2 class="text-xl font-black uppercase mb-6 border-b border-zinc-800 pb-2">შეტყობინებები</h2>
+        <div class="space-y-3">
+            <div class="card-iron p-4 flex items-center gap-4 btn-iron">
+                <div class="w-12 h-12 orange-brand rounded-full flex items-center justify-center font-black text-black">გ</div>
+                <div class="flex-1">
+                    <div class="flex justify-between">
+                        <span class="font-black text-xs uppercase">გიორგი</span>
+                        <span class="text-[9px] text-zinc-500">21:54</span>
+                    </div>
+                    <p class="text-xs text-zinc-400 mt-1 truncate font-medium">🤝 თანახმა ვარ გაცვლაზე...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- პროფილი გვერდი -->
+    <div id="profile" class="page p-4 text-center">
+        <div class="w-20 h-20 orange-brand rounded-full mx-auto mb-4 border-4 border-zinc-900 flex items-center justify-center text-3xl shadow-2xl">👤</div>
+        <h2 class="text-lg font-black uppercase">ნიკოლოზ ბ.</h2>
+        <p class="orange-text text-[10px] font-black uppercase tracking-widest mt-1">ID: 88412</p>
+        
+        <div class="mt-8 space-y-2">
+            <div class="card-iron p-4 text-left font-bold text-xs uppercase btn-iron flex justify-between">
+                <span>📦 ჩემი განცხადებები</span>
+                <span class="orange-text">→</span>
+            </div>
+            <div class="card-iron p-4 text-left font-bold text-xs uppercase btn-iron flex justify-between">
+                <span>⭐ შენახული</span>
+                <span class="orange-text">→</span>
+            </div>
+            <button class="w-full mt-10 p-4 border border-red-900/30 text-red-500 rounded-xl font-black uppercase text-xs btn-iron bg-red-900/5">გასვლა</button>
+        </div>
+    </div>
+
+    <!-- ნავიგაცია -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-zinc-800 p-2 pb-8 flex justify-around items-center z-50">
+        <button onclick="changeTab('home')" class="nav-btn nav-active flex flex-col items-center gap-1 opacity-60 transition-all">
+            <span class="text-xl">🏠</span>
+            <span class="text-[8px] font-black uppercase">მთავარი</span>
+        </button>
+        <button onclick="changeTab('chat')" class="nav-btn flex flex-col items-center gap-1 opacity-60 transition-all">
+            <span class="text-xl">💬</span>
+            <span class="text-[8px] font-black uppercase">ჩატი</span>
+        </button>
+        
+        <!-- Center Swap Button -->
+        <button class="relative -mt-10 group">
+            <div class="orange-brand w-14 h-14 rounded-full border-4 border-black flex items-center justify-center text-2xl shadow-[0_0_25px_rgba(255,95,0,0.4)] btn-iron">🤝</div>
+            <span class="text-[8px] font-black orange-text uppercase block text-center mt-1">SWAP</span>
+        </button>
+
+        <button onclick="changeTab('profile')" class="nav-btn flex flex-col items-center gap-1 opacity-60 transition-all">
+            <span class="text-xl">👤</span>
+            <span class="text-[8px] font-black uppercase">პროფილი</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 opacity-60">
+            <span class="text-xl">⚙️</span>
+            <span class="text-[8px] font-black uppercase">მეტი</span>
+        </button>
+    </nav>
+
+    <script>
+        function changeTab(tabId) {
+            // გვერდების გადართვა
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+
+            // ღილაკების ვიზუალი
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('nav-active', 'opacity-100'));
+            event.currentTarget.classList.add('nav-active', 'opacity-100');
+        }
+    </script>
+
+</body>
+</html>
