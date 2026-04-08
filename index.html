@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap.ge - გაცვალე ყველაფერი</title>
+    <script src="https://tailwindcss.com"></script>
+    <style>
+        :root {
+            --dark-orange: #CC5500; /* მუქი ნარინჯისფერი */
+            --bg-dark: #1a1a1a;
+        }
+        body { background-color: var(--bg-dark); color: white; font-family: sans-serif; }
+        .orange-gradient { background: linear-gradient(135deg, #FF8C00, #CC5500); }
+        .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .handshake-3d { filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); transition: transform 0.3s; }
+        .handshake-3d:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body class="pb-20">
+
+    <!-- Header / Logo Section -->
+    <header class="p-4 flex justify-between items-center bg-[#CC5500] shadow-lg sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <!-- 3D ლოგოს ადგილი (Placeholder) -->
+            <div class="handshake-3d text-3xl">🤝</div> 
+            <h1 class="text-2xl font-bold tracking-tighter">SWAP.GE</h1>
+        </div>
+        <div class="flex gap-4">
+            <span class="text-xl">🔍</span>
+            <span class="text-xl">☰</span>
+        </div>
+    </header>
+
+    <!-- Hero / Promo Area -->
+    <section class="p-4">
+        <div class="glass-card rounded-2xl p-6 text-center orange-gradient">
+            <h2 class="text-xl font-bold mb-2">მზად ხარ გაცვლისთვის?</h2>
+            <p class="text-sm opacity-90">ატვირთე ნივთი და იპოვე სასურველი დღესვე</p>
+            <button class="mt-4 bg-black text-white px-6 py-2 rounded-full font-bold shadow-xl">დაიწყე ახლავე</button>
+        </div>
+    </section>
+
+    <!-- Categories Section (ფოტოების მიხედვით) -->
+    <section class="px-4 py-2">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-lg text-[#FF8C00]">კატეგორიები</h3>
+            <span class="text-xs opacity-60">ყველა</span>
+        </div>
+        <div class="grid grid-cols-4 gap-4 text-center">
+            <div class="flex flex-col items-center gap-1">
+                <div class="w-12 h-12 glass-card rounded-xl flex items-center justify-center text-2xl">📱</div>
+                <span class="text-[10px]">ტექნიკა</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <div class="w-12 h-12 glass-card rounded-xl flex items-center justify-center text-2xl">🚗</div>
+                <span class="text-[10px]">ტრანსპორტი</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <div class="w-12 h-12 glass-card rounded-xl flex items-center justify-center text-2xl">🏠</div>
+                <span class="text-[10px]">უძრავი ქონება</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <div class="w-12 h-12 glass-card rounded-xl flex items-center justify-center text-2xl">🎨</div>
+                <span class="text-[10px]">ჰობი</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Item List (როგორც ფოტოებზე იყო) -->
+    <section class="p-4 space-y-4">
+        <h3 class="font-bold text-lg text-[#FF8C00]">ბოლო დამატებული</h3>
+        
+        <!-- Card 1 -->
+        <div class="glass-card rounded-2xl overflow-hidden flex">
+            <div class="w-1/3 bg-gray-700 h-32 flex items-center justify-center text-3xl">📷</div>
+            <div class="p-3 w-2/3">
+                <h4 class="font-bold text-sm">iPhone 15 Pro Max</h4>
+                <p class="text-[10px] opacity-60 mt-1">იცვლება: MacBook Air M2-ში</p>
+                <div class="mt-4 flex justify-between items-center">
+                    <span class="text-[#FF8C00] font-bold">SWAP</span>
+                    <button class="bg-[#CC5500] text-[10px] px-3 py-1 rounded-lg">ნახვა</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass-card rounded-2xl overflow-hidden flex">
+            <div class="w-1/3 bg-gray-700 h-32 flex items-center justify-center text-3xl">🚲</div>
+            <div class="p-3 w-2/3">
+                <h4 class="font-bold text-sm">მთის ველოსიპედი</h4>
+                <p class="text-[10px] opacity-60 mt-1">იცვლება: ნებისმიერ ტექნიკაში</p>
+                <div class="mt-4 flex justify-between items-center">
+                    <span class="text-[#FF8C00] font-bold">SWAP</span>
+                    <button class="bg-[#CC5500] text-[10px] px-3 py-1 rounded-lg">ნახვა</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Navigation (მობილური მენიუ) -->
+    <nav class="fixed bottom-0 left-0 right-0 glass-card border-t border-white/10 flex justify-around p-3 pb-6 bg-[#1a1a1a]/90">
+        <div class="flex flex-col items-center text-[#FF8C00]">
+            <span class="text-xl">🏠</span>
+            <span class="text-[10px]">მთავარი</span>
+        </div>
+        <div class="flex flex-col items-center opacity-60">
+            <span class="text-xl">❤️</span>
+            <span class="text-[10px]">შენახული</span>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-12 h-12 orange-gradient rounded-full -mt-8 border-4 border-[#1a1a1a] flex items-center justify-center text-2xl shadow-2xl">🤝</div>
+            <span class="text-[10px] mt-1 text-[#FF8C00]">გაცვლა</span>
+        </div>
+        <div class="flex flex-col items-center opacity-60">
+            <span class="text-xl">💬</span>
+            <span class="text-[10px]">ჩატი</span>
+        </div>
+        <div class="flex flex-col items-center opacity-60">
+            <span class="text-xl">👤</span>
+            <span class="text-[10px]">პროფილი</span>
+        </div>
+    </nav>
+
+</body>
+</html>
