@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAP.GE | გაცვალე ყველაფერი</title>
+    <script src="https://tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        @import url('https://googleapis.com');
+        body { font-family: 'Fira GO', sans-serif; background-color: #e65100; } /* მუქი ნარინჯისფერი ფონი */
+        .glass-nav { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+        .logo-3d { filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3)); transform: perspective(500px) rotateY(-10deg); }
+        .ad-card { background: rgba(255, 255, 255, 0.95); border-radius: 24px; transition: 0.3s; }
+        .ad-card:hover { transform: translateY(-5px); }
+    </style>
+</head>
+<body class="text-white min-h-screen">
+
+    <!-- ნავიგაცია -->
+    <nav class="glass-nav sticky top-0 z-50 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3 logo-3d">
+                <!-- 3D ხელის ჩამორთმევის სიმბოლო -->
+                <div class="text-4xl">🤝</div> 
+                <h1 class="text-2xl font-black tracking-tighter uppercase italic">SWAP<span class="text-orange-200">.GE</span></h1>
+            </div>
+            <div id="auth-section" class="flex items-center gap-3">
+                <button onclick="login()" class="bg-white/20 hover:bg-white/30 px-5 py-2 rounded-xl font-bold text-sm transition">შესვლა</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- მთავარი კონტენტი -->
+    <header class="container mx-auto px-4 py-10 text-center">
+        <h2 class="text-4xl md:text-5xl font-black mb-4 drop-shadow-lg">გაინაცვლე ახალზე!</h2>
+        <p class="text-orange-100 font-medium opacity-80">გააქციე ძველი ნივთები ახალ შესაძლებლობებად</p>
+    </header>
+
+    <div class="container mx-auto px-4 pb-10">
+        <div class="flex justify-between items-center mb-8">
+            <div class="flex gap-2">
+                <button onclick="showSection('home')" class="bg-white text-orange-600 px-6 py-2 rounded-full font-black text-xs shadow-xl">მთავარი</button>
+                <button id="my-ads-btn" onclick="showSection('profile')" class="bg-white/10 border border-white/20 px-6 py-2 rounded-full font-bold text-xs hidden">ჩემი პოსტები</button>
+            </div>
+            <button onclick="openPostModal()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-2xl font-black text-sm shadow-2xl transition transform active:scale-95">
+                + დამატება
+            </button>
+        </div>
+
+        <!-- განცხადებების სექცია -->
+        <main id="home-section" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <!-- აქ ჩაიტვირთება მონაცემები -->
+        </main>
+
+        <!-- პირადი კაბინეტი -->
+        <main id="profile-section" class="hidden">
+            <h2 class="text-2xl font-black mb-6">ჩემი კაბინეტი</h2>
+            <div id="my-listings" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+        </main>
+    </div>
+
+    <!-- პოსტის მოდალი -->
+    <div id="postModal" class="fixed inset-0 bg-black/80 hidden backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white text-gray-900 w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl overflow-hidden relative">
+            <div class="absolute top-0 left-0 w-full h-2 bg-orange-500"></div>
+            <h3 class="text-2xl font-black mb-6 text-center text-gray-800">ახალი განცხადება</h3>
+            
+            <div class="space-y-4">
+                <input id="p-name" placeholder="რა გაქვთ?" class="w-full p-4 bg-gray-50 border-none rounded-2xl outline-none focus:ring-2 ring-orange-500">
+                <input id="p-swap" placeholder="რაში ცვლით?" class="w-full p-4 bg-gray-50 border-none rounded-2xl outline-none">
+                <input id="p-phone" placeholder="WhatsApp ნომერი (მაგ: 599...)" class="w-full p-4 bg-gray-50 border-none rounded-2xl outline-none">
+                
+                <div class="bg-orange-50 border-2 border-dashed border-orange-200 p-6 rounded-2xl text-center">
+                    <input type="file" id="p-file" class="hidden" accept="image/*" onchange="previewImg(this)">
+                    <label for="p-file" class="cursor-pointer text-orange-600 font-bold text-sm">
+                        <i class="fas fa-cloud-upload-alt text-3xl block mb-2"></i> ფოტოს ატვირთვა
+                    </label>
+                    <img id="img-prev" class="hidden mt-4 h-32 mx-auto rounded-xl shadow-md border-2 border-white">
+                </div>
+
+                <div id="pay-notice" class="hidden bg-red-50 p-4 rounded-2xl text-xs text-red-600 font-bold border border-red-100">
+                    💡 უფასო ლიმიტი ამოწურულია. შემდეგი პოსტი ფასიანია (2₾).
+                </div>
+
+                <button id="submit-btn" onclick="handlePost()" class="w-full bg-orange-600 text-white py-4 rounded-2xl font-black text-lg shadow-xl hover:bg-orange-700 transition active:scale-95">გამოქვეყნება</button>
+                <button onclick="closePostModal()" class="w-full text-gray-400 font-bold py-2 text-sm">დახურვა</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ⚠️ FIREBASE და ლოგიკა (მონაცემები არ შემიცვლია) -->
+    <script type="module">
+        // აქ დარჩება იგივე ლოგიკა, რაც წინა პასუხში მოგწერე. 
+        // უბრალოდ არ დაგავიწყდეს firebaseConfig-ის ჩასმა!
+        
+        // ... (წინა პასუხის JavaScript კოდი აქ ჩაჯდება) ...
+    </script>
+</body>
+</html>
