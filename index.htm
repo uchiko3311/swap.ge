@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWAP.GE</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script src="notifications.js"></script>
+</head>
+<body>
+
+<header class="header">
+  <h1>SWAP<span class="orange">.GE</span></h1>
+  <nav>
+    <button onclick="changeTab('home')">🏠 მთავარი</button>
+    <button onclick="changeTab('chat')">💬 ჩატი</button>
+    <button onclick="changeTab('profile')">👤 პროფილი</button>
+  </nav>
+</header>
+
+<div id="home" class="page active">
+  <h2>გაცვალე დღესვე</h2>
+  <button onclick="addItem()">დამატე ნივთი 🤝</button>
+  <div id="map" style="width:100%;height:300px;margin-top:12px;"></div>
+  <div id="itemsList" class="mt-4"></div>
+</div>
+
+<div id="chat" class="page">
+  <h2>ჩატი</h2>
+  <div id="chatBox" class="space-y-2 mt-3"></div>
+</div>
+
+<div id="profile" class="page">
+  <h2>პროფილი</h2>
+  <button onclick="vipPayment()">💎 VIP გადახდა</button>
+</div>
+
+<script src="app.js"></script>
+<script src="items.js"></script>
+<script src="payment.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_KEY&callback=initMap" async defer></script>
+</body>
+</html>
