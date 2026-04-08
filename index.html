@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWAP.GE - 3D Experience Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+<style>
+body{margin:0;padding:0;font-family:'Fira GO',sans-serif;background:#FF7F00;color:#fff;perspective:1500px;}
+.page{display:none;transform-style: preserve-3d;}
+.page.active{display:block;animation: fadeIn 0.5s ease;}
+@keyframes fadeIn{from{opacity:0;transform: rotateY(-10deg);}to{opacity:1;transform: rotateY(0deg);}}
+.card{background:linear-gradient(145deg,#ff9f33,#ff6f00);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow: 0 10px 30px rgba(0,0,0,0.4);transition: transform 0.3s ease, box-shadow 0.3s ease;}
+.card:hover{transform: translateZ(20px) scale(1.03) rotateX(3deg) rotateY(3deg);box-shadow:0 20px 40px rgba(0,0,0,0.5);}
+button{cursor:pointer;transition: all 0.2s ease;font-weight:800;}
+button:active{transform: scale(0.95) rotateX(2deg) rotateY(-2deg);}
+.scroll-container{display:flex;overflow-x:auto;gap:12px;padding:6px 0;}
+.user-banner{min-width:180px;flex-shrink:0;border-radius:16px;padding:16px;background:linear-gradient(145deg,#ffb84d,#ff7f00);box-shadow:0 8px 20px rgba(0,0,0,0.5);cursor:pointer;transition: transform 0.3s ease;font-size:14px;font-weight:700;}
+.user-banner:hover{transform: translateZ(15px) scale(1.05);}
+.banner{background: linear-gradient(135deg,#ffcc66,#ff9900);padding:20px;border-radius:16px;text-align:center;margin-bottom:12px;box-shadow:0 10px 25px rgba(0,0,0,0.5);font-size:18px;font-weight:800;}
+.login-container{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);display:flex;justify-content:center;align-items:center;z-index:1000;}
+.login-box{background:#ff9900;padding:30px;border-radius:20px;width:300px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.6);}
+.login-box input{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:none;font-weight:700;}
+</style>
+</head>
+<body>
+
+<!-- Admin Login -->
+<div id="adminLogin" class="login-container">
+  <div class="login-box">
+    <h2 class="text-2xl font-black mb-4">Admin Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPass" placeholder="Password">
+    <button onclick="loginAdmin()" class="px-4 py-2 rounded-xl bg-black text-orange-400 mt-2">შესვლა</button>
+  </div>
+</div>
+
+<header class="flex justify-between items-center p-4 bg-orange-600 shadow-lg">
+  <h1 class="text-3xl font-black drop-shadow-lg">SWAP<span class="text-black">.GE</span></h1>
+  <nav class="flex gap-3">
+    <button onclick="changeTab('home')">🏠 მთავარი</button>
+    <button onclick="changeTab('chat')">💬 ჩატი</button>
+    <button onclick="changeTab('profile')">👤 პროფილი</button>
+  </nav>
+</header>
+
+<!-- Pages -->
+<div id="home" class="page active p-4">
+  <div id="userBanners" class="scroll-container mb-4"></div>
+  <div id="itemsList" class="mt-4"></div>
+
+  <!-- Admin Video Upload -->
+  <div id="adminVideoUpload" class="mt-6 hidden">
+    <h3 class="font-black mb-2">ადმინ ვიდეო ატვირთვა (20 წ. მაქს.)</h3>
+    <input type="file" id="videoFile" accept="video/*">
+    <button onclick="uploadVideo()" class="px-3 py-2 rounded-xl bg-black text-orange-400 shadow-lg mt-2">ატვირთე ვიდეო</button>
+    <div id="videoList" class="mt-4 space-y-2"></div>
+  </div>
+</div>
+
+<div id="chat" class="page p-4">
+  <h2 class="text-2xl font-black mb-3">ჩატი</h2>
+  <div id="chatBox" class="space-y-2"></div>
+</div>
+
+<div id="profile" class="page p-4">
+  <h2 class="text-2xl font-black mb-3">პროფილი</h2>
+</div>
+
+<script>
+  // Firebase Init
+  const firebaseConfig = {
+    apiKey: "AIzaSyCuFjbwcI3up46IoNEJfayWyGnXvABsOfM",
+    authDomain: "swap-5d311.firebaseapp.com",
+    databaseURL: "https://swap-5d311-default-rtdb.firebaseio.com",
+    projectId: "swap-5d311",
+    storageBucket: "swap-5d311.appspot.com",
+    messagingSenderId: "444445838698",
+    appId: "1:444445838698:web:18ab8580aa018d0236a913",
+    measurementId: "G-HS88H5PQ9P"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+
+  // Tabs
+  function changeTab(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  // Admin
+  const adminEmail = "admin@gmail.com";
+  const adminPass = "Admin2026$";
+
+  function loginAdmin(){
+    const email = document.getElementById('loginEmail').value;
+    const pass = document.getElementById('loginPass').value;
+    if(email===adminEmail && pass===adminPass){
+      document.getElementById('adminLogin').style.display='none';
+      document.getElementById('adminVideoUpload').classList.remove('hidden');
+      loadUserBanners();
+    }else{ alert("შეცდომა! დაუშვებელი შესვლა."); }
+  }
+
+  // User Banners
+  async function loadUserBanners(){
+    const container = document.getElementById('userBanners');
+    container.innerHTML='';
+    const snapshot = await db.collection('users').orderBy('createdAt','desc').limit(10).get();
+    snapshot.forEach(doc=>{
+      const data = doc.data();
+      const div = document.createElement('div');
+      div.className='user-banner';
+      div.innerHTML=`<div style="font-size:18px;font-weight:900;">${data.name}</div><div style="font-size:12px;margin-top:4px;">${data.lastItem}</div>`;
+      container.appendChild(div);
+    });
+  }
+
+  // Admin Video Upload
+  async function uploadVideo(){
+    const file = document.getElementById('videoFile').files[0];
+    if(!file) return alert("აირჩიეთ ვიდეო!");
+    if(file.duration && file.duration>20) return alert("ვიდეო უნდა იყოს 20 წამის მაქსიმუმი!");
+    const storageRef = storage.ref('videos/' + file.name);
+    const uploadTask = storageRef.put(file);
+    uploadTask.on('state_changed', null,
+      error => alert("შეცდომა: "+error.message),
+      async () => {
+        const url = await storageRef.getDownloadURL();
+        document.getElementById('videoList').innerHTML+=`<video src="${url}" controls class="w-full rounded-xl"></video>`;
+        alert("ვიდეო წარმატებით ატვირთულია!");
+      }
+    );
+  }
+</script>
+</body>
+</html>
