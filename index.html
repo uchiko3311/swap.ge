@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWAP.GE - 3D Experience</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+<style>
+  body {
+    margin:0; padding:0;
+    font-family:'Fira GO', sans-serif;
+    background:#FF7F00; /* ნარინჯისფერი ფონად */
+    color:#fff;
+    perspective: 1500px;
+  }
+
+  .page { display:none; transform-style: preserve-3d; }
+  .page.active { display:block; animation: fadeIn 0.5s ease; }
+
+  @keyframes fadeIn {
+    from { opacity:0; transform: rotateY(-10deg); }
+    to { opacity:1; transform: rotateY(0deg); }
+  }
+
+  .card {
+    background:linear-gradient(145deg,#ff9f33,#ff6f00);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateZ(20px) scale(1.03) rotateX(3deg) rotateY(3deg);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+
+  button {
+    cursor:pointer;
+    transition: all 0.2s ease;
+    font-weight:800;
+  }
+  button:active { transform: scale(0.95) rotateX(2deg) rotateY(-2deg); }
+
+  .scroll-container { display:flex; overflow-x:auto; gap:12px; padding:6px 0; }
+  .user-banner { min-width:140px; flex-shrink:0; border-radius:16px; padding:10px; background:linear-gradient(145deg,#ffb84d,#ff7f00); box-shadow:0 8px 20px rgba(0,0,0,0.5); cursor:pointer; transition: transform 0.3s ease; }
+  .user-banner:hover { transform: translateZ(15px) scale(1.05); }
+
+  .banner { background: linear-gradient(135deg,#ffcc66,#ff9900); padding:16px; border-radius:16px; text-align:center; margin-bottom:12px; box-shadow:0 10px 25px rgba(0,0,0,0.5);}
+</style>
+</head>
+<body>
+
+<header class="flex justify-between items-center p-4 bg-orange-600 shadow-lg">
+  <h1 class="text-3xl font-black drop-shadow-lg">SWAP<span class="text-black">.GE</span></h1>
+  <nav class="flex gap-3">
+    <button onclick="changeTab('home')">🏠 მთავარი</button>
+    <button onclick="changeTab('chat')">💬 ჩატი</button>
+    <button onclick="changeTab('profile')">👤 პროფილი</button>
+  </nav>
+</header>
+
+<!-- მთავარი გვერდი -->
+<div id="home" class="page active p-4">
+
+  <!-- ადმინის ბანერი -->
+  <div id="bannerContainer" class="banner hidden">🟢 რეკლამა აქ! (ადმინისთვის)</div>
+
+  <!-- მომხმარებელთა სქროლ ბანერები -->
+  <div id="userBanners" class="scroll-container mb-4"></div>
+
+  <h2 class="text-2xl font-black mb-3">გაცვალე დღესვე</h2>
+  <button onclick="addItem()" class="px-4 py-2 rounded-xl bg-black text-orange-400 shadow-lg">დამატე ნივთი 🤝</button>
+
+  <div id="itemsList" class="mt-4"></div>
+
+  <!-- ადმინის ვიდეოების ატვირთვა -->
+  <div id="adminVideoUpload" class="mt-6 hidden">
+    <h3 class="font-black mb-2">ადმინ ვიდეო ატვირთვა (მაქს. 20 წ.)</h3>
+    <input type="file" id="videoFile" accept="video/*">
+    <button onclick="uploadVideo()" class="px-3 py-2 rounded-xl bg-black text-orange-400 shadow-lg mt-2">ატვირთე ვიდეო</button>
+    <div id="videoList" class="mt-4 space-y-2"></div>
+  </div>
+</div>
+
+<!-- ჩატი -->
+<div id="chat" class="page p-4">
+  <h2 class="text-2xl font-black mb-3">ჩატი</h2>
+  <div id="chatBox" class="space-y-2"></div>
+</div>
+
+<!-- პროფილი -->
+<div id="profile" class="page p-4">
+  <h2 class="text-2xl font-black mb-3">პროფილი</h2>
+  <button onclick="vipPayment()" class="px-3 py-2 rounded-xl bg-black text-orange-400 shadow-lg">💎 VIP გადახდა</button>
+</div>
+
+<script>
+  // 🔹 Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCuFjbwcI3up46IoNEJfayWyGnXvABsOfM",
+    authDomain: "swap-5d311.firebaseapp.com",
+    databaseURL: "https://swap-5d311-default-rtdb.firebaseio.com",
+    projectId: "swap-5d311",
+    storageBucket: "swap-5d311.appspot.com",
+    messagingSenderId: "444445838698",
+    appId: "1:444445838698:web:18ab8580aa018d0236a913",
+    measurementId: "G-HS88H5PQ9P"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+
+  // ნავიგაცია
+  function changeTab(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  // Notifications
+  function notifyUser(message){
+    if(!("Notification" in window)) return;
+    if(Notification.permission==="granted"){ new Notification(message); }
+    else if(Notification.permission!=="denied"){
+      Notification.requestPermission().then(p=>{
+        if(p==="granted") new Notification(message);
+      });
+    }
+  }
+
+  // ნივთების დამატება
+  async function addItem(){
+    const title = prompt("დასახელება:");
+    if(!title) return;
+    const userId = 'user123'; // შემდგომ Firebase Auth
+    await db.collection('items').add({title,userId,createdAt:Date.now()});
+    alert("ნივთი დაემატა!");
+    loadItems();
+    notifyUser(`ნივთი "${title}" დაემატა!`);
+    loadUserBanners();
+  }
+
+  async function loadItems(){
+    const itemsList = document.getElementById('itemsList');
+    itemsList.innerHTML='';
+    const snapshot = await db.collection('items').orderBy('createdAt','desc').get();
+    snapshot.forEach(doc=>{
+      const data = doc.data();
+      const div = document.createElement('div');
+      div.className='card';
+      div.textContent = data.title;
+      itemsList.appendChild(div);
+    });
+  }
+  loadItems();
+
+  // VIP გადახდა
+  async function vipPayment(){
+    const res = await fetch('https://your-server.com/api/payment/create-payment',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({userId:'123',amount:4.99})
+    });
+    const data = await res.json();
+    window.open(data.paymentUrl,'_blank');
+  }
+
+  // ადმინი მართვა
+  const isAdmin = true; 
+  if(isAdmin){
+    document.getElementById('bannerContainer').classList.remove('hidden');
+    document.getElementById('adminVideoUpload').classList.remove('hidden');
+  }
+
+  async function uploadVideo(){
+    const file = document.getElementById('videoFile').files[0];
+    if(!file) return alert("აირჩიეთ ვიდეო!");
+    const storageRef = storage.ref('videos/' + file.name);
+    const uploadTask = storageRef.put(file);
+    uploadTask.on('state_changed', null,
+      error => { alert("შეცდომა ატვირთვისას: "+error.message); },
+      async () => {
+        const url = await storageRef.getDownloadURL();
+        document.getElementById('videoList').innerHTML+=`<video src="${url}" controls class="w-full rounded-xl"></video>`;
+        alert("ვიდეო წარმატებით ატვირთულია!");
+      }
+    );
+  }
+
+  // მომხმარებელთა ბანერები
+  async function loadUserBanners(){
+    const container = document.getElementById('userBanners');
+    container.innerHTML='';
+    const snapshot = await db.collection('items').orderBy('createdAt','desc').get();
+    snapshot.forEach(doc=>{
+      const data = doc.data();
+      const div = document.createElement('div');
+      div.className='user-banner';
+      div.innerHTML=`<div class="font-bold text-xs mb-1">${data.userId}</div><div>${data.title}</div>`;
+      div.onclick = ()=>alert(`გსურთ გაცვლა ნივთზე: ${data.title}?`);
+      container.appendChild(div);
+    });
+  }
+  loadUserBanners();
+</script>
+
+</body>
+</html>
