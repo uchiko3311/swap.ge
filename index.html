@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAP.GE | გაცვალე ყველაფერი</title>
+    <!-- აი ეს ორი ხაზია ყველაზე მნიშვნელოვანი სტილებისთვის -->
+    <script src="https://tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        @import url('https://googleapis.com');
+        body { font-family: 'Fira GO', sans-serif; background-color: #d35400; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); border-radius: 2rem; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .btn-green { background-color: #27ae60; color: white; padding: 12px 24px; border-radius: 1rem; font-weight: 900; }
+    </style>
+</head>
+<body class="m-0 p-0 text-gray-900">
+
+    <!-- Header -->
+    <nav class="p-6 flex justify-between items-center bg-black/20 backdrop-blur-md sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <span class="text-4xl drop-shadow-md">🤝</span>
+            <h1 class="text-2xl font-black text-white italic tracking-tighter">SWAP.GE</h1>
+        </div>
+        <button onclick="login()" class="bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold">შესვლა</button>
+    </nav>
+
+    <!-- Main Section -->
+    <main class="container mx-auto px-4 py-10">
+        <div class="text-center mb-10 text-white">
+            <h2 class="text-4xl font-black mb-2">გაინაცვლე ახალზე!</h2>
+            <p class="opacity-80">გააქციე ძველი ნივთები ახალ შესაძლებლობებად</p>
+        </div>
+
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex gap-2">
+                <button onclick="showHome()" class="bg-white text-orange-700 px-4 py-2 rounded-full font-bold text-xs shadow-lg">მთავარი</button>
+                <button onclick="showProfile()" class="bg-white/10 text-white px-4 py-2 rounded-full font-bold text-xs border border-white/20">პროფილი</button>
+            </div>
+            <button onclick="openModal()" class="btn-green shadow-xl active:scale-95 transition">+ დამატება</button>
+        </div>
+
+        <!-- განცხადებების ბადე -->
+        <div id="grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <!-- აქ გამოჩნდება პოსტები -->
+        </div>
+    </main>
+
+    <!-- დამატების ფორმა (Modal) -->
+    <div id="modal" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center p-4 z-50">
+        <div class="glass-card w-full max-w-md p-8 relative">
+            <h3 class="text-2xl font-black mb-6 text-orange-700">ახალი პოსტი</h3>
+            <div class="space-y-4">
+                <input type="text" placeholder="რა გაქვთ?" class="w-full p-4 bg-gray-100 rounded-2xl outline-none border-none">
+                <input type="text" placeholder="რაში ცვლით?" class="w-full p-4 bg-gray-100 rounded-2xl outline-none border-none">
+                <div class="border-2 border-dashed border-gray-200 p-6 rounded-2xl text-center cursor-pointer">
+                    <p class="text-gray-400 text-sm font-bold">📸 ფოტოს ატვირთვა</p>
+                </div>
+                <button class="w-full bg-orange-600 text-white py-4 rounded-2xl font-black shadow-lg">გამოქვეყნება</button>
+                <button onclick="closeModal()" class="w-full text-gray-400 py-2 font-bold">დახურვა</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() { document.getElementById('modal').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+        // აქ ჩასვი შენი Firebase ლოგიკა...
+    </script>
+</body>
+</html>
