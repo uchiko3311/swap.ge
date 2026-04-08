@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWAP.GE</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<style>
+  body { margin:0; padding:0; font-family:sans-serif; background:#000; color:#fff; }
+  .page { display:none; }
+  .page.active { display:block; }
+  .text-orange-500 { color:#FF5F00; }
+  button { cursor:pointer; transition:all 0.2s ease; }
+  button:active { transform:scale(0.97); filter:brightness(0.8); }
+  .card { background:#111; border:1px solid #222; border-radius:12px; padding:12px; margin-top:8px; }
+</style>
+</head>
+<body>
+
+<header class="flex justify-between items-center p-4 bg-[#111]">
+  <h1 class="text-2xl font-black">SWAP<span class="text-orange-500">.GE</span></h1>
+  <nav class="flex gap-3">
+    <button onclick="changeTab('home')">🏠 მთავარი</button>
+    <button onclick="changeTab('chat')">💬 ჩატი</button>
+    <button onclick="changeTab('profile')">👤 პროფილი</button>
+  </nav>
+</header>
+
+<!-- მთავარი -->
+<div id="home" class="page active p-4">
+  <h2 class="text-xl font-black mb-3">გაცვალე დღესვე</h2>
+  <button onclick="addItem()" class="bg-orange-500 text-black px-3 py-2 rounded-lg font-bold mb-4">დამატე ნივთი 🤝</button>
+  <div id="map" style="width:100%;height:250px;margin-bottom:12px;"></div>
+  <div id="itemsList" class="space-y-2"></div>
+</div>
+
+<!-- ჩატი -->
+<div id="chat" class="page p-4">
+  <h2 class="text-xl font-black mb-3">ჩატი</h2>
+  <div id="chatBox" class="space-y-2"></div>
+</div>
+
+<!-- პროფილი -->
+<div id="profile" class="page p-4">
+  <h2 class="text-xl font-black mb-3">პროფილი</h2>
+  <button onclick="vipPayment()" class="bg-orange-500 text-black px-3 py-2 rounded-lg font-bold">💎 VIP გადახდა</button>
+</div>
+
+<script>
+  // 1️⃣ Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCuFjbwcI3up46IoNEJfayWyGnXvABsOfM",
+    authDomain: "swap-5d311.firebaseapp.com",
+    databaseURL: "https://swap-5d311-default-rtdb.firebaseio.com",
+    projectId: "swap-5d311",
+    storageBucket: "swap-5d311.appspot.com",
+    messagingSenderId: "444445838698",
+    appId: "1:444445838698:web:18ab8580aa018d0236a913",
+    measurementId: "G-HS88H5PQ9P"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // 2️⃣ ნავიგაცია
+  function changeTab(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  // 3️⃣ Google Maps
+  function initMap(){
+    const map = new google.maps.Map(document.getElementById('map'),{
+      center:{lat:41.7151,lng:44.8271},
+      zoom:7
+    });
+  }
+
+  // 4️⃣ ნოტიფიკაციები
+  function notifyUser(message){
+    if(!("Notification" in window)) return;
+    if(Notification.permission === "granted"){
+      new Notification(message);
+    } else if(Notification.permission !== "denied"){
+      Notification.requestPermission().then(permission=>{
+        if(permission === "granted") new Notification(message);
+      });
+    }
+  }
+
+  // 5️⃣ ნივთების დამატება და ჩატვირთვა
+  async function addItem(){
+    const title = prompt("დასახელება:");
+    if(!title) return;
+    await db.collection('items').add({title,createdAt:Date.now()});
+    alert("ნივთი დაემატა!");
+    loadItems();
+    notifyUser(`ნივთი "${title}" დაემატა!`);
+  }
+
+  async function loadItems(){
+    const itemsList = document.getElementById('itemsList');
+    itemsList.innerHTML='';
+    const snapshot = await db.collection('items').orderBy('createdAt','desc').get();
+    snapshot.forEach(doc=>{
+      const data = doc.data();
+      itemsList.innerHTML+=`<div class="card">${data.title}</div>`;
+    });
+  }
+  loadItems();
+
+  // 6️⃣ VIP გადახდა (Server-side)
+  async function vipPayment(){
+    const res = await fetch('https://your-server.com/api/payment/create-payment',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({userId:'123',amount:4.99})
+    });
+    const data = await res.json();
+    window.open(data.paymentUrl,'_blank');
+  }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_KEY&callback=initMap" async defer></script>
+</body>
+</html>
