@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Swap.ge - გაცვალე რკინასავით</title>
+    <script src="https://tailwindcss.com"></script>
+    <style>
+        body { background-color: #050505; color: white; font-family: sans-serif; overflow-x: hidden; }
+        .orange-main { background-color: #FF5F00; }
+        .orange-text { color: #FF5F00; }
+        .border-iron { border: 2px solid #1a1a1a; }
+        .active-nav { color: #FF5F00 !important; opacity: 1 !important; }
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-iron:active { transform: scale(0.96); opacity: 0.9; }
+    </style>
+</head>
+<body class="pb-24">
+
+    <!-- Header -->
+    <header class="p-4 bg-[#0a0a0a] border-b-2 border-[#FF5F00] sticky top-0 z-50 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <span class="text-2xl">🤝</span>
+            <h1 class="text-2xl font-black italic text-[#FF5F00]">SWAP.GE</h1>
+        </div>
+        <div class="flex gap-4">
+            <button class="btn-iron text-xl">🔍</button>
+            <button class="btn-iron text-xl">🔔</button>
+        </div>
+    </header>
+
+    <!-- გვერდი 1: მთავარი -->
+    <main id="home" class="page active">
+        <section class="p-4">
+            <div class="orange-main rounded-2xl p-6 text-black shadow-2xl relative overflow-hidden">
+                <h2 class="text-2xl font-black uppercase italic">გაცვალე დღესვე</h2>
+                <p class="text-xs font-bold mb-4">ნებისმიერი ნივთი რკინის პირობებით</p>
+                <button class="bg-black text-white px-6 py-3 rounded-xl font-black text-xs btn-iron uppercase">დაამატე ნივთი</button>
+                <span class="absolute right-[-10px] bottom-[-10px] text-8xl opacity-10 rotate-12">🤝</span>
+            </div>
+        </section>
+
+        <section class="px-4 mt-2">
+            <h3 class="text-[10px] font-black uppercase tracking-[3px] text-zinc-500 mb-3">კატეგორიები</h3>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-[#111] p-4 rounded-xl border-iron btn-iron flex items-center gap-3">
+                    <span>📱</span> <span class="font-bold text-sm uppercase">ტექნიკა</span>
+                </div>
+                <div class="bg-[#111] p-4 rounded-xl border-iron btn-iron flex items-center gap-3">
+                    <span>🚗</span> <span class="font-bold text-sm uppercase">ტრანსპორტი</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="p-4 mt-4">
+            <h3 class="text-[10px] font-black uppercase tracking-[3px] text-[#FF5F00] mb-4 text-center">ტოპ შეთავაზებები</h3>
+            <div class="bg-[#111] rounded-2xl border-iron overflow-hidden mb-4">
+                <div class="h-48 bg-zinc-800 flex items-center justify-center text-5xl">💻</div>
+                <div class="p-4">
+                    <h4 class="font-black text-lg uppercase">MacBook Pro M3</h4>
+                    <p class="text-xs text-zinc-500 mb-4 font-bold italic">🔄 იცვლება: ავტომობილში</p>
+                    <button onclick="showPage('chat')" class="w-full orange-main text-black py-3 rounded-xl font-black uppercase text-xs btn-iron">შესთავაზე გაცვლა</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- გვერდი 2: ჩატი (გაცოცხლებული) -->
+    <main id="chat" class="page">
+        <div class="p-4">
+            <h2 class="text-xl font-black uppercase text-[#FF5F00] mb-6">შეტყობინებები</h2>
+            <div class="space-y-4">
+                <!-- Chat Item -->
+                <div onclick="openChat('გიორგი')" class="flex items-center gap-4 bg-[#111] p-4 rounded-2xl border-iron btn-iron">
+                    <div class="w-12 h-12 orange-main rounded-full flex items-center justify-center font-black text-black">გ</div>
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <span class="font-black text-sm uppercase">გიორგი</span>
+                            <span class="text-[10px] text-zinc-500 font-bold">21:45</span>
+                        </div>
+                        <p class="text-xs text-zinc-400 truncate mt-1">🤝 თანახმა ვარ გაცვლაზე, როდის შევხვდეთ?</p>
+                    </div>
+                </div>
+                <!-- Another Chat -->
+                <div class="flex items-center gap-4 bg-[#111] p-4 rounded-2xl border-iron opacity-60">
+                    <div class="w-12 h-12 bg-zinc-700 rounded-full flex items-center justify-center font-black">ლ</div>
+                    <div class="flex-1">
+                        <span class="font-black text-sm uppercase">ლაშა</span>
+                        <p class="text-xs text-zinc-500 mt-1">ნივთი ჯერ კიდევ გაქვთ?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- გვერდი 3: პროფილი -->
+    <main id="profile" class="page">
+        <div class="p-4 text-center">
+            <div class="w-24 h-24 orange-main rounded-full mx-auto mb-4 border-4 border-[#1a1a1a] shadow-2xl flex items-center justify-center text-4xl">👤</div>
+            <h2 class="text-xl font-black uppercase">ჩემი პროფილი</h2>
+            <p class="text-zinc-500 text-xs font-bold mt-1 uppercase tracking-widest">Swap ID: 88412</p>
+            
+            <div class="mt-8 space-y-2">
+                <button class="w-full bg-[#111] p-4 rounded-xl border-iron text-left font-bold uppercase text-xs btn-iron">📦 ჩემი განცხადებები</button>
+                <button class="w-full bg-[#111] p-4 rounded-xl border-iron text-left font-bold uppercase text-xs btn-iron">⭐ ფავორიტები</button>
+                <button class="w-full bg-red-900/20 text-red-500 p-4 rounded-xl border border-red-900/50 text-left font-bold uppercase text-xs btn-iron mt-10">გასვლა</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-[#0a0a0a] border-t-2 border-[#1a1a1a] flex justify-around p-2 pb-8 z-50">
+        <button onclick="showPage('home')" class="nav-btn active-nav flex flex-col items-center opacity-50">
+            <span class="text-2xl">🏠</span>
+            <span class="text-[9px] font-black mt-1 uppercase">მთავარი</span>
+        </button>
+        <button onclick="showPage('chat')" class="nav-btn flex flex-col items-center opacity-50">
+            <span class="text-2xl">💬</span>
+            <span class="text-[9px] font-black mt-1 uppercase">ჩატი</span>
+        </button>
+        
+        <!-- Center Swap Button -->
+        <button class="relative -mt-10 btn-iron">
+            <div class="orange-main w-16 h-16 rounded-full border-4 border-[#050505] flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(255,95,0,0.3)]">🤝</div>
+            <span class="text-[9px] font-black orange-text uppercase block text-center mt-1">SWAP</span>
+        </button>
+
+        <button onclick="showPage('profile')" class="nav-btn flex flex-col items-center opacity-50">
+            <span class="text-2xl">👤</span>
+            <span class="text-[9px] font-black mt-1 uppercase">პროფილი</span>
+        </button>
+        <button class="nav-btn flex flex-col items-center opacity-50">
+            <span class="text-2xl">⚙️</span>
+            <span class="text-[9px] font-black mt-1 uppercase">მეტი</span>
+        </button>
+    </nav>
+
+    <script>
+        function showPage(pageId) {
+            // ყველა გვერდის დამალვა
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // არჩეული გვერდის ჩვენება
+            document.getElementById(pageId).classList.add('active');
+            
+            // ნავიგაციის ღილაკების ფერის შეცვლა
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-nav'));
+            event.currentTarget.classList.add('active-nav');
+        }
+
+        function openChat(name) {
+            alert("იხსნება პირადი ჩატი: " + name + "-თან. \n\nაქ მომხმარებლები შეძლებენ ფოტოების გაცვლას და ლოკაციის გაზიარებას.");
+        }
+    </script>
+
+</body>
+</html>
