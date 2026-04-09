@@ -1,0 +1,72 @@
+<script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { 
+        getAuth, 
+        signInWithEmailAndPassword, 
+        createUserWithEmailAndPassword, 
+        sendPasswordResetEmail, 
+        GoogleAuthProvider, 
+        signInWithPopup 
+    } from "https://gstatic.com";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCuFjbwcI3up46IoNEJfayWyGnXvABsOfM",
+        authDomain: "://firebaseapp.com",
+        projectId: "swap-5d311",
+        storageBucket: "swap-5d311.firebasestorage.app",
+        messagingSenderId: "444445838698",
+        appId: "1:444445838698:web:18ab8580aa018d0236a913"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // მნიშვნელოვანია: ფუნქციები უნდა მიებას window-ს
+    window.handleAuth = async (type) => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        
+        if(!email || !password) {
+            alert("გთხოვთ, შეავსოთ ყველა ველი");
+            return;
+        }
+
+        try {
+            if(type === 'login') {
+                await signInWithEmailAndPassword(auth, email, password);
+                console.log("შესვლა წარმატებულია");
+            } else {
+                await createUserWithEmailAndPassword(auth, email, password);
+                console.log("რეგისტრაცია წარმატებულია");
+            }
+            window.location.href = "index.html";
+        } catch (err) {
+            console.error(err);
+            alert("შეცდომა: " + err.message);
+        }
+    };
+
+    window.googleLogin = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+            window.location.href = "index.html";
+        } catch (err) {
+            alert("Google-ით ავტორიზაცია ვერ მოხერხდა");
+        }
+    };
+
+    window.forgotPassword = async () => {
+        const email = document.getElementById('email').value;
+        if(!email) {
+            alert("პაროლის აღსადგენად ჩაწერეთ თქვენი ელ-ფოსტა");
+            return;
+        }
+        try {
+            await sendPasswordResetEmail(auth, email);
+            alert("ბმული გამოგზავნილია თქვენს მეილზე!");
+        } catch (err) {
+            alert(err.message);
+        }
+    };
+</script>
