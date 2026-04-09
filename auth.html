@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ავტორიზაცია - Swap.ge</title>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        :root { --orange: #e67e22; --orange-deep: #d35400; --dark: #2c3e50; --bg: #fdf2e9; --google: #db4437; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        
+        .auth-card { background: white; padding: 35px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; border-top: 6px solid var(--orange); position: relative; }
+        .auth-card h2 { text-align: center; color: var(--dark); margin-bottom: 25px; font-size: 24px; }
+        
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; color: var(--dark); font-size: 14px; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.3s; font-size: 15px; }
+        input:focus { border-color: var(--orange); box-shadow: 0 0 5px rgba(230, 126, 34, 0.2); }
+        
+        .btn-box { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        button { width: 100%; padding: 13px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        
+        .btn-login { background: var(--orange); color: white; }
+        .btn-login:hover { background: var(--orange-deep); transform: translateY(-1px); }
+        .btn-reg { background: white; color: var(--dark); border: 2px solid var(--dark); }
+        .btn-reg:hover { background: var(--dark); color: white; }
+
+        .separator { text-align: center; margin: 25px 0; position: relative; color: #7f8c8d; font-size: 13px; }
+        .separator::before, .separator::after { content: ""; position: absolute; top: 50%; width: 35%; height: 1px; background: #ddd; }
+        .separator::before { left: 0; } .separator::after { right: 0; }
+
+        .btn-google { background: white; color: #555; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .btn-google i { color: var(--google); font-size: 18px; }
+        .btn-google:hover { background: #f8f9fa; border-color: #ccc; }
+
+        .forgot-link { text-align: center; margin-top: 20px; }
+        .forgot-link a { color: #7f8c8d; text-decoration: none; font-size: 13px; transition: 0.3s; }
+        .forgot-link a:hover { color: var(--orange); text-decoration: underline; }
+        
+        .back-home { position: absolute; top: -50px; left: 0; text-decoration: none; color: var(--dark); font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="auth-card">
+    <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> მთავარზე</a>
+    <h2>ავტორიზაცია</h2>
+    
+    <div class="form-group">
+        <label>ელ-ფოსტა</label>
+        <input type="email" id="email" placeholder="example@mail.com" required>
+    </div>
+    
+    <div class="form-group">
+        <label>პაროლი</label>
+        <input type="password" id="password" placeholder="******" required>
+    </div>
+
+    <div class="btn-box">
+        <button type="button" class="btn-login" onclick="handleAuth('login')">შესვლა</button>
+        <button type="button" class="btn-reg" onclick="handleAuth('register')">რეგისტრაცია</button>
+    </div>
+
+    <div class="separator">ან გამოიყენეთ</div>
+
+    <button type="button" class="btn-google" onclick="handleGoogle()">
+        <i class="fab fa-google"></i> Google-ით შესვლა
+    </button>
+
+    <div class="forgot-link">
+        <a href="#" onclick="handleForgot()">დაგავიწყდათ პაროლი?</a>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { 
+        getAuth, 
+        signInWithEmailAndPassword, 
+        createUserWithEmailAndPassword, 
+        sendPasswordResetEmail, 
+        GoogleAuthProvider, 
+        signInWithPopup 
+    } from "https://gstatic.com";
+
+    // Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyCuFjbwcI3up46IoNEJfayWyGnXvABsOfM",
+        authDomain: "://firebaseapp.com",
+        projectId: "swap-5d311",
+        storageBucket: "swap-5d311.firebasestorage.app",
+        messagingSenderId: "444445838698",
+        appId: "1:444445838698:web:18ab8580aa018d0236a913"
+    };
+
+    // ინიციალიზაცია
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // ფუნქციების მიბმა Global Window-ზე
+    window.handleAuth = async (type) => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        if(!email || !password) {
+            alert("გთხოვთ შეავსოთ ყველა ველი!");
+            return;
+        }
+
+        try {
+            if(type === 'login') {
+                await signInWithEmailAndPassword(auth, email, password);
+            } else {
+                await createUserWithEmailAndPassword(auth, email, password);
+            }
+            window.location.href = "index.html";
+        } catch (error) {
+            let msg = "შეცდომა!";
+            if(error.code === 'auth/user-not-found') msg = "მომხმარებელი არ მოიძებნა";
+            if(error.code === 'auth/wrong-password') msg = "არასწორი პაროლი";
+            if(error.code === 'auth/email-already-in-use') msg = "ეს მეილი უკვე დაკავებულია";
+            alert(msg + ": " + error.message);
+        }
+    };
+
+    window.handleGoogle = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+            window.location.href = "index.html";
+        } catch (error) {
+            alert("Google-ით შესვლა ვერ მოხერხდა.");
+        }
+    };
+
+    window.handleForgot = async () => {
+        const email = document.getElementById('email').value;
+        if(!email) {
+            alert("ჯერ ჩაწერეთ თქვენი ელ-ფოსტა!");
+            return;
+        }
+        try {
+            await sendPasswordResetEmail(auth, email);
+            alert("პაროლის აღდგენის ბმული გამოგზავნილია მეილზე.");
+        } catch (error) {
+            alert("შეცდომა: " + error.message);
+        }
+    };
+</script>
+
+</body>
+</html>
