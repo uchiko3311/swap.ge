@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>სიცილის ოთახი 🍊😂</title>
+
+<style>
+body { margin:0; overflow:hidden; font-family: Arial; background:#FFAA55; }
+
+#overlay{ position:absolute; top:10px; left:10px; z-index:10; color:white; }
+
+button{
+    padding:10px 20px; margin:5px; border:none; border-radius:8px;
+    cursor:pointer; background:#FF5722; color:white; font-weight:bold;
+}
+
+#jokeBox{
+    position:absolute; bottom:50px; left:50%;
+    transform:translateX(-50%);
+    background:rgba(0,0,0,0.6);
+    color:white; padding:15px 25px;
+    border-radius:15px;
+    font-size:20px;
+    text-align:center;
+}
+
+#goalText{
+    position:absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    color:white;
+    font-size:36px;
+    font-weight:bold;
+    text-shadow:2px 2px 15px #000;
+}
+
+/* 💰 ლარი */
+#moneyBtn{
+    position:absolute;
+    top:10px;
+    right:10px;
+    font-size:26px;
+    cursor:pointer;
+    z-index:10;
+}
+
+#moneyCount{
+    position:absolute;
+    top:50px;
+    right:10px;
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+}
+
+/* 💰 ანიმაცია */
+.moneyFly{
+    position:absolute;
+    color:#00ff00;
+    font-weight:bold;
+    animation:fly 1s forwards;
+}
+@keyframes fly{
+    0%{ transform:translateY(0); opacity:1;}
+    100%{ transform:translateY(-80px); opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div id="overlay">
+    <button onclick="nextJoke()">შემდეგი 😂</button>
+</div>
+
+<div id="goalText">100000 ❤️ ავიყვანოთ!</div>
+<div id="jokeBox">დააჭირე "შემდეგი 😂"</div>
+
+<!-- 💰 ლარი -->
+<div id="moneyBtn">💵</div>
+<div id="moneyCount">₾ 0</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+<script>
+// ხუმრობები
+const jokes=[
+"ცოტნე და შორენა ბიბის ასეირნებენ რატო? იმიტო🤣",
+"რატომ არ მუშაობს კომპიუტერი? – Wi-Fi დაიძინა!",
+"რატომ არ იცინის პროგრამისტი? – error!"
+];
+
+let currentIndex=0;
+
+// 💰 ფული
+let money=parseInt(localStorage.getItem("money"))||0;
+const moneyCount=document.getElementById("moneyCount");
+moneyCount.textContent="₾ "+money;
+
+document.getElementById("moneyBtn").onclick=()=>{
+    money+=1;
+    localStorage.setItem("money",money);
+    moneyCount.textContent="₾ "+money;
+
+    // ანიმაცია
+    const fly=document.createElement("div");
+    fly.className="moneyFly";
+    fly.textContent="+₾";
+    fly.style.left=(window.innerWidth-60)+"px";
+    fly.style.top="50px";
+    document.body.appendChild(fly);
+    setTimeout(()=>fly.remove(),1000);
+};
+
+function nextJoke(){
+    currentIndex=Math.floor(Math.random()*jokes.length);
+    document.getElementById("jokeBox").textContent=jokes[currentIndex];
+}
+
+// 3D Scene (მარტივი)
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0xFFAA55);
+
+const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,1000);
+camera.position.z=5;
+
+const renderer=new THREE.WebGLRenderer();
+renderer.setSize(innerWidth,innerHeight);
+document.body.appendChild(renderer.domElement);
+
+const cube=new THREE.Mesh(
+new THREE.BoxGeometry(),
+new THREE.MeshBasicMaterial({color:0xffffff})
+);
+scene.add(cube);
+
+function animate(){
+requestAnimationFrame(animate);
+cube.rotation.x+=0.01;
+cube.rotation.y+=0.01;
+renderer.render(scene,camera);
+}
+animate();
+</script>
+
+</body>
+</html>
