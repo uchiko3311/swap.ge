@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap.com.ge - გაცვალე ყველაფერი</title>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        :root { --orange: #e67e22; --orange-deep: #d35400; --dark: #2c3e50; --vip: #f1c40f; --bg: #fdf2e9; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--bg); color: #333; overflow-x: hidden; }
+        
+        /* Header */
+        header { background: var(--orange-deep); padding: 12px 0; border-bottom: 3px solid var(--dark); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1100px; margin: auto; display: flex; align-items: center; padding: 0 15px; gap: 10px; }
+        .logo { color: white; text-decoration: none; font-weight: bold; font-size: 20px; white-space: nowrap; }
+        .search-bar { flex-grow: 1; }
+        .search-bar input { width: 100%; padding: 10px; border-radius: 5px; border: none; outline: none; }
+        .header-btns { display: flex; gap: 8px; }
+        .lang-btn { background: var(--dark); color: white; border: 1px solid white; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .vip-btn { background: var(--dark); color: var(--vip); border: 1.5px solid var(--vip); padding: 7px 12px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 13px; white-space: nowrap; }
+
+        .container { max-width: 1100px; margin: auto; padding: 15px; }
+
+        /* Banner Slider */
+        .slider-container { width: 100%; height: 220px; margin-bottom: 25px; position: relative; overflow: hidden; border-radius: 12px; border: 2px solid var(--dark); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .slider-track { display: flex; width: 400%; height: 100%; transition: 0.8s cubic-bezier(0.45, 0, 0.55, 1); }
+        .slide { width: 25%; height: 100%; position: relative; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .slide-overlay { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.7); color: white; padding: 15px; text-align: center; font-weight: bold; }
+
+        /* Post Form */
+        .post-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid var(--orange); margin-bottom: 35px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        input, textarea, select { padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; width: 100%; box-sizing: border-box; font-family: inherit; }
+        textarea, .upload-area, .btn-post { grid-column: span 2; }
+        .upload-area { border: 2px dashed #bbb; padding: 20px; text-align: center; background: #fafafa; cursor: pointer; border-radius: 8px; transition: 0.3s; }
+        .upload-area:hover { background: #f0f0f0; border-color: var(--orange); }
+        .btn-post { background: var(--orange); color: white; border: none; padding: 15px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
+        .btn-post:hover { background: var(--orange-deep); }
+
+        /* Multi-lang visibility */
+        [data-en] { display: none; }
+        body.en-mode [data-ka] { display: none; }
+        body.en-mode [data-en] { display: inline-block; }
+
+        /* Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+        .item { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); transition: 0.3s; border: 1px solid #eee; }
+        .item:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+        .item img { width: 100%; height: 180px; object-fit: cover; }
+        .item-info { padding: 15px; }
+        .item-info h4 { margin: 0 0 8px 0; color: var(--dark); font-size: 16px; }
+        .item-info p { margin: 0 0 12px 0; font-size: 13px; color: #666; height: 36px; overflow: hidden; }
+        .item-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f0f0; pt: 10px; }
+        .item-phone { font-weight: bold; color: var(--orange-deep); text-decoration: none; font-size: 14px; }
+
+        footer { background: var(--dark); color: white; padding: 40px 20px; text-align: center; margin-top: 50px; }
+        .footer-links { margin-bottom: 15px; }
+        .footer-links a { color: #bdc3c7; text-decoration: none; margin: 0 10px; font-size: 14px; }
+    </style>
+</head>
+<body id="mainBody">
+
+<header>
+    <div class="nav-container">
+        <a href="index.html" class="logo">🤝 SWAP.GE</a>
+        <div class="search-bar">
+            <input type="text" id="sInp" placeholder="მოძებნე ნივთი..." onkeyup="filterItems()">
+        </div>
+        <div class="header-btns">
+            <button class="lang-btn" onclick="toggleLang()" id="lBtn">EN</button>
+            <a href="premium.html" class="vip-btn">
+                <span data-ka>👑 VIP სერვისი</span>
+                <span data-en>👑 VIP Service</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <!-- Banner Slider -->
+    <div class="slider-container">
+        <div class="slider-track" id="sliderTrack">
+            <div class="slide">
+                <img src="https://unsplash.com">
+                <div class="slide-overlay"><span data-ka>განათავსე რეკლამა ჩვენთან</span><span data-en>Advertise with us</span></div>
+            </div>
+            <div class="slide">
+                <img src="https://unsplash.com">
+                <div class="slide-overlay"><span data-ka>საუკეთესო შემოთავაზებები ტექნიკაზე</span><span data-en>Best tech offers</span></div>
+            </div>
+            <div class="slide">
+                <img src="https://unsplash.com">
+                <div class="slide-overlay"><span data-ka>გაცვალე მობილური სწრაფად</span><span data-en>Swap phones fast</span></div>
+            </div>
+            <div class="slide">
+                <img src="https://unsplash.com">
+                <div class="slide-overlay"><span data-ka>VIP განცხადებები 5X ეფექტურია</span><span data-en>VIP ads are 5X effective</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <section class="post-box">
+        <h2 style="margin-top:0;">
+            <span data-ka>➕ განცხადების დამატება</span>
+            <span data-en>➕ Add New Listing</span>
+        </h2>
+        <form class="form-grid" id="postForm">
+            <input type="text" id="title" placeholder="რას ცვლით?" required>
+            <select id="cat" required>
+                <option value="" data-ka>აირჩიეთ კატეგორია</option>
+                <option value="" data-en>Select Category</option>
+                <option value="Tech">Tech / ტექნიკა</option>
+                <option value="Auto">Auto / ავტო</option>
+                <option value="Home">Home / სახლი</option>
+            </select>
+            <textarea id="desc" placeholder="აღწერეთ ნივთი და გაცვლის პირობები..." rows="3" required></textarea>
+            <div class="upload-area" onclick="document.getElementById('fInp').click()">
+                <i class="fas fa-camera fa-2x"></i>
+                <p><span data-ka>დაამატეთ ფოტო</span><span data-en>Add Photo</span></p>
+                <input type="file" id="fInp" hidden accept="image/*" onchange="preview(this)">
+            </div>
+            <div id="preBox"></div>
+            <input type="text" id="phone" placeholder="ტელეფონის ნომერი" required>
+            <button type="submit" class="btn-post">
+                <span data-ka>გამოქვეყნება</span><span data-en>Publish Listing</span>
+            </button>
+        </form>
+    </section>
+
+    <h3>
+        <span data-ka>🔍 ბოლო განცხადებები</span>
+        <span data-en>🔍 Recent Listings</span>
+    </h3>
+    <div class="grid" id="listGrid"></div>
+</div>
+
+<footer>
+    <div class="footer-links">
+        <a href="privacy-policy.html"><span data-ka>კონფიდენციალურობა</span><span data-en>Privacy Policy</span></a>
+        <a href="terms-conditions.html"><span data-ka>წესები და პირობები</span><span data-en>Terms & Conditions</span></a>
+    </div>
+    <p>&copy; 2024 Swap.com.ge</p>
+</footer>
+
+<script>
+let currentLang = 'ka';
+let upImg = '';
+
+// საცდელი 20 განცხადება
+const demoData = [
+    { title: "iPhone 13 Pro", desc: "ვცვლი MacBook-ში ან iPhone 15-ში", cat: "Tech", phone: "555 12 34 56", img: "https://unsplash.com" },
+    { title: "BMW E46", desc: "ვცვლი უფრო ახალ მოდელში ჩემი მხრიდან თანხის დამატებით", cat: "Auto", phone: "599 00 11 22", img: "https://unsplash.com" },
+    { title: "Sony PS5", desc: "ვცვლი მძლავრ გეიმინგ კომპიუტერში", cat: "Tech", phone: "577 33 44 55", img: "https://unsplash.com" },
+    { title: "ველოსიპედი Giant", desc: "ვცვლი ელექტრო სკუტერში", cat: "Other", phone: "551 66 77 88", img: "https://unsplash.com" },
+    { title: "Samsung S23 Ultra", desc: "იდეალურ მდგომარეობაში, ვცვლი iPhone-ში", cat: "Tech", phone: "598 99 88 77", img: "https://unsplash.com" },
+    { title: "აკუსტიკური გიტარა", desc: "ვცვლი ელექტრო გიტარაში ან კომპიუტერის მონიტორში", cat: "Other", phone: "593 11 22 33", img: "https://unsplash.com" },
+    { title: "Mercedes C240", desc: "ვცვლი SUV ტიპის ავტომობილში", cat: "Auto", phone: "555 44 55 66", img: "https://unsplash.com" },
+    { title: "iPad Air 5", desc: "ვცვლი Microsoft Surface-ში", cat: "Tech", phone: "574 77 88 99", img: "https://unsplash.com" },
+    { title: "Nikkon D750", desc: "პროფესიონალური კამერა, ვცვლი ობიექტივებში", cat: "Tech", phone: "591 22 33 44", img: "https://unsplash.com" },
+    { title: "სათამაშო სავარძელი", desc: "ვცვლი საოფისე კომფორტულ სავარძელში", cat: "Home", phone: "555 88 77 66", img: "https://unsplash.com" },
+    { title: "Smart Watch Series 9", desc: "ვცვლი Garmin-ის საათში", cat: "Tech", phone: "599 44 33 22", img: "https://unsplash.com" },
+    { title: "Honda Civic", desc: "ეკონომიურია, ვცვლი ჰიბრიდულ მანქანაში", cat: "Auto", phone: "555 11 22 11", img: "https://unsplash.com" },
+    { title: "ყავის აპარატი", desc: "ვცვლი მიკროტალღურ ღუმელში", cat: "Home", phone: "577 00 99 88", img: "https://unsplash.com" },
+    { title: "ტელევიზორი 55' 4K", desc: "ვცვლი პროექტორში", cat: "Tech", phone: "591 55 66 77", img: "https://unsplash.com" },
+    { title: "Electric Scooter", desc: "ვცვლი სმარტფონში", cat: "Other", phone: "555 33 22 11", img: "https://unsplash.com" },
+    { title: "გაზქურა Beko", desc: "ვცვლი სარეცხ მანქანაში", cat: "Home", phone: "599 77 66 55", img: "https://unsplash.com" },
+    { title: "Dyson ფენი", desc: "ვცვლი სხვა ტექნიკაში", cat: "Home", phone: "551 22 44 66", img: "https://unsplash.com" },
+    { title: "AirPods Pro 2", desc: "ვცვლი Samsung Buds-ში", cat: "Tech", phone: "593 00 11 00", img: "https://unsplash.com" },
+    { title: "Jeep Grand Cherokee", desc: "ვცვლი მიწის ნაკვეთში", cat: "Auto", phone: "555 99 99 99", img: "https://unsplash.com" },
+    { title: "Gaming Laptop ASUS", desc: "ვცვლი MacBook M2-ში", cat: "Tech", phone: "577 55 55 55", img: "https://unsplash.com" }
+];
+
+let listings = JSON.parse(localStorage.getItem('swap_listings')) || demoData;
+
+// Toggle Language
+function toggleLang() {
+    const body = document.getElementById('mainBody');
+    const btn = document.getElementById('lBtn');
+    body.classList.toggle('en-mode');
+    currentLang = currentLang === 'ka' ? 'en' : 'ka';
+    btn.innerText = currentLang === 'ka' ? 'EN' : 'GE';
+    document.getElementById('sInp').placeholder = currentLang === 'ka' ? "მოძებნე ნივთი..." : "Search items...";
+}
+
+// Preview Photo
+function preview(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            upImg = e.target.result;
+            document.getElementById('preBox').innerHTML = `<img src="${upImg}" style="width:100px; height:100px; object-fit:cover; margin-top:10px; border-radius:8px;">`;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Form Submit
+document.getElementById('postForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newItem = {
+        title: document.getElementById('title').value,
+        desc: document.getElementById('desc').value,
+        cat: document.getElementById('cat').value,
+        phone: document.getElementById('phone').value,
+        img: upImg || 'https://placeholder.com'
+    };
+    listings.unshift(newItem);
+    localStorage.setItem('swap_listings', JSON.stringify(listings));
+    window.location.href = "success.html";
+});
+
+// Slider logic
+let sIdx = 0;
+setInterval(() => {
+    sIdx = (sIdx + 1) % 4;
+    document.getElementById('sliderTrack').style.transform = `translateX(-${sIdx * 25}%)`;
+}, 5000);
+
+// Search filter
+function filterItems() {
+    const term = document.getElementById('sInp').value.toLowerCase();
+    const filtered = listings.filter(i => i.title.toLowerCase().includes(term) || i.cat.toLowerCase().includes(term));
+    render(filtered);
+}
+
+// Render Listings
+function render(data) {
+    const grid = document.getElementById('listGrid');
+    grid.innerHTML = data.map(i => `
+        <div class="item">
+            <img src="${i.img}">
+            <div class="item-info">
+                <h4>${i.title}</h4>
+                <p>${i.desc}</p>
+                <div class="item-meta">
+                    <a href="tel:${i.phone}" class="item-phone">📞 ${i.phone}</a>
+                    <span style="font-size:11px; color:var(--orange); font-weight:bold;">${i.cat}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Init
+render(listings);
+</script>
+</body>
+</html>
