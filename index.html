@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap.com.ge - გაცვალე ყველაფერი</title>
+
+    <!-- Google AdSense -->
+    <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
+
+    <style>
+        :root { 
+            --orange-dark: #e67e22; 
+            --orange-deep: #d35400;
+            --vip-gold: #f1c40f; 
+            --dark: #2c3e50; 
+            --bg: #fdf2e9; /* ძალიან ღია ნარინჯისფერი ფონისთვის */
+        }
+        
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; background: var(--bg); color: #333; }
+        
+        /* Navigation */
+        header { background: var(--orange-deep); color: white; padding: 15px 0; position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--dark); }
+        .nav-container { max-width: 1100px; margin: auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        
+        .logo { font-size: 24px; font-weight: bold; text-decoration: none; color: white; display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--vip-gold); }
+        .handshake-logo { font-size: 30px; }
+
+        .search-bar { flex-grow: 1; margin: 0 25px; }
+        .search-bar input { width: 100%; padding: 10px 20px; border-radius: 5px; border: none; outline: none; font-size: 15px; }
+
+        .btn-vip-nav { background: var(--dark); color: var(--vip-gold); padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 900; font-size: 14px; transition: 0.3s; border: 1px solid var(--vip-gold); }
+        .btn-vip-nav:hover { background: #1a252f; transform: scale(1.05); }
+
+        /* Categories */
+        .cats { max-width: 1100px; margin: 25px auto; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .cat-link { background: white; padding: 10px 18px; border-radius: 5px; text-decoration: none; color: var(--orange-deep); font-weight: bold; border: 1px solid var(--orange-dark); transition: 0.2s; }
+        .cat-link:hover { background: var(--orange-dark); color: white; }
+
+        .container { max-width: 1100px; margin: auto; padding: 0 20px; }
+
+        /* VIP Banner with Dark Orange */
+        .vip-card-main { background: var(--orange-deep); color: white; padding: 40px; border-radius: 15px; border: 2px solid var(--dark); text-align: center; margin-bottom: 40px; box-shadow: 0 10px 25px rgba(211, 84, 0, 0.3); }
+        .vip-card-main h2 { margin: 0; color: var(--vip-gold); font-size: 35px; letter-spacing: 1px; }
+        .vip-card-main p { margin: 15px 0 25px; font-size: 18px; opacity: 0.9; }
+
+        /* Post Form */
+        .post-box { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 45px; border-top: 5px solid var(--orange-deep); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        input, textarea, select { padding: 12px; border: 1px solid #ddd; border-radius: 5px; width: 100%; box-sizing: border-box; }
+        textarea { grid-column: span 2; }
+        .btn-post { background: var(--orange-dark); color: white; border: none; padding: 15px; border-radius: 5px; cursor: pointer; font-weight: bold; grid-column: span 2; font-size: 17px; transition: 0.3s; }
+        .btn-post:hover { background: var(--orange-deep); }
+
+        /* Listings Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; margin-bottom: 50px; }
+        .item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.06); position: relative; transition: 0.3s; border-bottom: 3px solid transparent; }
+        .item:hover { transform: translateY(-8px); border-color: var(--orange-dark); }
+        .item img { width: 100%; height: 190px; object-fit: cover; }
+        
+        .vip-badge { position: absolute; top: 12px; right: 12px; background: var(--vip-gold); color: var(--dark); padding: 4px 10px; border-radius: 5px; font-size: 11px; font-weight: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        
+        .info { padding: 18px; }
+        .info h3 { margin: 0 0 10px; font-size: 18px; color: var(--dark); }
+        .info p { font-size: 14px; color: #666; margin: 0; line-height: 1.4; height: 40px; overflow: hidden; }
+
+        footer { background: var(--dark); color: #bdc3c7; padding: 50px 20px; text-align: center; }
+        footer a { color: var(--orange-dark); text-decoration: none; margin: 0 12px; font-weight: bold; }
+        
+        @media (max-width: 768px) { .nav-container { flex-direction: column; gap: 15px; } .search-bar { width: 100%; margin: 0; } .form-grid { grid-template-columns: 1fr; } textarea, .btn-post { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <span class="handshake-logo">🤝</span> SWAP<span>.GE</span>
+        </a>
+        <div class="search-bar">
+            <input type="text" placeholder="მოძებნე ნივთი, რომელიც გინდა...">
+        </div>
+        <a href="premium.html" class="btn-vip-nav">👑 VIP STATUS</a>
+    </div>
+</header>
+
+<div class="cats">
+    <a href="#" class="cat-link">🤝 ყველა</a>
+    <a href="#" class="cat-link">📱 ტექნიკა</a>
+    <a href="#" class="cat-link">🚗 ავტო</a>
+    <a href="#" class="cat-link">🛋️ ავეჯი</a>
+    <a href="#" class="cat-link">🎮 ჰობი</a>
+</div>
+
+<div class="container">
+    
+    <div class="vip-card-main">
+        <h2>👑 VIP სტატუსი</h2>
+        <p>გახდი VIP, მიიღე ხელის ჩამორთმევის გარანტია და გაცვალე 5-ჯერ სწრაფად!</p>
+        <a href="premium.html" class="btn-vip-nav" style="padding: 15px 40px; font-size: 18px; background: var(--dark);">გააქტიურე VIP</a>
+    </div>
+
+    <section class="post-box">
+        <h2 style="margin-top:0; color: var(--orange-deep);">➕ განცხადების დამატება</h2>
+        <form class="form-grid">
+            <input type="text" placeholder="რას ცვლით?" required>
+            <select required>
+                <option value="">აირჩიეთ კატეგორია</option>
+                <option value="1">ტექნიკა</option>
+                <option value="2">ავტო</option>
+                <option value="3">ავეჯი</option>
+            </select>
+            <textarea placeholder="დეტალური აღწერა და სასურველი ნივთი გაცვლისთვის..." rows="3" required></textarea>
+            <input type="text" placeholder="საკონტაქტო ნომერი" required>
+            <input type="file" multiple accept="image/*">
+            <button type="submit" class="btn-post">განცხადების გამოქვეყნება</button>
+        </form>
+    </section>
+
+    <h2 style="margin-bottom:25px; color: var(--dark); border-left: 5px solid var(--orange-deep); padding-left: 15px;">🔍 ბოლო განცხადებები</h2>
+    <div class="grid">
+        <!-- VIP ITEMS -->
+        <div class="item">
+            <div class="vip-badge">👑 VIP</div>
+            <img src="https://unsplash.com" alt="img">
+            <div class="info"><h3>iPhone 13 Pro</h3><p>ვიცვლი MacBook Air-ში. იდეალურ მდგომარეობაშია.</p></div>
+        </div>
+        <div class="item">
+            <div class="vip-badge">👑 VIP</div>
+            <img src="https://unsplash.com" alt="img">
+            <div class="info"><h3>Nike Air Max</h3><p>ვიცვლი Bluetooth დინამიკში. ზომა 42.</p></div>
+        </div>
+
+        <!-- REGULAR ITEMS -->
+        <div class="item">
+            <img src="https://unsplash.com" alt="img">
+            <div class="info"><h3>Gaming PC</h3><p>ვიცვლი მოტოციკლში. RTX 3060, 16GB RAM.</p></div>
+        </div>
+        <div class="item">
+            <img src="https://unsplash.com" alt="img">
+            <div class="info"><h3>BMW E46 (2003)</h3><p>ვიცვლი SUV ტიპის მანქანაში. მოვლილია.</p></div>
+        </div>
+        <div class="item">
+            <img src="https://unsplash.com" alt="img">
+            <div class="info"><h3>საოფისე სავარძელი</h3><p>ვიცვლი პლანშეტში ან მონიტორში.</p></div>
+        </div>
+        <div class="item">
+            <img src="https://unsplash.com" alt="img">
+            <div class="info"><h3>Apple Watch 7</h3><p>ვიცვლი კარგ ველოსიპედში. მოყვება ყუთი.</p></div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p style="color: white; font-weight: bold; font-size: 18px;">🤝 SWAP.COM.GE</p>
+    <p>&copy; 2026 ყველა უფლება დაცულია</p>
+    <div style="margin-top: 20px;">
+        <a href="privacy-policy.html">კონფიდენციალურობა</a>
+        <a href="terms-conditions.html">წესები</a>
+        <a href="premium.html">VIP STATUS</a>
+    </div>
+</footer>
+
+</body>
+</html>
