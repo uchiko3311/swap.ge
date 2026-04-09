@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Status - Swap.com.ge</title>
+    <style>
+        :root { --orange-deep: #d35400; --orange-dark: #e67e22; --dark: #2c3e50; --vip-gold: #f1c40f; }
+        body { font-family: 'Segoe UI', sans-serif; background: #fdf2e9; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        
+        .header { background: var(--orange-deep); color: white; width: 100%; text-align: center; padding: 60px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-bottom: 5px solid var(--dark); }
+        .handshake-icon { font-size: 70px; margin-bottom: 10px; display: block; }
+        .header h1 { margin: 0; font-size: 38px; letter-spacing: 2px; }
+
+        .lang-switcher { margin: 25px 0; }
+        .lang-btn { background: white; border: 1px solid var(--orange-dark); padding: 8px 20px; cursor: pointer; border-radius: 20px; font-weight: bold; color: var(--orange-deep); transition: 0.3s; }
+        .lang-btn:hover, .lang-btn.active { background: var(--orange-deep); color: white; }
+
+        .pricing-card { background: white; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); width: 380px; padding: 45px; text-align: center; border: 3px solid var(--vip-gold); position: relative; }
+        .vip-tag { position: absolute; top: 20px; right: -35px; background: var(--vip-gold); color: var(--dark); padding: 6px 45px; transform: rotate(45deg); font-size: 11px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+        .price { font-size: 60px; font-weight: bold; color: var(--dark); margin: 30px 0; }
+        .price span { font-size: 22px; color: #888; }
+
+        .features { text-align: left; margin: 35px 0; padding: 0; }
+        .features li { list-style: none; padding: 14px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 16px; }
+        .features li::before { content: "🤝"; margin-right: 15px; font-size: 20px; }
+
+        .btn-pay { background: var(--orange-deep); color: white; text-decoration: none; padding: 20px; border-radius: 12px; font-size: 20px; font-weight: bold; display: block; transition: 0.3s; box-shadow: 0 8px 20px rgba(211, 84, 0, 0.3); }
+        .btn-pay:hover { background: #ba4a00; transform: scale(1.03); }
+
+        .secure-bog { margin-top: 30px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 13px; color: #777; }
+        .bog-logo { height: 22px; filter: grayscale(1); opacity: 0.7; }
+
+        section { display: none; }
+        section.active { display: block; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <span class="handshake-icon">🤝</span>
+    <h1>VIP STATUS</h1>
+    <p>გააქტიურე და გაცვალე 5-ჯერ სწრაფად</p>
+</div>
+
+<div class="lang-switcher">
+    <button class="lang-btn active" onclick="showLang('ka', this)">KA</button>
+    <button class="lang-btn" onclick="showLang('en', this)">EN</button>
+    <button class="lang-btn" onclick="showLang('ru', this)">RU</button>
+</div>
+
+<div class="pricing-card">
+    <section id="ka" class="active">
+        <div class="vip-tag">BEST VALUE</div>
+        <h2>VIP პაკეტი</h2>
+        <div class="price">2.00 <span>₾ / თვე</span></div>
+        <ul class="features">
+            <li>5 VIP განცხადება</li>
+            <li>VIP პოსტების ნახვა</li>
+            <li>14 ფოტო თითო პოსტზე</li>
+            <li>პრიორიტეტული ჩვენება</li>
+        </ul>
+        <a href="/api/pay" class="btn-pay">ბარათით გადახდა</a>
+    </section>
+    <!-- (English/Russian sections follow the same style) -->
+    
+    <div class="secure-bog">
+        SECURE BY <img src="https://bankofgeorgia.ge" class="bog-logo" alt="BOG">
+    </div>
+</div>
+
+<script>
+    function showLang(lang, btn) {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(lang).classList.add('active');
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
