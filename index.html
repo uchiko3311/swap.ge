@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap.com.ge - გაცვალე ყველაფერი</title>
+
+    <!-- Google AdSense -->
+    <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
+
+    <style>
+        :root { --primary: #3498db; --secondary: #2c3e50; --accent: #e74c3c; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; background: #f4f7f6; }
+        header { background: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        .container { max-width: 1000px; margin: 20px auto; padding: 20px; }
+        
+        /* განცხადების ფორმა */
+        .post-form { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.05); margin-bottom: 40px; }
+        .post-form h2 { color: var(--secondary); margin-top: 0; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        .file-label { display: block; background: #eee; padding: 15px; text-align: center; border: 2px dashed #ccc; cursor: pointer; }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; font-size: 16px; cursor: pointer; }
+        .btn-submit:hover { background: #2980b9; }
+
+        /* პრემიუმ პაკეტის ბანერი */
+        .premium-banner { background: var(--accent); color: white; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 30px; }
+
+        /* განცხადებების სექცია */
+        .listings { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-content { padding: 15px; }
+        .card-price { color: var(--accent); font-weight: bold; }
+
+        footer { background: var(--secondary); color: white; padding: 30px; text-align: center; margin-top: 50px; }
+        footer a { color: var(--primary); text-decoration: none; margin: 0 10px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Swap.com.ge</h1>
+    <p>ნივთების გაცვლის ყველაზე მარტივი საშუალება</p>
+</header>
+
+<div class="container">
+    
+    <!-- პრემიუმ ბანერი -->
+    <div class="premium-banner">
+        <h3>✨ პრემიუმ პაკეტი - მხოლოდ 2 ლარი!</h3>
+        <p>განათავსეთ 5 პრემიუმ განცხადება და გაზარდეთ გაცვლის შანსი</p>
+    </div>
+
+    <!-- განცხადების დამატება -->
+    <section class="post-form">
+        <h2>➕ განცხადების დამატება</h2>
+        <form>
+            <input type="text" placeholder="ნივთის დასახელება" required>
+            <textarea placeholder="აღწერეთ ნივთი დეტალურად..." rows="4" required></textarea>
+            <select required>
+                <option value="">აირჩიეთ კატეგორია</option>
+                <option value="tech">ტექნიკა</option>
+                <option value="auto">ავტო</option>
+                <option value="home">სახლი/ბაღი</option>
+            </select>
+            <label class="file-label">
+                📷 ატვირთეთ ფოტოები (მაქს. 14)
+                <input type="file" accept="image/*" multiple style="display:none">
+            </label>
+            <input type="text" placeholder="თქვენი ტელეფონის ნომერი" required>
+            <button type="submit" class="btn-submit">განცხადების განთავსება</button>
+        </form>
+    </section>
+
+    <!-- სატესტო განცხადებები Google-ისთვის -->
+    <h2>🔍 ბოლო განცხადებები</h2>
+    <div class="listings">
+        <div class="card">
+            <img src="https://placeholder.com" alt="item">
+            <div class="card-content">
+                <h3>iPhone 13 - გაცვლა</h3>
+                <p>ვიცვლი Samsung-ის ფლაგმანში...</p>
+                <span class="card-price">კატეგორია: ტექნიკა</span>
+            </div>
+        </div>
+        <!-- მეტი ბარათი დაამატეთ კონტენტისთვის -->
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 Swap.com.ge - ყველა უფლება დაცულია</p>
+    <div>
+        <a href="privacy-policy.html">კონფიდენციალურობა</a> | 
+        <a href="terms-conditions.html">წესები და პირობები</a>
+    </div>
+</footer>
+
+</body>
+</html>
