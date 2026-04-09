@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap.com.ge - გაცვალე ყველაფერი</title>
+
+    <!-- Google AdSense -->
+    <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
+
+    <style>
+        :root { --primary: #3498db; --secondary: #2c3e50; --accent: #f1c40f; --danger: #e74c3c; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; background: var(--bg); color: #333; }
+        
+        /* Navigation */
+        header { background: var(--primary); color: white; padding: 15px 0; sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1100px; margin: auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .logo { font-size: 26px; font-weight: bold; text-decoration: none; color: white; display: flex; align-items: center; }
+        .search-bar { flex-grow: 1; margin: 0 30px; position: relative; }
+        .search-bar input { width: 100%; padding: 12px 20px; border-radius: 25px; border: none; outline: none; font-size: 15px; }
+        .btn-premium { background: var(--accent); color: var(--secondary); padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.3s; }
+        .btn-premium:hover { background: #d4ac0d; transform: scale(1.05); }
+
+        /* Categories */
+        .categories { max-width: 1100px; margin: 30px auto; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .cat-btn { background: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; color: var(--secondary); font-weight: 500; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.3s; }
+        .cat-btn:hover { background: var(--primary); color: white; }
+
+        .container { max-width: 1100px; margin: auto; padding: 0 20px; }
+
+        /* Banner */
+        .premium-banner { background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 40px; position: relative; overflow: hidden; }
+        .premium-banner h2 { margin: 0; font-size: 28px; }
+        .premium-banner p { opacity: 0.9; margin: 10px 0 20px; }
+
+        /* Post Form */
+        .post-form { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 50px; }
+        .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        input, textarea, select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%; box-sizing: border-box; }
+        textarea { grid-column: span 2; }
+        .btn-post { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; grid-column: span 2; font-size: 16px; }
+
+        /* Listings */
+        .listings { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; margin-bottom: 50px; }
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 15px rgba(0,0,0,0.08); transition: 0.3s; position: relative; }
+        .card:hover { transform: translateY(-7px); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .badge { position: absolute; top: 10px; right: 10px; background: var(--accent); color: var(--secondary); padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: bold; }
+        .card-body { padding: 15px; }
+        .card-body h3 { margin: 0 0 10px; font-size: 18px; }
+        .card-body p { font-size: 14px; color: #666; margin-bottom: 15px; height: 40px; overflow: hidden; }
+        .price-tag { color: var(--primary); font-weight: bold; font-size: 14px; }
+
+        footer { background: var(--secondary); color: white; padding: 50px 20px; text-align: center; margin-top: 50px; }
+        footer a { color: #3498db; text-decoration: none; margin: 0 15px; font-weight: 500; }
+        
+        @media (max-width: 768px) { .nav-container { flex-direction: column; gap: 15px; } .search-bar { margin: 0; width: 100%; } .grid-form { grid-template-columns: 1fr; } textarea, .btn-post { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <a href="index.html" class="logo">🔄 SWAP<span style="color: var(--accent);">.GE</span></a>
+        <div class="search-bar">
+            <input type="text" placeholder="მოძებნე რაც გსურს...">
+        </div>
+        <a href="premium.html" class="btn-premium">👑 PREMIUM</a>
+    </div>
+</header>
+
+<div class="categories">
+    <a href="#" class="cat-btn">💻 ტექნიკა</a>
+    <a href="#" class="cat-btn">🚗 ავტო</a>
+    <a href="#" class="cat-btn">🏠 სახლი</a>
+    <a href="#" class="cat-btn">🎸 ჰობი</a>
+    <a href="#" class="cat-btn">👔 მოდა</a>
+</div>
+
+<div class="container">
+    
+    <div class="premium-banner">
+        <h2>გაცვალე ნივთები უფრო სწრაფად!</h2>
+        <p>შეიძინე პრემიუმ პაკეტი მხოლოდ 2 ლარად და იყავი ყურადღების ცენტრში</p>
+        <a href="premium.html" class="btn-premium">აქტივაცია</a>
+    </div>
+
+    <section class="post-form">
+        <h2 style="margin-top:0">➕ განცხადების დამატება</h2>
+        <form class="grid-form">
+            <input type="text" placeholder="ნივთის დასახელება" required>
+            <select required>
+                <option value="">კატეგორია</option>
+                <option value="tech">ტექნიკა</option>
+                <option value="auto">ავტო</option>
+                <option value="home">ავეჯი</option>
+            </select>
+            <textarea placeholder="აღწერეთ ნივთი და რაში ცვლით..." rows="3" required></textarea>
+            <input type="text" placeholder="ტელეფონის ნომერი" required>
+            <input type="file" multiple accept="image/*">
+            <button type="submit" class="btn-post">განცხადების გამოქვეყნება</button>
+        </form>
+    </section>
+
+    <h2 style="margin-bottom:25px; border-left: 5px solid var(--primary); padding-left: 15px;">🔍 ბოლო განცხადებები</h2>
+    <div class="listings">
+        <!-- 1 -->
+        <div class="card">
+            <div class="badge">👑 PREMIUM</div>
+            <img src="https://unsplash.com" alt="iPhone">
+            <div class="card-body">
+                <h3>iPhone 13 Pro</h3>
+                <p>ვიცვლი MacBook-ში. იდეალურ მდგომარეობაშია.</p>
+                <span class="price-tag">ტექნიკა</span>
+            </div>
+        </div>
+        <!-- 2 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="PC">
+            <div class="card-body">
+                <h3>Gaming PC</h3>
+                <p>ვიცვლი მოტოციკლში. RTX 3060, 16GB RAM.</p>
+                <span class="price-tag">ტექნიკა</span>
+            </div>
+        </div>
+        <!-- 3 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="Auto">
+            <div class="card-body">
+                <h3>BMW E46</h3>
+                <p>ვიცვლი SUV-ში. ყველაფერი მუშაობს გამართულად.</p>
+                <span class="price-tag">ავტო</span>
+            </div>
+        </div>
+        <!-- 4 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="Furniture">
+            <div class="card-body">
+                <h3>საოფისე სავარძელი</h3>
+                <p>ვიცვლი პლანშეტში. ახალივითაა.</p>
+                <span class="price-tag">ავეჯი</span>
+            </div>
+        </div>
+        <!-- 5 -->
+        <div class="card">
+            <div class="badge">👑 PREMIUM</div>
+            <img src="https://unsplash.com" alt="Shoes">
+            <div class="card-body">
+                <h3>Nike Air Max</h3>
+                <p>ვიცვლი Bluetooth დინამიკში. ზომა 42.</p>
+                <span class="price-tag">სხვადასხვა</span>
+            </div>
+        </div>
+        <!-- 6-10 (გაგრძელება კონტენტისთვის) -->
+        <div class="card"><img src="https://unsplash.com" class="card-body"><h3>Apple Watch 7</h3><p>ვიცვლი ველოსიპედში.</p></div>
+        <div class="card"><img src="https://unsplash.com" class="card-body"><h3>Canon Camera</h3><p>ვიცვლი PS4-ში.</p></div>
+        <div class="card"><img src="https://unsplash.com" class="card-body"><h3>Legion 5</h3><p>ვიცვლი iPhone 15-ში.</p></div>
+        <div class="card"><img src="https://unsplash.com" class="card-body"><h3>Yamaha R6</h3><p>ვიცვლი მანქანაში.</p></div>
+        <div class="card"><img src="https://unsplash.com" class="card-body"><h3>ხის მაგიდა</h3><p>ვიცვლი ტექნიკაში.</p></div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 Swap.com.ge - ყველა უფლება დაცულია</p>
+    <div style="margin-top: 20px;">
+        <a href="privacy-policy.html">კონფიდენციალურობა</a> | 
+        <a href="terms-conditions.html">წესები და პირობები</a>
+    </div>
+</footer>
+
+</body>
+</html>
