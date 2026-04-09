@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap.com.ge - გაცვალე ყველაფერი</title>
+
+    <!-- Google AdSense სკრიპტი -->
+    <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
+
+    <style>
+        :root { --primary: #3498db; --secondary: #2c3e50; --accent: #e74c3c; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; background: var(--bg); color: #333; }
+        
+        header { background: var(--primary); color: white; padding: 30px 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .container { max-width: 1100px; margin: auto; padding: 20px; }
+
+        /* პრემიუმ ბანერი */
+        .premium-box { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3); }
+        
+        /* ფორმა */
+        .post-form { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 50px; }
+        .post-form h2 { margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 10px; display: inline-block; }
+        .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        input, textarea, select { padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; width: 100%; box-sizing: border-box; }
+        textarea { grid-column: span 2; }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 6px; cursor: pointer; font-weight: bold; grid-column: span 2; font-size: 16px; transition: 0.3s; }
+        .btn-submit:hover { background: #2980b9; transform: translateY(-2px); }
+
+        /* განცხადებების ბადე */
+        .listings { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 12px rgba(0,0,0,0.08); transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .card img { width: 100%; height: 180px; object-fit: cover; }
+        .card-body { padding: 15px; }
+        .card-body h3 { margin: 0 0 10px 0; font-size: 18px; color: var(--secondary); }
+        .card-body p { font-size: 14px; color: #666; margin: 0 0 15px 0; height: 40px; overflow: hidden; }
+        .tag { background: #e8f4fd; color: var(--primary); padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+
+        footer { background: var(--secondary); color: white; padding: 40px 20px; text-align: center; margin-top: 60px; }
+        footer a { color: #3498db; text-decoration: none; margin: 0 15px; font-weight: bold; }
+        
+        @media (max-width: 600px) { .grid-form { grid-template-columns: 1fr; } textarea, .btn-submit { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Swap.com.ge</h1>
+    <p>გაცვალე ნებისმიერი ნივთი სწრაფად და მარტივად</p>
+</header>
+
+<div class="container">
+    
+    <div class="premium-box">
+        <h2>🚀 პრემიუმ პაკეტი - მხოლოდ 2 ლარი!</h2>
+        <p>განათავსეთ 5 პრემიუმ განცხადება და იყავით ყოველთვის პირველი.</p>
+    </div>
+
+    <section class="post-form">
+        <h2>➕ განცხადების დამატება</h2>
+        <form class="grid-form">
+            <input type="text" placeholder="რას ცვლით? (დასახელება)" required>
+            <select required>
+                <option value="">კატეგორია</option>
+                <option value="tech">ტექნიკა</option>
+                <option value="auto">ავტო</option>
+                <option value="home">ავეჯი</option>
+            </select>
+            <textarea placeholder="აღწერეთ ნივთის მდგომარეობა და რაში გსურთ გაცვლა..." rows="3" required></textarea>
+            <input type="text" placeholder="ტელეფონის ნომერი" required>
+            <input type="file" multiple accept="image/*">
+            <button type="submit" class="btn-submit">გამოქვეყნება (1 თვე უფასოდ)</button>
+        </form>
+    </section>
+
+    <h2>🔍 ბოლო განცხადებები</h2>
+    <div class="listings">
+        <!-- 1 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="iPhone">
+            <div class="card-body">
+                <span class="tag">ტექნიკა</span>
+                <h3>iPhone 13 Pro</h3>
+                <p>ვიცვლი MacBook Air-ში ან Pro-ში. იდეალურ მდგომარეობაში.</p>
+            </div>
+        </div>
+        <!-- 2 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="PC">
+            <div class="card-body">
+                <span class="tag">ტექნიკა</span>
+                <h3>Gaming PC (RTX 3060)</h3>
+                <p>ვიცვლი კარგ მოტოციკლში ან ავტომობილში თანხის დამატებით.</p>
+            </div>
+        </div>
+        <!-- 3 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="Auto">
+            <div class="card-body">
+                <span class="tag">ავტო</span>
+                <h3>BMW E46 (2003)</h3>
+                <p>ვიცვლი SUV ტიპის ავტომობილში. მანქანა გამართულია.</p>
+            </div>
+        </div>
+        <!-- 4 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="Furniture">
+            <div class="card-body">
+                <span class="tag">ავეჯი</span>
+                <h3>საოფისე სავარძელი</h3>
+                <p>ვიცვლი პლანშეტში ან მონიტორში. სრულიად ახალია.</p>
+            </div>
+        </div>
+        <!-- 5 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="Shoes">
+            <div class="card-body">
+                <span class="tag">სხვადასხვა</span>
+                <h3>Nike Air Max (ახალი)</h3>
+                <p>ვიცვლი Bluetooth დინამიკში (JBL). ზომა 42.</p>
+            </div>
+        </div>
+        <!-- 6 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="Watch">
+            <div class="card-body">
+                <span class="tag">ტექნიკა</span>
+                <h3>Apple Watch Series 7</h3>
+                <p>ვიცვლი კარგ ველოსიპედში. მოყვება ყუთი და დამტენი.</p>
+            </div>
+        </div>
+        <!-- 7 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="Camera">
+            <div class="card-body">
+                <span class="tag">ტექნიკა</span>
+                <h3>Canon EOS 2000D</h3>
+                <p>ვიცვლი Sony PlayStation 4-ში ან 5-ში.</p>
+            </div>
+        </div>
+        <!-- 8 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="Laptop">
+            <div class="card-body">
+                <span class="tag">ტექნიკა</span>
+                <h3>Lenovo Legion 5</h3>
+                <p>ვიცვლი iPhone 15 Pro-ში. არის იდეალურ მდგომარეობაში.</p>
+            </div>
+        </div>
+        <!-- 9 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="Bike">
+            <div class="card-body">
+                <span class="tag">ავტო</span>
+                <h3>Yamaha R6</h3>
+                <p>ვიცვლი მსუბუქ ავტომობილში. საბუთები წესრიგშია.</p>
+            </div>
+        </div>
+        <!-- 10 -->
+        <div class="card">
+            <img src="https://unsplash.com" alt="Desk">
+            <div class="card-body">
+                <span class="tag">ავეჯი</span>
+                <h3>საწერი მაგიდა</h3>
+                <p>ვიცვლი რაიმე ტექნიკაში. ხარისხიანი ხის მაგიდაა.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 Swap.com.ge - ყველა უფლება დაცულია</p>
+    <div style="margin-top: 15px;">
+        <a href="privacy-policy.html">კონფიდენციალურობა</a>
+        <a href="terms-conditions.html">წესები და პირობები</a>
+    </div>
+</footer>
+
+</body>
+</html>
