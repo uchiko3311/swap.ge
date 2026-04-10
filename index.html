@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAP.GE - გაცვალე ყველაფერი</title>
+    <script src="https://tailwindcss.com"></script>
+    <!-- Font Awesome ლოგოებისთვის -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- Google AdSense -->
+    <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://googleapis.com');
+        body { font-family: 'Inter', sans-serif; background-color: #FFF5F0; }
+        .banner-slide { display: none; height: 250px; }
+        .active-slide { display: flex; animation: fadeIn 0.8s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="pb-20">
+
+    <!-- 1 & 2. ნავიგაცია და ლოგო (ნარინჯისფერი) -->
+    <nav class="bg-[#E65100] shadow-lg sticky top-0 z-50 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-white text-2xl font-black flex items-center gap-2 tracking-tighter">
+                <i class="fas fa-handshake"></i> SWAP.GE
+            </a>
+            
+            <div id="auth-ui" class="flex items-center gap-4">
+                <!-- 3, 5, 6. ავტორიზაცია / პირადი კაბინეტი / სეთინგები -->
+                <a href="login.html" class="bg-[#1A237E] text-white px-6 py-2 rounded-xl font-bold text-sm shadow-md hover:bg-indigo-900 transition">
+                    შესვლა
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 8. ადმინის 5 მოძრავი ბანერი (მხოლოდ ადმინისთვის) -->
+    <div class="container mx-auto px-4 mt-6">
+        <div id="banner-slider" class="relative bg-gray-200 rounded-3xl overflow-hidden shadow-inner border-4 border-white">
+            <div class="banner-slide active-slide items-center justify-center bg-gradient-to-r from-orange-400 to-orange-600 text-white text-2xl font-black italic">
+                სარეკლამო ბანერი 1
+            </div>
+            <div class="banner-slide items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-2xl font-black italic">
+                სარეკლამო ბანერი 2
+            </div>
+            <!-- ბანერები 3, 4, 5 ჩაიტვირთება ადმინ პანელიდან -->
+        </div>
+    </div>
+
+    <main class="container mx-auto px-4 py-10">
+        
+        <!-- 7. საძიებო ველი -->
+        <div class="max-w-2xl mx-auto mb-12">
+            <div class="relative">
+                <input type="text" id="search-bar" placeholder="რას ეძებ დღეს?" class="w-full p-5 rounded-2xl border-none shadow-lg focus:ring-4 focus:ring-orange-200 outline-none text-lg">
+                <button class="absolute right-4 top-4 text-orange-600 text-xl"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <!-- 12. კატეგორიები -->
+        <div class="flex gap-4 overflow-x-auto pb-6 mb-10 no-scrollbar">
+            <button class="flex items-center gap-2 bg-white px-8 py-3 rounded-2xl shadow-sm border-2 border-transparent hover:border-orange-500 font-bold transition whitespace-nowrap"><i class="fas fa-laptop text-orange-500"></i> ტექნიკა</button>
+            <button class="flex items-center gap-2 bg-white px-8 py-3 rounded-2xl shadow-sm border-2 border-transparent hover:border-orange-500 font-bold transition whitespace-nowrap"><i class="fas fa-home text-orange-500"></i> სახლი</button>
+            <button class="flex items-center gap-2 bg-white px-8 py-3 rounded-2xl shadow-sm border-2 border-transparent hover:border-orange-500 font-bold transition whitespace-nowrap"><i class="fas fa-car text-orange-500"></i> ავტომობილი</button>
+            <button class="flex items-center gap-2 bg-white px-8 py-3 rounded-2xl shadow-sm border-2 border-transparent hover:border-orange-500 font-bold transition whitespace-nowrap"><i class="fas fa-plus text-orange-500"></i> სხვა</button>
+        </div>
+
+        <!-- 4 & 10. VIP განცხადებები (ხილვადობა: მარტო VIP მომხმარებლებისთვის) -->
+        <section id="vip-section" class="hidden mb-16">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-black text-orange-600 flex items-center gap-2"><i class="fas fa-crown"></i> VIP განცხადებები</h3>
+                <span class="text-xs font-bold bg-orange-100 text-orange-600 px-3 py-1 rounded-full uppercase">ექსკლუზივი</span>
+            </div>
+            <div id="vip-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- VIP განცხადებები -->
+            </div>
+            <div class="h-1 bg-orange-100 mt-10 rounded-full"></div>
+        </section>
+
+        <!-- ჩვეულებრივი განცხადებები -->
+        <div class="flex justify-between items-center mb-8">
+            <h3 class="text-2xl font-black text-gray-800">ბოლო განცხადებები</h3>
+        </div>
+        
+        <div id="items-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- 11. აქ ჩაჯდება AdSense რეკლამები და განცხადებები -->
+            <div class="col-span-full text-center py-20 text-gray-400 italic">განცხადებები იტვირთება...</div>
+        </div>
+
+    </main>
+
+    <!-- 9. განცხადების დამატება (მხოლოდ რეგისტრაციის მერე) -->
+    <a href="add-item.html" class="fixed bottom-8 right-8 bg-[#E65100] text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 hover:rotate-90 transition-all z-50 border-4 border-white">
+        <i class="fas fa-plus text-2xl"></i>
+    </a>
+
+    <!-- 🏗️ FIREBASE CONFIG & LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        import { getAuth, onAuthStateChanged } from "https://gstatic.com";
+        import { getFirestore, doc, getDoc } from "https://gstatic.com";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEUjh_mVRLTzUecRJbeG_K6gTp__FVft0",
+            authDomain: "://firebaseapp.com",
+            projectId: "swap-39e13",
+            storageBucket: "swap-39e13.firebasestorage.app",
+            messagingSenderId: "107187341554",
+            appId: "1:107187341554:web:75533a380b58a7a141286b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, async (user) => {
+            const authUi = document.getElementById('auth-ui');
+            if (user) {
+                const userSnap = await getDoc(doc(db, "users", user.uid));
+                const userData = userSnap.data();
+                
+                // 4. VIP წვდომის შემოწმება
+                if (userData?.isVIP) {
+                    document.getElementById('vip-section').classList.remove('hidden');
+                }
+
+                // 5 & 6. პირადი კაბინეტი და სეთინგები
+                authUi.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <a href="profile.html" class="text-white font-black text-sm flex items-center gap-2"><i class="fas fa-user-circle"></i> კაბინეტი</a>
+                        <a href="settings.html" class="text-orange-200 hover:text-white transition"><i class="fas fa-cog"></i></a>
+                    </div>
+                `;
+            }
+        });
+
+        // 8. ბანერის სლაიდერის ლოგიკა (5 ბანერი)
+        let slideIndex = 0;
+        const slides = document.getElementsByClassName("banner-slide");
+        setInterval(() => {
+            if(slides.length < 2) return;
+            slides[slideIndex].classList.remove("active-slide");
+            slideIndex = (slideIndex + 1) % slides.length;
+            slides[slideIndex].classList.add("active-slide");
+        }, 5000);
+    </script>
+
+    <!-- 11. Google AdSense ავტომატური ინტეგრაცია -->
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-2363560102833914",
+            enable_page_level_ads: true
+        });
+    </script>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
