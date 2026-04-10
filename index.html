@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap.com.ge - გაცვალე ყველაფერი</title>
+
+    <!-- ✅ Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X5VB1YGF8B"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X5VB1YGF8B');
+    </script>
+
+    <style>
+        :root { --orange: #e67e22; --orange-deep: #d35400; --dark: #2c3e50; --vip: #f1c40f; --bg: #fdf2e9; }
+        body { font-family: Arial; margin: 0; background: var(--bg); }
+        header { background: var(--orange-deep); padding: 15px; color: white; text-align:center; }
+        .container { padding:20px; }
+        input, textarea, select, button { padding:10px; margin:5px; width:100%; }
+        .item { background:white; padding:10px; margin-top:10px; border-radius:10px; }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>🤝 SWAP.GE</h2>
+</header>
+
+<div class="container">
+
+<h3>➕ განცხადება</h3>
+
+<input id="title" placeholder="რას ცვლით?">
+<input id="phone" placeholder="ტელეფონი">
+<input type="file" id="file">
+
+<button onclick="addItem()">გამოქვეყნება</button>
+
+<h3>📦 განცხადებები</h3>
+<div id="list"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCuFjbwcI3up46IoNEJfayWyGnXvABsOfM",
+  authDomain: "swap-5d311.firebaseapp.com",
+  projectId: "swap-5d311",
+  storageBucket: "swap-5d311.appspot.com",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+// დამატება
+window.addItem = async () => {
+    const title = document.getElementById('title').value;
+    const phone = document.getElementById('phone').value;
+    const file = document.getElementById('file').files[0];
+
+    if(!file) return alert("ატვირთე ფოტო");
+
+    const sRef = ref(storage, "images/" + Date.now() + file.name);
+    await uploadBytes(sRef, file);
+    const url = await getDownloadURL(sRef);
+
+    await addDoc(collection(db, "listings"), { // ✅ შენი ძველი ბაზა
+        title,
+        phone,
+        image: url,
+        createdAt: new Date()
+    });
+
+    alert("დაემატა!");
+    load();
+};
+
+// წამოღება
+async function load(){
+    const q = query(collection(db, "listings"), orderBy("createdAt","desc"));
+    const snap = await getDocs(q);
+    const list = document.getElementById('list');
+    list.innerHTML = "";
+
+    snap.forEach(doc=>{
+        const d = doc.data();
+        list.innerHTML += `
+        <div class="item">
+            <img src="${d.image}" width="100%">
+            <b>${d.title}</b><br>
+            ${d.phone}
+        </div>`;
+    });
+}
+load();
+
+</script>
+
+</body>
+</html>
