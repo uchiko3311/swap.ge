@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <!-- Google Analytics (თქვენი ID-ით) -->
+    <script async src="https://googletagmanager.com"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XSVBV1YGFB');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap.com.ge - გაცვალე ყველაფერი</title>
+    
+    <style>
+        :root { --orange: #e67e22; --orange-deep: #d35400; --dark: #2c3e50; --vip: #f1c40f; --bg: #fdf2e9; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); overflow-x: hidden; }
+        
+        /* Header & Navigation */
+        header { background: var(--orange-deep); padding: 12px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1100px; margin: auto; display: flex; align-items: center; padding: 0 15px; gap: 15px; }
+        .logo { color: white; text-decoration: none; font-weight: bold; font-size: 22px; white-space: nowrap; }
+        .search-bar { flex-grow: 1; }
+        .search-bar input { width: 100%; padding: 10px 15px; border-radius: 25px; border: none; outline: none; }
+        .header-btns { display: flex; gap: 10px; }
+        .auth-btn, .user-link, .vip-link { background: var(--dark); color: white; padding: 8px 15px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; border: none; cursor: pointer; }
+        .vip-link { border: 2px solid var(--vip); color: var(--vip); }
+
+        /* Banner Slider */
+        .slider-container { max-width: 1100px; margin: 20px auto; position: relative; height: 350px; overflow: hidden; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .slider { display: flex; transition: transform 0.6s ease-in-out; height: 100%; }
+        .slide { min-width: 100%; height: 100%; position: relative; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .slide-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 40px 20px 20px; color: white; }
+
+        .container { max-width: 1100px; margin: auto; padding: 20px; }
+
+        /* Sections Styling */
+        .vip-section { background: #fff4d8; padding: 20px; border-radius: 15px; border: 2px solid var(--vip); margin-bottom: 30px; }
+        .post-box { background: white; padding: 25px; border-radius: 15px; border-top: 6px solid var(--orange); margin-bottom: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        textarea, .upload-area, .btn-post { grid-column: span 2; }
+        .upload-area { border: 2px dashed var(--orange); padding: 20px; text-align: center; background: #fffaf5; cursor: pointer; border-radius: 10px; }
+        .btn-post { background: var(--orange); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        /* Items Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
+        .item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid #eee; }
+        .item img { width: 100%; height: 180px; object-fit: cover; }
+        .item-info { padding: 15px; }
+
+        footer { background: var(--dark); color: white; padding: 40px 20px; text-align: center; margin-top: 50px; }
+        .footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 15px; flex-wrap: wrap; }
+        .footer-links a { color: #bdc3c7; text-decoration: none; font-size: 14px; }
+
+        @media (max-width: 600px) { .nav-container { flex-direction: column; } .slider-container { height: 180px; } .form-grid { grid-template-columns: 1fr; } textarea, .upload-area, .btn-post { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <a href="index.html" class="logo">🤝 SWAP.GE</a>
+        <div class="search-bar"><input type="text" placeholder="მოძებნე ნივთი..."></div>
+        <div class="header-btns" id="headerAuth">
+            <a href="auth.html" class="auth-btn">👤 შესვლა</a>
+            <a href="premium.html" class="vip-link">👑 VIP</a>
+        </div>
+    </div>
+</header>
+
+<div class="slider-container">
+    <div class="slider" id="mainSlider">
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-overlay"><h2>საუკეთესო გაცვლა საქართველოში</h2></div></div>
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-overlay"><h2>ტექნიკის ფართო არჩევანი</h2></div></div>
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-overlay"><h2>მობილურები და აქსესუარები</h2></div></div>
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-overlay"><h2>ახალი ნივთები ყოველდღე</h2></div></div>
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-overlay"><h2>იპოვე რაც გჭირდება</h2></div></div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- VIP სექცია -->
+    <div class="vip-section" id="vipBox" style="display:none;">
+        <h3>👑 VIP განცხადებები</h3>
+        <div class="grid" id="vipGrid"></div>
+    </div>
+
+    <!-- განცხადების დამატება -->
+    <section class="post-box">
+        <h2>➕ განცხადების დამატება</h2>
+        <form class="form-grid" id="postForm">
+            <input type="text" id="title" placeholder="რას ცვლით?" required>
+            <select id="cat" required>
+                <option value="">კატეგორია</option>
+                <option value="Tech">ტექნიკა</option>
+                <option value="Auto">ავტო</option>
+                <option value="Home">სახლი</option>
+            </select>
+            <textarea id="desc" placeholder="აღწერა..." rows="3" required></textarea>
+            <div class="upload-area" onclick="document.getElementById('fInp').click()">
+                <p id="upLabel">📸 ატვირთეთ ფოტო</p>
+                <input type="file" id="fInp" hidden accept="image/*">
+            </div>
+            <input type="text" id="phone" placeholder="ტელეფონი" required>
+            <button type="submit" id="subBtn" class="btn-post">გამოქვეყნება</button>
+        </form>
+    </section>
+
+    <h3>🔍 ბოლო განცხადებები</h3>
+    <div class="grid" id="listGrid"></div>
+</div>
+
+<footer>
+    <div class="footer-links">
+        <a href="contact.html">კონტაქტი</a>
+        <a href="privacy-policy.html">კონფიდენციალურობა</a>
+        <a href="terms-conditions.html">წესები</a>
+        <a href="premium.html">Premium</a>
+    </div>
+    <p>&copy; 2026 Swap.com.ge</p>
+</footer>
+
+<script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { getAuth, onAuthStateChanged, signOut } from "https://gstatic.com";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://gstatic.com";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCuFjbwcI3up46IoNEJfayWyGnXvABsOfM",
+        authDomain: "://firebaseapp.com",
+        projectId: "swap-5d311",
+        storageBucket: "swap-5d311.firebasestorage.app",
+        messagingSenderId: "444445838698",
+        appId: "1:444445838698:web:18ab8580aa018d0236a913"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUser = null;
+
+    // Slider
+    let currentSlide = 0;
+    setInterval(() => {
+        currentSlide = (currentSlide + 1) % 5;
+        document.getElementById('mainSlider').style.transform = `translateX(-${currentSlide * 100}%)`;
+    }, 4000);
+
+    // Auth & Navigation links
+    onAuthStateChanged(auth, (user) => {
+        const headerAuth = document.getElementById('headerAuth');
+        if (user) {
+            currentUser = user;
+            headerAuth.innerHTML = `
+                <a href="profile.html" class="user-link">👤 კაბინეტი</a>
+                <button onclick="window.location.reload()" class="auth-btn" style="background:#c0392b">გამოსვლა</button>
+            `;
+        }
+    });
+
+    // Post to ImgBB & Firestore
+    document.getElementById('postForm').onsubmit = async (e) => {
+        e.preventDefault();
+        if(!currentUser) return alert("გაიარეთ ავტორიზაცია!");
+        const btn = document.getElementById('subBtn');
+        const file = document.getElementById('fInp').files[0];
+        if(!file) return alert("აირჩიეთ ფოტო!");
+
+        try {
+            btn.disabled = true; btn.innerText = "იტვირთება...";
+            const fd = new FormData(); fd.append("image", file);
+            const res = await fetch("https://imgbb.com", { method: "POST", body: fd });
+            const imgData = await res.json();
+
+            await addDoc(collection(db, "items"), {
+                title: document.getElementById('title').value,
+                category: document.getElementById('cat').value,
+                description: document.getElementById('desc').value,
+                phone: document.getElementById('phone').value,
+                image: imgData.data.url,
+                userId: currentUser.uid,
+                isVip: false,
+                createdAt: serverTimestamp()
+            });
+            alert("წარმატებით დაემატა!"); location.reload();
+        } catch(e) { alert("შეცდომა!"); btn.disabled = false; }
+    };
+
+    // Load Items (VIP & General)
+    async function loadItems() {
+        const q = query(collection(db, "items"), orderBy("createdAt", "desc"));
+        const snap = await getDocs(q);
+        const grid = document.getElementById('listGrid');
+        const vGrid = document.getElementById('vipGrid');
+        grid.innerHTML = ""; vGrid.innerHTML = "";
+
+        snap.forEach(doc => {
+            const d = doc.data();
+            const html = `<div class="item"><img src="${d.image}"><div class="item-info"><h4>${d.title}</h4><p>📞 ${d.phone}</p></div></div>`;
+            if(d.isVip) {
+                document.getElementById('vipBox').style.display = "block";
+                vGrid.innerHTML += html;
+            } else {
+                grid.innerHTML += html;
+            }
+        });
+    }
+    loadItems();
+</script>
+</body>
+</html>
