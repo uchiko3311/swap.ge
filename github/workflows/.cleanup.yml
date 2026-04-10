@@ -1,0 +1,13 @@
+name: Cleanup Deployments
+on: workflow_dispatch
+
+jobs:
+  delete-deployments:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete all deployments
+        uses: Mattraks/delete-deployment-by-id@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          which-deployment-ids: all
