@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchange Pro - ვალუტის გაცვლა</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .exchange-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 { text-align: center; margin-bottom: 1.5rem; color: var(--primary-color); }
+
+        .input-group { margin-bottom: 1.2rem; }
+
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.8rem;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .rate-info {
+            background: #eff6ff;
+            padding: 1rem;
+            border-radius: 0.8rem;
+            text-align: center;
+            margin-top: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .btn-exchange {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 0.8rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.3s;
+        }
+
+        .btn-exchange:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body>
+
+<div class="exchange-card">
+    <h2>ვალუტის კალკულატორი</h2>
+    
+    <div class="input-group">
+        <label>გაქვთ (რაოდენობა)</label>
+        <input type="number" id="amount" value="100" placeholder="შეიყვანეთ თანხა">
+    </div>
+
+    <div class="input-group">
+        <label>საიდან</label>
+        <select id="fromCurrency">
+            <option value="USD">USD - აშშ დოლარი</option>
+            <option value="GEL" selected>GEL - ქართული ლარი</option>
+            <option value="EUR">EUR - ევრო</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>სად</label>
+        <select id="toCurrency">
+            <option value="USD" selected>USD - აშშ დოლარი</option>
+            <option value="GEL">GEL - ქართული ლარი</option>
+            <option value="EUR">EUR - ევრო</option>
+        </select>
+    </div>
+
+    <div class="rate-info" id="resultText">
+        100 GEL = 37.04 USD
+    </div>
+
+    <button class="btn-exchange" onclick="calculate()">გამოთვლა</button>
+</div>
+
+<script>
+    // სიმულაციური კურსები (რეალურ პროექტში გამოიყენებ API-ს)
+    const rates = {
+        "GEL": 1,
+        "USD": 2.70,
+        "EUR": 2.92
+    };
+
+    function calculate() {
+        const amount = document.getElementById('amount').value;
+        const from = document.getElementById('fromCurrency').value;
+        const to = document.getElementById('toCurrency').value;
+        const resultText = document.getElementById('resultText');
+
+        if(amount <= 0 || amount === "") {
+            alert("გთხოვთ შეიყვანოთ სწორი რაოდენობა");
+            return;
+        }
+
+        // კონვერტაციის ლოგიკა: ჯერ გადაგვყავს ლარში, მერე სასურველ ვალუტაში
+        const amountInGEL = amount * rates[from];
+        const finalAmount = amountInGEL / rates[to];
+
+        resultText.innerText = `${amount} ${from} = ${finalAmount.toFixed(2)} ${to}`;
+    }
+</script>
+
+</body>
+</html>
