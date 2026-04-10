@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap.ge - გაცვალე ყველაფერი</title>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        :root { --main: #27ae60; --dark: #2c3e50; --vip: #f1c40f; --bg: #f4f7f6; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; background: var(--bg); color: var(--dark); }
+        
+        /* Header */
+        header { background: #fff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 26px; font-weight: 800; color: var(--main); text-decoration: none; display: flex; align-items: center; }
+        .logo i { margin-right: 8px; font-size: 32px; }
+        .nav-btns button { border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-left: 10px; transition: 0.3s; }
+        .btn-login { background: transparent; color: var(--dark); border: 1px solid var(--dark) !important; }
+        .btn-add { background: var(--main); color: white; }
+        .btn-add:hover { background: #219150; }
+
+        /* Banner */
+        .hero { background: linear-gradient(45deg, #2c3e50, #27ae60); color: white; padding: 60px 5%; text-align: center; }
+        .search-box { max-width: 600px; margin: 20px auto; display: flex; }
+        .search-box input { flex: 1; padding: 15px; border: none; border-radius: 10px 0 0 10px; outline: none; }
+        .search-box button { padding: 15px 25px; border: none; background: #34495e; color: white; border-radius: 0 10px 10px 0; cursor: pointer; }
+
+        /* Sections */
+        .container { padding: 40px 5%; }
+        .section-header { display: flex; align-items: center; margin-bottom: 25px; font-size: 22px; border-left: 5px solid var(--vip); padding-left: 15px; }
+        
+        /* Grid System */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); position: relative; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .vip-badge { position: absolute; top: 10px; right: 10px; background: var(--vip); padding: 4px 12px; border-radius: 5px; font-size: 12px; font-weight: bold; z-index: 1; }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-body { padding: 15px; }
+        .card-price { color: var(--main); font-size: 1.2rem; font-weight: bold; margin-top: 10px; }
+
+        /* Modal Styles (Login & Add Form) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 450px; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; }
+        form input, form select, form textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .form-submit { width: 100%; background: var(--main); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="#" class="logo"><i class="fas fa-handshake"></i> SWAP.GE</a>
+    <div class="nav-btns">
+        <button class="btn-login" onclick="toggleModal('loginModal')">ავტორიზაცია</button>
+        <button class="btn-add" onclick="toggleModal('addModal')"><i class="fas fa-plus"></i> დამატება</button>
+    </div>
+</header>
+
+<div class="hero">
+    <h1>გაცვალე ნებისმიერი ნივთი მარტივად</h1>
+    <p>ავტომობილები, უძრავი ქონება, ტექნიკა და სხვა</p>
+    <div class="search-box">
+        <input type="text" placeholder="რას ეძებთ?">
+        <button>ძებნა</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="section-header">⭐ VIP განცხადებები</div>
+    <div class="grid" id="itemsGrid">
+        <!-- VIP 1 -->
+        <div class="card">
+            <div class="vip-badge">VIP</div>
+            <img src="https://unsplash.com" alt="Laptop">
+            <div class="card-body">
+                <h3>MacBook Pro M3</h3>
+                <p>იცვლება სათამაშო კომპიუტერში ან ავტომობილში</p>
+                <div class="card-price">ღირებულება: 6,500 ₾</div>
+            </div>
+        </div>
+        <!-- VIP 2 -->
+        <div class="card">
+            <div class="vip-badge">VIP</div>
+            <img src="https://unsplash.com" alt="Car">
+            <div class="card-body">
+                <h3>BMW M4 (2021)</h3>
+                <p>იცვლება ბინაში თბილისში</p>
+                <div class="card-price">ღირებულება: 55,000 $</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal" id="loginModal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="toggleModal('loginModal')">&times;</span>
+        <h2>ავტორიზაცია</h2>
+        <form onsubmit="event.preventDefault(); alert('ავტორიზაცია წარმატებულია!')">
+            <input type="email" placeholder="ელ-ფოსტა" required>
+            <input type="password" placeholder="პაროლი" required>
+            <button type="submit" class="form-submit">შესვლა</button>
+        </form>
+    </div>
+</div>
+
+<!-- Add Item Modal -->
+<div class="modal" id="addModal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="toggleModal('addModal')">&times;</span>
+        <h2>განცხადების დამატება</h2>
+        <form id="addForm">
+            <select id="cat" required>
+                <option value="">აირჩიეთ კატეგორია</option>
+                <option value="ავტო">ავტო</option>
+                <option value="სახლი">სახლი</option>
+                <option value="ტექნიკა">ტექნიკა</option>
+            </select>
+            <input type="text" id="title" placeholder="სათაური" required>
+            <textarea id="desc" placeholder="რაში ცვლით?" rows="3" required></textarea>
+            <input type="text" id="price" placeholder="სავარაუდო ფასი (₾ / $)" required>
+            <input type="url" id="img" placeholder="ფოტოს ლინკი (URL)" required>
+            <button type="submit" class="form-submit">გამოქვეყნება</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // მოდალების ჩართვა/გამორთვა
+    function toggleModal(id) {
+        const modal = document.getElementById(id);
+        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    // ახალი განცხადების დამატების ლოგიკა (დროებითი)
+    document.getElementById('addForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const title = document.getElementById('title').value;
+        const desc = document.getElementById('desc').value;
+        const price = document.getElementById('price').value;
+        const img = document.getElementById('img').value;
+
+        const newItem = `
+            <div class="card">
+                <img src="${img}" alt="Item">
+                <div class="card-body">
+                    <h3>${title}</h3>
+                    <p>${desc}</p>
+                    <div class="card-price">ღირებულება: ${price}</div>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('itemsGrid').innerHTML += newItem;
+        toggleModal('addModal');
+        this.reset();
+        alert("თქვენი განცხადება დაემატა!");
+    });
+</script>
+
+</body>
+</html>
