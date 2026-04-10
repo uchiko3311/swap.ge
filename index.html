@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap.com.ge - გაცვალე ყველაფერი</title>
+    
+    <style>
+        :root { --orange: #e67e22; --orange-deep: #d35400; --dark: #2c3e50; --vip: #f1c40f; --bg: #fdf2e9; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); overflow-x: hidden; }
+        
+        /* Header */
+        header { background: var(--orange-deep); padding: 12px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1100px; margin: auto; display: flex; align-items: center; padding: 0 15px; gap: 15px; }
+        .logo { color: white; text-decoration: none; font-weight: bold; font-size: 22px; }
+        .search-bar { flex-grow: 1; }
+        .search-bar input { width: 100%; padding: 10px 15px; border-radius: 25px; border: none; outline: none; }
+        .header-btns { display: flex; gap: 10px; }
+        .auth-btn { background: var(--dark); color: white; padding: 8px 15px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; border: none; cursor: pointer; }
+
+        /* Banner Slider */
+        .slider-container { max-width: 1100px; margin: 20px auto; position: relative; height: 300px; overflow: hidden; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .slider { display: flex; transition: transform 0.5s ease-in-out; height: 100%; }
+        .slide { min-width: 100%; height: 100%; position: relative; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .slide-text { position: absolute; bottom: 20px; left: 20px; color: white; background: rgba(0,0,0,0.6); padding: 10px 20px; border-radius: 5px; }
+
+        .container { max-width: 1100px; margin: auto; padding: 20px; }
+
+        /* Post Form */
+        .post-box { background: white; padding: 25px; border-radius: 15px; border-top: 6px solid var(--orange); margin-bottom: 40px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        input, textarea, select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%; box-sizing: border-box; }
+        textarea, .upload-area, .btn-post { grid-column: span 2; }
+        .upload-area { border: 2px dashed var(--orange); padding: 20px; text-align: center; background: #fffaf5; cursor: pointer; border-radius: 10px; }
+        .btn-post { background: var(--orange); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .btn-post:disabled { background: #ccc; }
+
+        /* Items Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
+        .item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; }
+        .item img { width: 100%; height: 180px; object-fit: cover; }
+        .item-info { padding: 15px; }
+
+        @media (max-width: 600px) { 
+            .nav-container { flex-direction: column; } 
+            .slider-container { height: 180px; }
+            .form-grid { grid-template-columns: 1fr; }
+            textarea, .upload-area, .btn-post { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <a href="index.html" class="logo">🤝 SWAP.GE</a>
+        <div class="search-bar"><input type="text" placeholder="მოძებნე ნივთი..."></div>
+        <div class="header-btns" id="headerAuth">
+            <a href="auth.html" class="auth-btn">👤 შესვლა</a>
+        </div>
+    </div>
+</header>
+
+<!-- Banner Slider -->
+<div class="slider-container">
+    <div class="slider" id="mainSlider">
+        <div class="slide"><img src="https://unsplash.com" alt="1"><div class="slide-text">გააკეთე საუკეთესო გაცვლა</div></div>
+        <div class="slide"><img src="https://unsplash.com" alt="2"><div class="slide-text">ტექნიკის ფართო არჩევანი</div></div>
+        <div class="slide"><img src="https://unsplash.com" alt="3"><div class="slide-text">მობილურები და აქსესუარები</div></div>
+        <div class="slide"><img src="https://unsplash.com" alt="4"><div class="slide-text">ახალი ნივთები ყოველდღე</div></div>
+        <div class="slide"><img src="https://unsplash.com" alt="5"><div class="slide-text">იპოვე რაც გჭირდება</div></div>
+    </div>
+</div>
+
+<div class="container">
+    <section class="post-box">
+        <h2>➕ განცხადების დამატება</h2>
+        <form class="form-grid" id="postForm">
+            <input type="text" id="title" placeholder="რას ცვლით?" required>
+            <select id="cat" required>
+                <option value="">კატეგორია</option>
+                <option value="Tech">ტექნიკა</option>
+                <option value="Auto">ავტო</option>
+                <option value="Home">სახლი</option>
+            </select>
+            <textarea id="desc" placeholder="აღწერა..." rows="3" required></textarea>
+            <div class="upload-area" onclick="document.getElementById('fInp').click()">
+                <p id="upLabel">📸 ატვირთეთ ფოტო</p>
+                <input type="file" id="fInp" hidden accept="image/*">
+            </div>
+            <input type="text" id="phone" placeholder="ტელეფონი" required>
+            <button type="submit" id="subBtn" class="btn-post">გამოქვეყნება</button>
+        </form>
+    </section>
+
+    <h3>🔍 ბოლო განცხადებები</h3>
+    <div class="grid" id="listGrid"></div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { getAuth, onAuthStateChanged, signOut } from "https://gstatic.com";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://gstatic.com";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCuFjbwcI3up46IoNEJfayWyGnXvABsOfM",
+        authDomain: "://firebaseapp.com",
+        projectId: "swap-5d311",
+        storageBucket: "swap-5d311.firebasestorage.app",
+        messagingSenderId: "444445838698",
+        appId: "1:444445838698:web:18ab8580aa018d0236a913"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUser = null;
+
+    // Slider Logic
+    let currentSlide = 0;
+    setInterval(() => {
+        currentSlide = (currentSlide + 1) % 5;
+        document.getElementById('mainSlider').style.transform = `translateX(-${currentSlide * 100}%)`;
+    }, 4000);
+
+    // Auth state
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            currentUser = user;
+            document.getElementById('headerAuth').innerHTML = `
+                <button onclick="window.location.reload()" class="auth-btn" style="background:#c0392b">გამოსვლა</button>
+            `;
+        }
+    });
+
+    // Post logic with ImgBB
+    document.getElementById('postForm').onsubmit = async (e) => {
+        e.preventDefault();
+        if(!currentUser) return alert("გთხოვთ გაიაროთ ავტორიზაცია!");
+
+        const btn = document.getElementById('subBtn');
+        const file = document.getElementById('fInp').files[0];
+        if(!file) return alert("აირჩიეთ ფოტო!");
+
+        try {
+            btn.disabled = true;
+            btn.innerText = "იტვირთება...";
+
+            const formData = new FormData();
+            formData.append("image", file);
+            const imgRes = await fetch("https://imgbb.com", {
+                method: "POST",
+                body: formData
+            });
+            const imgData = await imgRes.json();
+
+            await addDoc(collection(db, "items"), {
+                title: document.getElementById('title').value,
+                category: document.getElementById('cat').value,
+                description: document.getElementById('desc').value,
+                phone: document.getElementById('phone').value,
+                image: imgData.data.url,
+                userId: currentUser.uid,
+                createdAt: serverTimestamp()
+            });
+
+            alert("წარმატებით დაემატა!");
+            location.reload();
+        } catch (err) {
+            alert("შეცდომა!");
+            btn.disabled = false;
+        }
+    };
+
+    // Load Items
+    async function loadItems() {
+        const q = query(collection(db, "items"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        const grid = document.getElementById('listGrid');
+        grid.innerHTML = "";
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            grid.innerHTML += `
+                <div class="item">
+                    <img src="${data.image}">
+                    <div class="item-info">
+                        <h4>${data.title}</h4>
+                        <p>${data.category}</p>
+                        <b style="color:#d35400">${data.phone}</b>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    loadItems();
+</script>
+</body>
+</html>
