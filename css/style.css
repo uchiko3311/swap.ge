@@ -1,0 +1,27 @@
+:root {
+    --primary-blue: #004a99;
+    --vip-gold: #ffd700;
+}
+
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    margin: 0;
+    color: #333;
+}
+
+/* Handshake ლოგოს სტილი */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    color: var(--primary-blue);
+}
+
+/* AdSense ბანერის კონტეინერი */
+.adsense-slot {
+    background: #f9f9f9;
+    border: 1px dashed #ccc;
+    text-align: center;
+    min-height: 90px;
+}
