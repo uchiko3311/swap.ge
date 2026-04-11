@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAP.GE - სრულყოფილი ვერსია</title>
+    
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+
+    <style>
+        :root { --main: #27ae60; --dark: #2c3e50; --vip: #f1c40f; --bg: #f8fafc; --white: #fff; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* Header & Nav */
+        header { background: var(--white); padding: 12px 6%; box-shadow: 0 2px 15px rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 1000; }
+        .nav-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .logo { font-size: 24px; font-weight: 900; color: var(--main); text-decoration: none; }
+        
+        .btn { border: none; padding: 10px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: 0.2s; font-size: 14px; }
+        .btn:active { transform: scale(0.95); }
+        .btn-add { background: var(--main); color: white; border-radius: 8px; }
+        .btn-auth { background: var(--dark); color: white; }
+        .btn-vip { background: linear-gradient(45deg, var(--vip), #f39c12); color: #000; width: 100%; margin-top: 10px; }
+        .btn-test { background: #edf2f7; color: var(--dark); width: 100%; margin-top: 10px; border: 1px solid #cbd5e0; }
+
+        .search-row { display: flex; gap: 10px; }
+        .search-bar { flex: 1; }
+        .search-bar input { width: 100%; padding: 11px 15px; border-radius: 10px; border: 1px solid #e2e8f0; outline: none; box-sizing: border-box; }
+
+        /* Banner */
+        .slider-container { width: 88%; margin: 20px auto; overflow: hidden; border-radius: 16px; height: 260px; position: relative; background: #ddd; }
+        .slider { display: flex; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
+        .slide { min-width: 100%; height: 100%; position: relative; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .slide-overlay { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); display: flex; align-items: flex-end; padding: 25px; color: white; font-size: 20px; font-weight: 800; }
+
+        /* Main Grid */
+        .container { padding: 0 6% 40px 6%; display: grid; grid-template-columns: 1fr 300px; gap: 25px; }
+        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } .slider-container { width: 95%; height: 200px; } }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; }
+        .card { background: var(--white); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); position: relative; border: 1px solid #f1f5f9; transition: 0.3s; }
+        .card.is-vip { border: 2px solid var(--vip); box-shadow: 0 5px 15px rgba(241, 196, 15, 0.2); }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 150px; object-fit: cover; background: #f8fafc; }
+        .card-body { padding: 12px; }
+        .card-price { color: var(--main); font-weight: 800; font-size: 1.1rem; margin-top: 5px; }
+        .vip-badge { position: absolute; top: 10px; left: 10px; background: var(--vip); padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 900; z-index: 5; }
+
+        /* Modals */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal-content { background: white; padding: 25px; border-radius: 18px; width: 90%; max-width: 360px; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #e2e8f0; border-radius: 10px; box-sizing: border-box; }
+
+        footer { background: var(--dark); color: #fff; padding: 30px; text-align: center; margin-top: auto; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-top">
+        <a href="#" class="logo">SWAP.GE</a>
+        <div id="authBox"></div>
+    </div>
+    <div class="search-row">
+        <div class="search-bar"><input type="text" id="sInp" placeholder="ძებნა..." onkeyup="filterItems()"></div>
+        <button class="btn btn-add" onclick="checkAuthAndOpen('addM')"><i class="fas fa-plus"></i> განცხადება</button>
+    </div>
+</header>
+
+<div class="slider-container">
+    <div class="slider" id="slider">
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-overlay">გაცვალე ტექნიკა</div></div>
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-overlay">ავტომობილების დიდი არჩევანი</div></div>
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-overlay">უძრავი ქონება</div></div>
+    </div>
+</div>
+
+<div class="container">
+    <main><div id="grid" class="grid">მონაცემები იტვირთება...</div></main>
+    <aside>
+        <div style="background:#fff; padding:20px; border-radius:15px; box-shadow: 0 4px 6px rgba(0,0,0,0.04);">
+            <h4 style="margin:0">სტატუსი</h4>
+            <p id="vStatus" style="font-size:12px; color:#666;">თქვენ გაქვთ უფასო პაკეტი</p>
+            <button class="btn btn-vip" onclick="activateVIP()"><i class="fas fa-crown"></i> გახდი VIP (2₾)</button>
+            <button class="btn btn-test" onclick="generateTestData()"><i class="fas fa-tools"></i> 20 ტესტ-ნივთი</button>
+        </div>
+    </aside>
+</div>
+
+<!-- Modals -->
+<div id="authM" class="modal"><div class="modal-content">
+    <h3>ავტორიზაცია</h3>
+    <input type="email" id="email" placeholder="ელ-ფოსტა">
+    <input type="password" id="pass" placeholder="პაროლი">
+    <button class="btn btn-add" style="width:100%" onclick="handleAuth()">შესვლა / რეგისტრაცია</button>
+    <button class="btn" style="width:100%; background:none; color:#666; margin-top:10px" onclick="toggleModal('authM')">დახურვა</button>
+</div></div>
+
+<div id="addM" class="modal"><div class="modal-content">
+    <h3>დამატება</h3>
+    <input type="text" id="iT" placeholder="სათაური">
+    <input type="text" id="iP" placeholder="ფასი">
+    <input type="text" id="iI" placeholder="სურათის URL (ImgBB)">
+    <button class="btn btn-add" style="width:100%" onclick="save()">გამოქვეყნება</button>
+    <button class="btn" style="width:100%; background:none; margin-top:10px" onclick="toggleModal('addM')">გაუქმება</button>
+</div></div>
+
+<footer>&copy; 2024 SWAP.GE - ყველა უფლება დაცულია</footer>
+
+<script>
+    // 1. Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEUjh_mVRLTzUecRJbeG_K6gTp__FVft0",
+        authDomain: "://firebaseapp.com",
+        databaseURL: "https://firebaseio.com",
+        projectId: "swap-39e13"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(), auth = firebase.auth();
+    let ads = [], isVipUser = false;
+
+    // 2. Auth Control
+    auth.onAuthStateChanged(user => {
+        const box = document.getElementById('authBox');
+        if (user) {
+            box.innerHTML = `<button class="btn" style="background:#f1f5f9; font-size:12px;" onclick="auth.signOut()">გამოსვლა (${user.email.split('@')[0]})</button>`;
+        } else {
+            box.innerHTML = `<button class="btn btn-auth" onclick="toggleModal('authM')">შესვლა</button>`;
+        }
+        load();
+    });
+
+    async function handleAuth() {
+        const e = document.getElementById('email').value, p = document.getElementById('pass').value;
+        if(!e || !p) return;
+        try {
+            await auth.signInWithEmailAndPassword(e, p);
+            toggleModal('authM');
+        } catch (err) {
+            if (err.code === 'auth/user-not-found') { await auth.createUserWithEmailAndPassword(e, p); toggleModal('authM'); }
+            else alert(err.message);
+        }
+    }
+
+    // 3. Functions
+    function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display==='flex') ? 'none' : 'flex'; }
+    
+    function checkAuthAndOpen(id) { if(!auth.currentUser) toggleModal('authM'); else toggleModal(id); }
+
+    function activateVIP() { isVipUser = true; document.getElementById('vStatus').innerHTML = "✅ თქვენ ხართ <b>VIP</b>"; alert("VIP რეჟიმი ჩართულია!"); }
+
+    function save() {
+        const t=document.getElementById('iT').value, p=document.getElementById('iP').value, i=document.getElementById('iI').value;
+        if(!t || !p) return;
+        db.ref('items/').push({ title:t, price:p, img:i || 'https://placeholder.com', date:Date.now(), uid:auth.currentUser.uid, isVIP: isVipUser });
+        toggleModal('addM');
+    }
+
+    function load() {
+        db.ref('items/').on('value', snap => {
+            ads = [];
+            snap.forEach(c => { ads.push({ ...c.val(), id:c.key }); });
+            render(ads);
+        });
+    }
+
+    function render(data) {
+        const g = document.getElementById('grid');
+        const sorted = data.sort((a,b) => b.isVIP - a.isVIP || b.date - a.date);
+        g.innerHTML = sorted.map(i => `
+            <div class="card ${i.isVIP ? 'is-vip' : ''}">
+                ${i.isVIP ? '<div class="vip-badge">VIP</div>' : ''}
+                <img src="${i.img}" onerror="this.src='https://placeholder.comx200?text=SWAP.GE'">
+                <div class="card-body">
+                    <h4 style="margin:0; font-size:14px;">${i.title}</h4>
+                    <div class="card-price">${i.price}</div>
+                    ${auth.currentUser && auth.currentUser.uid === i.uid ? `<i class="fas fa-trash" style="position:absolute; bottom:12px; right:12px; color:#ddd; cursor:pointer" onclick="del('${i.id}')"></i>` : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function del(id) { if(confirm("წავშალოთ?")) db.ref('items/'+id).remove(); }
+
+    function filterItems() {
+        const v = document.getElementById('sInp').value.toLowerCase();
+        render(ads.filter(a => a.title.toLowerCase().includes(v)));
+    }
+
+    function generateTestData() {
+        const imgs = ['https://ibb.co', 'https://ibb.co'];
+        for(let i=1; i<=20; i++) {
+            db.ref('items/').push({ title: "ნივთი " + i, price: (i*10)+"₾", img: imgs[i%2], isVIP: i%5===0, date: Date.now()+i, uid: 'test' });
+        }
+    }
+
+    // Slider Auto
+    let c = 0; setInterval(() => { const s = document.getElementById('slider'); if(s) { c=(c+1)%3; s.style.transform=`translateX(-${c*100}%)`; } }, 4000);
+</script>
+</body>
+</html>
