@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAP.GE - VIP Marketplace</title>
+    
+    <!-- ფავიკონი (ბრაუზერის ხატულა) -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    
+    <!-- გარე ბიბლიოთეკები -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+
+    <style>
+        :root {
+            --main: #27ae60;
+            --main-dark: #219150;
+            --dark: #2c3e50;
+            --vip: #f1c40f;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background: var(--bg);
+            color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ჰედერი */
+        header {
+            background: var(--white);
+            padding: 15px 8%;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9f9f9;
+        }
+
+        .logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--dark);
+            letter-spacing: -1px;
+        }
+
+        .logo-text span {
+            color: var(--main);
+        }
+
+        /* ძებნა და ღილაკები */
+        .search-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .search-bar {
+            flex: 3;
+            position: relative;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            background: #f9f9f9;
+            outline: none;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--main);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.1);
+        }
+
+        .btn {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .btn-add { background: var(--main); color: white; flex: 1; }
+        .btn-add:hover { background: var(--main-dark); transform: translateY(-2px); }
+
+        .btn-vip { background: var(--vip); color: #000; width: 100%; margin-top: 15px; }
+        .btn-vip:hover { opacity: 0.9; transform: scale(1.02); }
+
+        .btn-outline { background: transparent; border: 1px solid #ddd; color: var(--dark); }
+        .btn-outline:hover { background: #f5f5f5; }
+
+        /* კონტენტი */
+        .container {
+            padding: 30px 8%;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+            border: 1px solid rgba(0,0,0,0.03);
+            position: relative;
+        }
+
+        .card:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+
+        .card-body { padding: 18px; }
+
+        .card-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; display: block; }
+
+        .card-price { font-size: 20px; color: var(--main); font-weight: 800; }
+
+        /* მოდალები */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        .modal h3 { margin-top: 0; font-size: 22px; }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            box-sizing: border-box;
+            background: #fcfcfc;
+            font-size: 15px;
+        }
+
+        /* ადაპტური დიზაინი */
+        @media (max-width: 950px) {
+            .container { grid-template-columns: 1fr; padding: 20px 5%; }
+            header { padding: 15px 5%; }
+            aside { order: -1; }
+        }
+    </style>
+</head>
+<body onload="load()">
+
+<header>
+    <div class="nav-top">
+        <a href="index.html" class="logo">
+            <div class="logo-box">
+                <img src="logo.png" alt="Logo" onerror="this.src='https://placeholder.com'">
+            </div>
+            <div class="logo-text">SWAP<span>.GE</span></div>
+        </a>
+        <div id="authArea"></div>
+    </div>
+    <div class="search-row">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" id="sInp" placeholder="რას ეძებთ?" onkeyup="filterItems()">
+        </div>
+        <button class="btn btn-add" onclick="checkAuthAndOpen('addM')">
+            <i class="fas fa-plus"></i> განცხადება
+        </button>
+    </div>
+</header>
+
+<div class="container">
+    <main>
+        <div id="grid" class="grid">
+            <!-- აქ ჩაიტვირთება ბარათები -->
+        </div>
+    </main>
+
+    <aside>
+        <div style="background:#fff; padding:25px; border-radius:20px; border:1px solid #eee; position: sticky; top: 110px;">
+            <h4 style="margin:0; font-size:18px;">🔥 VIP ზონა</h4>
+            <p style="font-size:14px; color:#666; margin: 10px 0 20px;">გინდა შენი ნივთი ყველამ დაინახოს?</p>
+            <button class="btn btn-vip" onclick="makeMeVIP()">
+                <i class="fas fa-crown"></i> გახდი VIP (2₾)
+            </button>
+        </div>
+    </aside>
+</div>
+
+<!-- მოდალი: განცხადების დამატება -->
+<div id="addM" class="modal">
+    <div class="modal-content">
+        <h3>✨ ახალი განცხადება</h3>
+        <input type="text" id="iT" placeholder="რას ყიდით/ცვლით?">
+        <input type="number" id="iP" placeholder="ფასი (₾)">
+        <input type="file" id="iFile" accept="image/*" style="padding: 10px 0;">
+        <div id="upStatus" style="display:none; color:var(--main); text-align:center; margin: 10px 0; font-weight: 600;">
+            <i class="fas fa-spinner fa-spin"></i> იტვირთება...
+        </div>
+        <button class="btn btn-add" id="saveBtn" style="width:100%; margin-top:15px;" onclick="uploadAndSave()">გამოქვეყნება</button>
+        <button class="btn btn-outline" style="width:100%; margin-top:10px;" onclick="toggleModal('addM')">გაუქმება</button>
+    </div>
+</div>
+
+<!-- მოდალი: ავტორიზაცია -->
+<div id="authM" class="modal">
+    <div class="modal-content">
+        <h3>🔐 შესვლა</h3>
+        <input type="email" id="email" placeholder="ელ-ფოსტა">
+        <input type="password" id="pass" placeholder="პაროლი">
+        <button class="btn btn-add" style="width:100%; margin-top:15px;" onclick="handleAuth()">ავტორიზაცია</button>
+        <button class="btn btn-outline" style="width:100%; margin-top:10px;" onclick="toggleModal('authM')">დახურვა</button>
+    </div>
+</div>
+
+<script>
+    // Firebase კონფიგურაცია
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEUjh_mVRLTzUecRJbeG_K6gTp__FVft0",
+        authDomain: "://firebaseapp.com",
+        databaseURL: "https://firebaseio.com",
+        projectId: "swap-39e13"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(), auth = firebase.auth();
+    const IMGBB_KEY = "6c65f28458e083e576a88f49eb775dc9";
+
+    // მონაცემების ჩატვირთვა
+    function load() {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding: 50px;">იტვირთება...</p>';
+
+        db.ref('items/').on('value', snap => {
+            const val = snap.val();
+            const items = val ? Object.keys(val).map(k => ({id:k, ...val[k]})) : [];
+            
+            if(items.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding: 50px; color:#999;">განცხადებები არ მოიძებნა.</p>';
+                return;
+            }
+
+            grid.innerHTML = items.reverse().map(i => `
+                <div class="card">
+                    <img src="${i.img || 'https://placeholder.com'}" alt="${i.title}">
+                    <div class="card-body">
+                        <span class="card-title">${i.title}</span>
+                        <span class="card-price">${i.price} ₾</span>
+                    </div>
+                </div>
+            `).join('');
+        });
+    }
+
+    // სურათის ატვირთვა და შენახვა
+    async function uploadAndSave() {
+        const fileInput = document.getElementById('iFile');
+        const t = document.getElementById('iT').value, p = document.getElementById('iP').value;
+        
+        if (!t || !p || !fileInput.files[0]) return alert("გთხოვთ შეავსოთ ყველა ველი!");
+        
+        document.getElementById('upStatus').style.display = "block";
+        document.getElementById('saveBtn').disabled = true;
+
+        const formData = new FormData();
+        formData.append("image", fileInput.files[0]);
+
+        try {
+            const res = await fetch(`https://imgbb.com{IMGBB_KEY}`, { method: "POST", body: formData });
+            const data = await res.json();
+            
+            await db.ref('items/').push({
+                title: t,
+                price: p,
+                img: data.data.url,
+                date: Date.now(),
+                userId: auth.currentUser.uid
+            });
+
+            toggleModal('addM');
+            alert("წარმატებით გამოქვეყნდა!");
+            // გასუფთავება
+            document.getElementById('iT').value = '';
+            document.getElementById('iP').value = '';
+            fileInput.value = '';
+        } catch (e) {
+            alert("შეცდომა ატვირთვისას!");
+        } finally {
+            document.getElementById('upStatus').style.display = "none";
+            document.getElementById('saveBtn').disabled = false;
+        }
+    }
+
+    // ძებნის ფუნქცია
+    function filterItems() {
+        const s = document.getElementById('sInp').value.toLowerCase();
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(c => {
+            const title = c.querySelector('.card-title').innerText.toLowerCase();
+            c.style.display = title.includes(s) ? 'block' : 'none';
+        });
+    }
+
+    // ავტორიზაცია და მოდალები
+    function toggleModal(id) {
+        const m = document.getElementById(id);
+        m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function checkAuthAndOpen(id) {
+        if (!auth.currentUser) toggleModal('authM');
+        else toggleModal(id);
+    }
+
+    function handleAuth() {
+        const e = document.getElementById('email').value, p = document.getElementById('pass').value;
+        auth.signInWithEmailAndPassword(e, p)
+            .then(() => toggleModal('authM'))
+            .catch(err => alert("შეცდომა: " + err.message));
+    }
+
+    auth.onAuthStateChanged(user => {
+        const area = document.getElementById('authArea');
+        area.innerHTML = user 
+            ? `<button class="btn btn-outline" onclick="auth.signOut()"><i class="fas fa-sign-out-alt"></i> გამოსვლა</button>` 
+            : `<button class="btn btn-outline" onclick="toggleModal('authM')"><i class="fas fa-user"></i> შესვლა</button>`;
+    });
+</script>
+
+</body>
+</html>
