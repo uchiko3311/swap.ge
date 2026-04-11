@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAP.GE - ავტორიზაციით</title>
+    
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- Firebase SDK-ები -->
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+
+    <style>
+        :root { --main: #27ae60; --dark: #2c3e50; --vip: #f1c40f; --bg: #f8fafc; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--dark); display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: #fff; padding: 15px 6%; box-shadow: 0 2px 15px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        .nav-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .logo { font-size: 26px; font-weight: 900; color: var(--main); text-decoration: none; }
+        
+        .btn { border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .btn-auth { background: #f1f5f9; color: var(--dark); border: 1px solid #ddd; }
+        .btn-add { background: var(--main); color: white; flex: 1; }
+        .btn-logout { background: #fee2e2; color: #ef4444; font-size: 12px; }
+
+        .search-row { display: flex; gap: 10px; }
+        .search-bar { flex: 2; }
+        .search-bar input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; outline: none; box-sizing: border-box; }
+
+        /* Slider */
+        .slider-container { width: 88%; margin: 20px auto; overflow: hidden; border-radius: 16px; height: 280px; position: relative; }
+        .slider { display: flex; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
+        .slide { min-width: 100%; height: 100%; position: relative; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .slide-overlay { position: absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,0.6), transparent); display: flex; align-items: flex-end; padding: 25px; color: white; font-weight: bold; }
+
+        /* Grid */
+        .container { padding: 0 6% 40px 6%; display: grid; grid-template-columns: 1fr 300px; gap: 30px; }
+        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; border: 1px solid #f1f5f9; }
+        .card img { width: 100%; height: 160px; object-fit: cover; }
+        .card-body { padding: 12px; }
+        .card-price { color: var(--main); font-weight: 800; font-size: 1.1rem; }
+
+        /* Modals */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal-content { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 380px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #e2e8f0; border-radius: 10px; box-sizing: border-box; }
+
+        footer { background: var(--dark); color: #fff; padding: 30px; text-align: center; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-top">
+        <a href="#" class="logo">SWAP.GE</a>
+        <div id="authPanel" style="display:flex; gap:8px;">
+            <button class="btn btn-auth" onclick="toggleModal('authM')"><i class="fas fa-user"></i> შესვლა</button>
+        </div>
+    </div>
+    <div class="search-row">
+        <div class="search-bar"><input type="text" id="sInp" placeholder="ძებნა..." onkeyup="filterItems()"></div>
+        <button class="btn btn-add" onclick="checkAuthAndAdd()"><i class="fas fa-plus"></i> განცხადება</button>
+    </div>
+</header>
+
+<!-- Banner -->
+<div class="slider-container">
+    <div class="slider" id="slider">
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-overlay">საუკეთესო შემოთავაზებები</div></div>
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-overlay">ავტომობილების გაცვლა</div></div>
+    </div>
+</div>
+
+<div class="container">
+    <main><div id="grid" class="grid">იტვირთება...</div></main>
+    <aside>
+        <div style="background:#fff; padding:20px; border-radius:15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <button class="btn btn-test" style="width:100%" onclick="generateTestData()">🔧 20 ტესტ-განცხადება</button>
+            <div style="height:200px; background:#f8fafc; border:2px dashed #eee; margin-top:15px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#ccc;">AdSense</div>
+        </div>
+    </aside>
+</div>
+
+<!-- Auth Modal -->
+<div id="authM" class="modal"><div class="modal-content">
+    <h3 id="authTitle">შესვლა</h3>
+    <input type="email" id="email" placeholder="ელ-ფოსტა">
+    <input type="password" id="pass" placeholder="პაროლი">
+    <button class="btn btn-add" style="width:100%" onclick="handleAuth()">შესვლა / რეგისტრაცია</button>
+    <button class="btn" style="width:100%; background:none; color:#666" onclick="toggleModal('authM')">დახურვა</button>
+    <p style="font-size:11px; color:#999; text-align:center;">*თუ არ გაქვთ აქაუნთი, სისტემა ავტომატურად დაგარეგისტრირებთ</p>
+</div></div>
+
+<!-- Add Modal -->
+<div id="addM" class="modal"><div class="modal-content">
+    <h3>განცხადების დამატება</h3>
+    <input type="text" id="iT" placeholder="სათაური">
+    <input type="text" id="iP" placeholder="ფასი">
+    <input type="text" id="iI" placeholder="სურათის URL (ImgBB)">
+    <button class="btn btn-add" style="width:100%" onclick="save()">გამოქვეყნება</button>
+    <button class="btn" style="width:100%; background:none; color:#666" onclick="toggleModal('addM')">გაუქმება</button>
+</div></div>
+
+<script>
+    // Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEUjh_mVRLTzUecRJbeG_K6gTp__FVft0",
+        authDomain: "://firebaseapp.com",
+        databaseURL: "https://firebaseio.com",
+        projectId: "swap-39e13"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const auth = firebase.auth();
+    let ads = [];
+
+    // Auth Logic
+    auth.onAuthStateChanged(user => {
+        const panel = document.getElementById('authPanel');
+        if (user) {
+            panel.innerHTML = `
+                <span style="font-size:13px; font-weight:bold; margin-right:10px;">${user.email.split('@')[0]}</span>
+                <button class="btn btn-logout" onclick="auth.signOut()">გამოსვლა</button>
+            `;
+        } else {
+            panel.innerHTML = `<button class="btn btn-auth" onclick="toggleModal('authM')"><i class="fas fa-user"></i> შესვლა</button>`;
+        }
+    });
+
+    async function handleAuth() {
+        const e = document.getElementById('email').value, p = document.getElementById('pass').value;
+        try {
+            await auth.signInWithEmailAndPassword(e, p);
+            toggleModal('authM');
+        } catch (err) {
+            if (err.code === 'auth/user-not-found') {
+                await auth.createUserWithEmailAndPassword(e, p);
+                toggleModal('authM');
+            } else { alert(err.message); }
+        }
+    }
+
+    function checkAuthAndAdd() {
+        if (!auth.currentUser) { alert("განცხადების დასამატებლად გაიარეთ ავტორიზაცია!"); toggleModal('authM'); }
+        else { toggleModal('addM'); }
+    }
+
+    // Slider
+    let cur = 0;
+    setInterval(() => {
+        const s = document.getElementById('slider');
+        if(s) { cur = (cur + 1) % 2; s.style.transform = `translateX(-${cur * 100}%)`; }
+    }, 5000);
+
+    function toggleModal(id) {
+        const m = document.getElementById(id);
+        m.style.display = (m.style.display==='flex') ? 'none' : 'flex';
+    }
+
+    function save() {
+        const t=document.getElementById('iT').value, p=document.getElementById('iP').value, i=document.getElementById('iI').value;
+        db.ref('items/').push({ title:t, price:p, img:i, date: Date.now(), uid: auth.currentUser.uid });
+        toggleModal('addM');
+    }
+
+    function load() {
+        db.ref('items/').on('value', snap => {
+            ads = [];
+            snap.forEach(c => { ads.push({ ...c.val(), id:c.key }); });
+            render(ads);
+        });
+    }
+
+    function render(data) {
+        const g = document.getElementById('grid');
+        const sorted = data.sort((a,b) => b.date - a.date);
+        g.innerHTML = sorted.map(i => `
+            <div class="card">
+                <img src="${i.img}" onerror="this.src='https://placeholder.com'">
+                <div class="card-body">
+                    <h4 style="margin:0">${i.title}</h4>
+                    <div class="card-price">${i.price}</div>
+                    ${auth.currentUser && auth.currentUser.uid === i.uid ? `<i class="fas fa-trash" style="float:right; cursor:pointer; color:#ddd" onclick="del('${i.id}')"></i>` : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function del(id) { if(confirm("წავშალოთ?")) db.ref('items/'+id).remove(); }
+
+    function filterItems() {
+        const v = document.getElementById('sInp').value.toLowerCase();
+        render(ads.filter(a => a.title.toLowerCase().includes(v)));
+    }
+
+    function generateTestData() {
+        for(let i=1; i<=20; i++) {
+            db.ref('items/').push({
+                title: "ნივთი " + i, price: (i*5) + " ₾",
+                img: "https://picsum.photos"+i, date: Date.now()+i, uid: 'test'
+            });
+        }
+    }
+
+    load();
+</script>
+</body>
+</html>
