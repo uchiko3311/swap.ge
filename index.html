@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAP.GE - Marketplace</title>
+    
+    <!-- აუცილებელი ბიბლიოთეკები -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+
+    <style>
+        :root { --main: #27ae60; --dark: #2c3e50; --vip: #f1c40f; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--dark); display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* Header */
+        header { background: #fff; padding: 15px 5%; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .nav-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .logo { font-size: 24px; font-weight: 900; color: var(--main); text-decoration: none; }
+        
+        .btn-group { display: flex; gap: 8px; }
+        .btn { border: none; padding: 10px 16px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+        .btn-auth { background: #f1f5f9; color: var(--dark); border: 1px solid #ddd; }
+        .btn-add { background: var(--main); color: white; flex: 1; justify-content: center; }
+        .btn-vip { background: linear-gradient(45deg, #f1c40f, #f39c12); color: #000; width: 100%; margin-top: 10px; }
+
+        .search-row { display: flex; gap: 10px; }
+        .search-bar { flex: 2; }
+        .search-bar input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; outline: none; box-sizing: border-box; }
+
+        /* Slider */
+        .slider-container { width: 90%; margin: 20px auto; overflow: hidden; border-radius: 15px; height: 250px; position: relative; background: #eee; }
+        .slider { display: flex; transition: 0.6s ease-in-out; height: 100%; }
+        .slide { min-width: 100%; height: 100%; position: relative; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .slide-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: flex-end; padding: 20px; color: white; font-weight: bold; font-size: 20px; }
+
+        /* Main */
+        .container { padding: 0 5% 40px 5%; display: grid; grid-template-columns: 1fr 280px; gap: 20px; flex: 1; }
+        @media (max-width: 800px) { .container { grid-template-columns: 1fr; } .slider-container { width: 95%; height: 180px; } }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+        .card { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 150px; object-fit: cover; }
+        .card-body { padding: 12px; }
+        .card-price { color: var(--main); font-weight: 800; font-size: 1.1rem; }
+        .vip-tag { position: absolute; top: 8px; left: 8px; background: var(--vip); padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 900; }
+
+        /* Modals */
+        .modal { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal-content { background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 350px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+
+        footer { background: var(--dark); color: white; padding: 30px; text-align: center; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-top">
+        <a href="#" class="logo">SWAP.GE</a>
+        <div id="authPanel" class="btn-group"></div>
+    </div>
+    <div class="search-row">
+        <div class="search-bar"><input type="text" id="sInp" placeholder="ძებნა..." onkeyup="filterItems()"></div>
+        <button class="btn btn-add" onclick="checkAuthAndOpen('addM')"><i class="fas fa-plus"></i> განცხადება</button>
+    </div>
+</header>
+
+<div class="slider-container">
+    <div class="slider" id="slider">
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-overlay">საუკეთესო ტექნიკა</div></div>
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-overlay">ავტომობილების გაცვლა</div></div>
+    </div>
+</div>
+
+<div class="container">
+    <main><div id="grid" class="grid">იტვირთება...</div></main>
+    <aside>
+        <div style="background:white; padding:15px; border-radius:15px; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+            <h4 style="margin:0 0 10px 0">სტატუსი</h4>
+            <div id="vStatus" style="font-size:12px; color:#666;">ჩვეულებრივი მომხმარებელი</div>
+            <button class="btn btn-vip" onclick="beVip()"><i class="fas fa-crown"></i> გახდი VIP (2₾)</button>
+            <hr style="margin:15px 0; border:0; border-top:1px solid #eee;">
+            <button class="btn" style="width:100%; background:#f1f5f9; font-size:11px;" onclick="generateTestData()">🔧 20 ტესტ-ნივთი</button>
+        </div>
+    </aside>
+</div>
+
+<!-- Auth Modal -->
+<div id="authM" class="modal"><div class="modal-content">
+    <h3>ავტორიზაცია</h3>
+    <input type="email" id="email" placeholder="ელ-ფოსტა">
+    <input type="password" id="pass" placeholder="პაროლი">
+    <button class="btn btn-add" style="width:100%" onclick="handleAuth()">შესვლა</button>
+    <button class="btn" style="width:100%; background:none; margin-top:10px;" onclick="toggleModal('authM')">დახურვა</button>
+</div></div>
+
+<!-- Add Modal -->
+<div id="addM" class="modal"><div class="modal-content">
+    <h3>დამატება</h3>
+    <input type="text" id="iT" placeholder="სათაური">
+    <input type="text" id="iP" placeholder="ფასი">
+    <input type="text" id="iI" placeholder="სურათის URL (ImgBB)">
+    <button class="btn btn-add" style="width:100%" onclick="save()">გამოქვეყნება</button>
+    <button class="btn" style="width:100%; background:none; margin-top:10px;" onclick="toggleModal('addM')">დახურვა</button>
+</div></div>
+
+<script>
+    // 1. Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEUjh_mVRLTzUecRJbeG_K6gTp__FVft0",
+        authDomain: "://firebaseapp.com",
+        databaseURL: "https://firebaseio.com",
+        projectId: "swap-39e13"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(), auth = firebase.auth();
+    let ads = [], isVip = false;
+
+    // 2. Auth Control
+    auth.onAuthStateChanged(user => {
+        const p = document.getElementById('authPanel');
+        if(user) {
+            p.innerHTML = `<button class="btn btn-auth" onclick="auth.signOut()" style="font-size:11px;">გამოსვლა</button>`;
+        } else {
+            p.innerHTML = `<button class="btn btn-auth" onclick="toggleModal('authM')">შესვლა</button>`;
+        }
+        load();
+    });
+
+    async function handleAuth() {
+        const e = document.getElementById('email').value, p = document.getElementById('pass').value;
+        try { await auth.signInWithEmailAndPassword(e, p); toggleModal('authM'); } 
+        catch (err) { if(err.code === 'auth/user-not-found') { await auth.createUserWithEmailAndPassword(e, p); toggleModal('authM'); } else alert(err.message); }
+    }
+
+    function checkAuthAndOpen(id) { if(!auth.currentUser) toggleModal('authM'); else toggleModal(id); }
+
+    function beVip() { isVip = true; document.getElementById('vStatus').innerHTML = "✅ თქვენ ხართ <b>VIP</b>"; alert("VIP რეჟიმი ჩაირთო!"); }
+
+    // 3. Logic
+    function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display==='flex') ? 'none' : 'flex'; }
+
+    let sIdx = 0;
+    setInterval(() => { const s = document.getElementById('slider'); if(s) { sIdx = (sIdx + 1) % 2; s.style.transform = `translateX(-${sIdx * 100}%)`; } }, 4000);
+
+    function save() {
+        const t=document.getElementById('iT').value, p=document.getElementById('iP').value, i=document.getElementById('iI').value;
+        if(!t || !p) return;
+        db.ref('items/').push({ title:t, price:p, img:i || 'https://placeholder.com', date: Date.now(), uid: auth.currentUser.uid, isVIP: isVip });
+        toggleModal('addM');
+    }
+
+    function load() {
+        db.ref('items/').on('value', snap => {
+            ads = [];
+            snap.forEach(c => { ads.push({ ...c.val(), id:c.key }); });
+            render(ads);
+        });
+    }
+
+    function render(data) {
+        const g = document.getElementById('grid');
+        const sorted = data.sort((a,b) => b.isVIP - a.isVIP || b.date - a.date);
+        g.innerHTML = sorted.map(i => `
+            <div class="card">
+                ${i.isVIP ? '<div class="vip-tag">VIP</div>' : ''}
+                <img src="${i.img}" onerror="this.src='https://placeholder.com'">
+                <div class="card-body">
+                    <h5 style="margin:0">${i.title}</h5>
+                    <div class="card-price">${i.price}</div>
+                    ${auth.currentUser && auth.currentUser.uid === i.uid ? `<i class="fas fa-trash" style="position:absolute; bottom:10px; right:10px; color:#ddd; cursor:pointer" onclick="del('${i.id}')"></i>` : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function del(id) { if(confirm("წავშალოთ?")) db.ref('items/'+id).remove(); }
+
+    function filterItems() {
+        const v = document.getElementById('sInp').value.toLowerCase();
+        render(ads.filter(a => a.title.toLowerCase().includes(v)));
+    }
+
+    function generateTestData() {
+        for(let i=1; i<=20; i++) {
+            db.ref('items/').push({ title: "ნივთი "+i, price: (i*10)+"₾", img: "https://picsum.photos"+i, date: Date.now()+i, isVIP: i%5===0, uid: 'test' });
+        }
+    }
+</script>
+</body>
+</html>
