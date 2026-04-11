@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAP.GE - VIP Marketplace</title>
+    
+    <!-- ფავიკონი - ჩასწორებული სახელით -->
+    <link rel="icon" type="image/png" href="file_00000000f23c720ab39c9e71a2a3fcf6.png">
+    <link rel="apple-touch-icon" href="file_00000000f23c720ab39c9e71a2a3fcf6.png">
+    
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+
+    <style>
+        :root { --main: #27ae60; --dark: #2c3e50; --vip: #f1c40f; --bg: #f4f7f6; --white: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--dark); display: flex; flex-direction: column; min-height: 100vh; }
+        header { background: var(--white); padding: 15px 8%; box-shadow: 0 2px 15px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000; }
+        .nav-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .logo { text-decoration: none; display: flex; align-items: center; gap: 12px; }
+        .logo-box { width: 42px; height: 42px; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .logo-box img { width: 100%; height: 100%; object-fit: contain; }
+        .logo-text { font-size: 24px; font-weight: 900; color: var(--dark); }
+        .logo-text span { color: var(--main); }
+        .search-row { display: flex; gap: 10px; }
+        .search-bar { flex: 3; }
+        .search-bar input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #eee; outline: none; }
+        .btn { border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+        .btn-add { background: var(--main); color: white; }
+        .container { padding: 30px 8%; display: grid; grid-template-columns: 1fr 300px; gap: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 30px; border-radius: 24px; width: 90%; max-width: 400px; }
+    </style>
+</head>
+<body onload="load()">
+
+<header>
+    <div class="nav-top">
+        <a href="index.html" class="logo">
+            <div class="logo-box">
+                <!-- ლოგო ჩასწორებული სახელით -->
+                <img src="file_00000000f23c720ab39c9e71a2a3fcf6.png" alt="Logo">
+            </div>
+            <div class="logo-text">SWAP<span>.GE</span></div>
+        </a>
+        <div id="authArea"></div>
+    </div>
+    <div class="search-row">
+        <div class="search-bar"><input type="text" id="sInp" placeholder="ძებნა..." onkeyup="filterItems()"></div>
+        <button class="btn btn-add" onclick="checkAuthAndOpen('addM')">+ განცხადება</button>
+    </div>
+</header>
+
+<div class="container">
+    <main><div id="grid" class="grid">იტვირთება...</div></main>
+    <aside>
+        <div style="background:#fff; padding:20px; border-radius:15px; border:1px solid #eee;">
+            <h4 style="margin:0">VIP სტატუსი</h4>
+            <button class="btn" style="background:var(--vip); width:100%; margin-top:10px;" onclick="makeMeVIP()">გახდი VIP</button>
+        </div>
+    </aside>
+</div>
+
+<!-- Firebase და სხვა სკრიპტები იგივე რჩება... -->
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEUjh_mVRLTzUecRJbeG_K6gTp__FVft0",
+        authDomain: "://firebaseapp.com",
+        databaseURL: "https://firebaseio.com",
+        projectId: "swap-39e13"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(), auth = firebase.auth();
+
+    function load() {
+        db.ref('items/').on('value', snap => {
+            const val = snap.val();
+            const items = val ? Object.keys(val).map(k => ({id:k, ...val[k]})) : [];
+            document.getElementById('grid').innerHTML = items.reverse().map(i => `
+                <div class="card">
+                    <img src="${i.img}">
+                    <div style="padding:15px;"><b>${i.title}</b><br><span style="color:var(--main)">${i.price} ₾</span></div>
+                </div>
+            `).join('');
+        });
+    }
+
+    function toggleModal(id) { document.getElementById(id).style.display = (document.getElementById(id).style.display === 'flex') ? 'none' : 'flex'; }
+    function checkAuthAndOpen(id) { if (!auth.currentUser) toggleModal('authM'); else toggleModal(id); }
+    auth.onAuthStateChanged(user => { 
+        document.getElementById('authArea').innerHTML = user ? `<button class="btn" onclick="auth.signOut()">გამოსვლა</button>` : `<button class="btn" onclick="toggleModal('authM')">შესვლა</button>`;
+    });
+</script>
+
+</body>
+</html>
