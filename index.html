@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAP.GE - ნივთების გაცვლა</title>
+    
+    <!-- ხატულები -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    
+    <!-- Firebase (სტაბილური ვერსია) -->
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+
+    <style>
+        :root { --main: #27ae60; --dark: #2c3e50; --vip: #f1c40f; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg); color: var(--dark); display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: #fff; padding: 15px 8%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000; }
+        .nav-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .logo { font-size: 26px; font-weight: 900; color: var(--main); text-decoration: none; }
+        
+        .search-row { display: flex; gap: 12px; }
+        .search-bar { flex: 2; }
+        .search-bar input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #ddd; outline: none; box-sizing: border-box; }
+        
+        .btn { border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .btn-add { background: var(--main); color: white; }
+        .btn-test { background: #34495e; color: white; font-size: 12px; }
+
+        /* Slider */
+        .slider-container { width: 84%; margin: 20px auto; overflow: hidden; border-radius: 15px; height: 250px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .slider { display: flex; transition: 0.6s ease-in-out; height: 100%; }
+        .slide { min-width: 100%; height: 100%; position: relative; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .slide-text { position: absolute; bottom: 20px; left: 20px; color: white; background: rgba(0,0,0,0.6); padding: 10px 20px; border-radius: 8px; backdrop-filter: blur(5px); }
+
+        /* Content Area */
+        .container { padding: 0 8% 40px 8%; display: grid; grid-template-columns: 1fr 300px; gap: 25px; }
+        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } .slider-container { width: 95%; height: 180px; } }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; transition: 0.3s; border: 1px solid #eee; }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 160px; object-fit: cover; background: #f9f9f9; }
+        .card-body { padding: 15px; }
+        .card-price { color: var(--main); font-weight: 800; font-size: 1.1rem; }
+        .vip-tag { position: absolute; top: 10px; left: 10px; background: var(--vip); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+        .del-btn { float: right; color: #ccc; cursor: pointer; transition: 0.2s; }
+        .del-btn:hover { color: #e74c3c; }
+
+        /* Ad Slots */
+        .ad-slot { background: #dfe6e9; border: 1px dashed #b2bec3; margin: 20px auto; width: 84%; height: 90px; display: flex; align-items: center; justify-content: center; color: #636e72; font-size: 12px; }
+
+        /* Modal */
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); z-index:2000; align-items:center; justify-content:center; backdrop-filter: blur(4px); }
+        .modal-content { background:white; padding:30px; border-radius:20px; width:90%; max-width:380px; }
+        input, select { width:100%; padding:12px; margin:8px 0; border:1px solid #ddd; border-radius:10px; box-sizing: border-box; }
+
+        footer { background: var(--dark); color: white; padding: 30px 8%; text-align: center; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-top">
+        <a href="#" class="logo">SWAP.GE</a>
+        <button class="btn btn-test" onclick="generateTestData()"><i class="fas fa-magic"></i> სატესტო 20 ნივთი</button>
+    </div>
+    <div class="search-row">
+        <div class="search-bar"><input type="text" id="sInp" placeholder="ძებნა..." onkeyup="filterItems()"></div>
+        <button class="btn btn-add" onclick="toggleModal('addM')"><i class="fas fa-plus"></i> განცხადება</button>
+    </div>
+</header>
+
+<div class="slider-container">
+    <div class="slider" id="mainSlider">
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-text">ტექნიკის გაცვლა</div></div>
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-text">ავტომობილები</div></div>
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-text">უძრავი ქონება</div></div>
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-text">აქსესუარები</div></div>
+        <div class="slide"><img src="https://unsplash.com"><div class="slide-text">ავეჯი</div></div>
+    </div>
+</div>
+
+<div class="ad-slot">Google AdSense Space (970x90)</div>
+
+<div class="container">
+    <main><div id="itemGrid" class="grid">იტვირთება...</div></main>
+    <aside>
+        <div style="background:white; padding:20px; border-radius:15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: sticky; top: 150px;">
+            <h4 style="margin-top:0">ფილტრი</h4>
+            <button class="btn" style="width:100%; margin-bottom:10px; background:#f1f2f6" onclick="render(ads.filter(a => a.isVIP))">⭐ მხოლოდ VIP</button>
+            <button class="btn" style="width:100%; background:#eee" onclick="render(ads)">ყველა</button>
+            <div class="ad-slot" style="width:100%; height:250px; margin-top:20px;">AdSense 300x250</div>
+        </div>
+    </aside>
+</div>
+
+<footer><p>&copy; 2024 SWAP.GE - ყველა უფლება დაცულია</p></footer>
+
+<div id="addM" class="modal"><div class="modal-content">
+    <h3>დამატება</h3>
+    <select id="iCat"><option value="ავტო">ავტო</option><option value="ტექნიკა">ტექნიკა</option><option value="ბინები">ბინები</option></select>
+    <input type="text" id="iT" placeholder="სათაური">
+    <input type="text" id="iP" placeholder="ფასი">
+    <input type="text" id="iI" placeholder="სურათის URL">
+    <button class="btn btn-add" style="width:100%" onclick="save()">გამოქვეყნება</button>
+    <button onclick="toggleModal('addM')" style="width:100%; background:none; border:none; margin-top:10px; cursor:pointer">დახურვა</button>
+</div></div>
+
+<script>
+    // Firebase კონფიგურაცია
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEUjh_mVRLTzUecRJbeG_K6gTp__FVft0",
+        databaseURL: "https://firebaseio.com",
+        projectId: "swap-39e13"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    let ads = [];
+
+    // Slider
+    let currentSlide = 0;
+    setInterval(() => {
+        const s = document.getElementById('mainSlider');
+        if(s) { currentSlide = (currentSlide + 1) % 5; s.style.transform = `translateX(-${currentSlide * 100}%)`; }
+    }, 4000);
+
+    function toggleModal(id) {
+        const m = document.getElementById(id);
+        m.style.display = (m.style.display==='flex') ? 'none' : 'flex';
+    }
+
+    function save() {
+        const t=document.getElementById('iT').value, p=document.getElementById('iP').value, i=document.getElementById('iI').value, c=document.getElementById('iCat').value;
+        if(!t || !p) return alert("შეავსეთ ველები!");
+        db.ref('items/').push({ title:t, price:p, img:i, category:c, isVIP: false, date: Date.now() });
+        toggleModal('addM');
+    }
+
+    function load() {
+        db.ref('items/').on('value', snap => {
+            ads = [];
+            snap.forEach(c => { ads.push({ ...c.val(), id:c.key }); });
+            render(ads);
+        });
+    }
+
+    function render(data) {
+        const g = document.getElementById('itemGrid');
+        const sorted = data.sort((a,b) => b.isVIP - a.isVIP || b.date - a.date);
+        g.innerHTML = sorted.map(i => `
+            <div class="card">
+                ${i.isVIP ? '<div class="vip-tag">VIP</div>' : ''}
+                <img src="${i.img || 'https://placeholder.com'}" onerror="this.src='https://placeholder.com'">
+                <div class="card-body">
+                    <h5 style="margin:0; height:35px; overflow:hidden">${i.title}</h5>
+                    <div class="card-price">${i.price}</div>
+                    <i class="fas fa-trash del-btn" onclick="del('${i.id}')"></i>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function del(id) { if(confirm("წავშალოთ?")) db.ref('items/'+id).remove(); }
+
+    function filterItems() {
+        const v = document.getElementById('sInp').value.toLowerCase();
+        render(ads.filter(a => a.title.toLowerCase().includes(v)));
+    }
+
+    function generateTestData() {
+        const imgs = ['https://picsum.photos'];
+        for(let i=1; i<=20; i++) {
+            db.ref('items/').push({
+                title: "სატესტო ნივთი " + i,
+                price: (i * 15) + " ₾",
+                img: imgs[i % 2],
+                isVIP: i % 5 === 0,
+                date: Date.now() + i
+            });
+        }
+        alert("20 განცხადება დაემატა!");
+    }
+
+    load();
+</script>
+</body>
+</html>
