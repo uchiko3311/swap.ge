@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swap.ge | გაცვლა</title>
+
+<!-- FAVICON -->
+<link rel="icon" type="image/png" href="favicon.png">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+color:white;
+background:url("./bg.png") no-repeat center center fixed;
+background-size:cover;
+min-height:100vh;
+position:relative;
+}
+
+/* overlay */
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+z-index:-1;
+}
+
+/* HEADER */
+header{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+background:linear-gradient(90deg,#ff6a00,#ff8c1a);
+padding:14px;
+font-size:20px;
+font-weight:bold;
+}
+
+/* LOGO */
+.logo{
+width:32px;
+height:32px;
+border-radius:6px;
+}
+
+/* SEARCH */
+.search{
+display:flex;
+justify-content:center;
+margin:10px;
+}
+
+.search input{
+width:85%;
+padding:10px;
+border-radius:10px;
+border:none;
+outline:none;
+}
+
+/* CONTAINER */
+.container{
+width:100%;
+max-width:900px;
+margin:auto;
+padding:10px;
+}
+
+/* CARD */
+.card{
+background:rgba(20,10,5,0.75);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,106,0,0.5);
+border-radius:14px;
+padding:12px;
+margin-bottom:12px;
+}
+
+/* BUTTON */
+button{
+width:100%;
+padding:10px;
+margin-top:8px;
+border-radius:8px;
+border:none;
+background:#ff6a00;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+background:#ff7f1a;
+}
+
+/* INPUT */
+input{
+width:100%;
+padding:10px;
+margin-top:6px;
+border-radius:8px;
+border:none;
+outline:none;
+}
+
+/* POSTS GRID */
+#posts{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:10px;
+}
+
+/* IMAGE */
+img{
+width:100%;
+border-radius:10px;
+margin-top:8px;
+}
+
+/* HIDDEN */
+.hidden{
+display:none;
+}
+
+@media(max-width:600px){
+header{font-size:16px;}
+.logo{width:26px;height:26px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<img src="./logo.png" class="logo">
+Swap.ge
+</header>
+
+<div class="search">
+<input id="search" placeholder="ძებნა განცხადებები...">
+</div>
+
+<div class="container">
+
+<!-- POST FORM -->
+<div class="card">
+<h3>ახალი განცხადება</h3>
+<input id="title" placeholder="სათაური">
+<input id="price" placeholder="ფასი">
+<button onclick="addPost()">დამატება</button>
+</div>
+
+<!-- POSTS -->
+<div id="posts"></div>
+
+</div>
+
+<script>
+let data = [
+{t:"iPhone 13",p:"900₾"},
+{t:"BMW E60",p:"5500₾"},
+{t:"ქირავდება ბინა",p:"1200₾"},
+{t:"MacBook Pro",p:"1800₾"},
+{t:"PlayStation 5",p:"1100₾"},
+{t:"სახლი თბილისი",p:"120000₾"}
+];
+
+function render(filter=""){
+let list=document.getElementById("posts");
+list.innerHTML="";
+
+data
+.filter(i=>i.t.toLowerCase().includes(filter.toLowerCase()))
+.forEach(item=>{
+let div=document.createElement("div");
+div.className="card";
+div.innerHTML=`
+<h3>${item.t}</h3>
+<strong>${item.p}</strong>
+`;
+list.appendChild(div);
+});
+}
+
+function addPost(){
+let t=document.getElementById("title").value;
+let p=document.getElementById("price").value;
+
+if(!t||!p)return;
+
+data.push({t,p});
+render();
+}
+
+document.getElementById("search").addEventListener("input",(e)=>{
+render(e.target.value);
+});
+
+render();
+</script>
+
+</body>
+</html>
