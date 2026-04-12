@@ -1,0 +1,47 @@
+body {
+  margin: 0;
+  background: #0f0f0f;
+  color: white;
+  font-family: Arial;
+}
+
+.header {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: black;
+}
+
+.header input {
+  flex: 1;
+  padding: 8px;
+}
+
+.upload {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+}
+
+.upload input, .upload button {
+  padding: 10px;
+}
+
+.upload button {
+  background: red;
+  color: white;
+  border: none;
+}
+
+#videos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  padding: 10px;
+}
+
+.video video {
+  width: 100%;
+  border-radius: 10px;
+}
