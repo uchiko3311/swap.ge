@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+  background: #0f0f0f;
+  color: white;
+  font-family: Arial;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: black;
+  gap: 10px;
+}
+
+.logo {
+  color: red;
+  font-weight: bold;
+}
+
+.header input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  background: #222;
+  color: white;
+}
+
+.upload {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upload input {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #222;
+  color: white;
+}
+
+.upload button {
+  background: red;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+#videos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  padding: 10px;
+}
+
+.video {
+  background: #181818;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.video video,
+.video iframe {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.video h3 {
+  margin: 8px 0;
+}
+
+button {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.comments input {
+  width: 100%;
+  padding: 6px;
+  margin-top: 5px;
+}
