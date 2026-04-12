@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Swap.com.ge - გაცვლის პლატფორმა</title>
+    <script src="https://tailwindcss.com"></script>
+    <link href="https://cloudflare.com" rel="stylesheet">
+    <style>
+        @import url('https://googleapis.com');
+        body { font-family: 'Noto Sans Georgian', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- ნავიგაცია -->
+    <nav class="bg-white shadow-sm p-4 sticky top-0 z-50">
+        <div class="flex justify-between items-center max-w-2xl mx-auto">
+            <h1 class="text-xl font-bold text-blue-600">SWAP<span class="text-gray-700">.COM.GE</span></h1>
+            <div id="userStatus" class="text-xs bg-gray-200 px-2 py-1 rounded">უფასო პაკეტი</div>
+        </div>
+    </nav>
+
+    <div class="max-w-xl mx-auto p-4">
+        
+        <!-- VIP ინფო ბლოკი -->
+        <div class="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl p-4 mb-6 text-white shadow-md">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="font-bold text-lg italic"><i class="fas fa-crown mr-2"></i>VIP პაკეტი</h3>
+                    <p class="text-sm opacity-90">5 განცხადება / 14 ფოტო</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-2xl font-bold">2 ₾</span>
+                    <p class="text-xs italic">30 დღე</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ფორმა -->
+        <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+            <h2 class="text-xl font-bold mb-6 flex items-center">
+                <i class="fas fa-plus-circle text-blue-500 mr-2"></i> განცხადების დამატება
+            </h2>
+
+            <form id="uploadForm" class="space-y-5">
+                
+                <!-- დასახელება -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">რას ცვლით?</label>
+                    <input type="text" id="itemName" required 
+                        class="w-full border-gray-300 border p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition"
+                        placeholder="მაგ: iPhone 13 Pro ან BMW E46">
+                </div>
+
+                <!-- აღწერა -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">აღწერა</label>
+                    <textarea id="itemDesc" rows="4" required
+                        class="w-full border-gray-300 border p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition"
+                        placeholder="დაწერეთ დეტალები და რაში გაცვლით..."></textarea>
+                </div>
+
+                <!-- ფოტოები -->
+                <div class="bg-blue-50 p-4 rounded-xl border-2 border-dashed border-blue-200">
+                    <label class="block text-sm font-medium text-blue-800 mb-2">ფოტოების ატვირთვა</label>
+                    <input type="file" id="itemImages" multiple accept="image/*" class="hidden">
+                    <button type="button" onclick="document.getElementById('itemImages').click()" 
+                        class="w-full py-3 bg-white border border-blue-300 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition">
+                        <i class="fas fa-camera mr-2"></i> ფოტოების არჩევა
+                    </button>
+                    <div class="flex justify-between mt-2 text-xs font-medium uppercase tracking-wider">
+                        <span id="fileCount" class="text-gray-500 italic">არჩეულია: 0</span>
+                        <span id="limitNote" class="text-blue-600">ლიმიტი: 7 ფოტო</span>
+                    </div>
+                </div>
+
+                <!-- გაფრთხილება -->
+                <div class="flex items-start p-3 bg-amber-50 rounded-lg border border-amber-100">
+                    <i class="fas fa-info-circle text-amber-500 mt-1 mr-3"></i>
+                    <p class="text-xs text-amber-800">
+                        განცხადება აქტიური იქნება **30 დღის** განმავლობაში, რის შემდეგაც ავტომატურად წაიშლება.
+                    </p>
+                </div>
+
+                <!-- ღილაკი -->
+                <button type="submit" id="submitBtn" 
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-200 transition-all active:scale-95 disabled:bg-gray-400">
+                    განთავსება
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase და ლოგიკა -->
+    <script type="module" src="app.js"></script>
+
+</body>
+</html>
