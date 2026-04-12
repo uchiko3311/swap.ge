@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>განცხადების დეტალები - Swap.ge</title>
+    <!-- AdSense -->
+    <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
+    <script src="https://tailwindcss.com"></script>
+    <link href="https://cloudflare.com" rel="stylesheet">
+    <style>
+        @import url('https://googleapis.com');
+        body { font-family: 'Noto Sans Georgian', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .gallery-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; }
+        .gallery-item { min-width: 100%; scroll-snap-align: start; height: 400px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- ზედა ნავიგაცია -->
+    <nav class="bg-white/80 backdrop-blur-md p-4 sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-2xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 active:scale-90 transition">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1 id="topTitle" class="font-black text-[10px] uppercase tracking-tighter truncate max-w-[200px] text-gray-400">განცხადება</h1>
+            <button onclick="shareLink()" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-600">
+                <i class="fas fa-share-alt"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="max-w-2xl mx-auto">
+        <!-- ფოტოების სლაიდერი -->
+        <div class="relative bg-black group">
+            <div id="gallery" class="gallery-track no-scrollbar">
+                <!-- ფოტოები ჩაიტვირთება აქ -->
+                <div class="gallery-item flex items-center justify-center text-white animate-pulse">
+                    <i class="fas fa-spinner fa-spin text-2xl"></i>
+                </div>
+            </div>
+            <!-- ფოტოების მრიცხველი -->
+            <div id="photoCounter" class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md text-white text-[10px] px-4 py-1.5 rounded-full font-black tracking-widest uppercase">
+                1 / 1
+            </div>
+        </div>
+
+        <!-- ძირითადი ინფორმაცია -->
+        <div class="bg-white rounded-t-[40px] -mt-10 relative z-10 p-8 shadow-2xl min-h-[500px]">
+            <div id="vipBadge" class="hidden mb-4 inline-flex items-center bg-amber-400 text-white text-[9px] px-3 py-1 rounded-full font-black uppercase tracking-widest">
+                <i class="fas fa-crown mr-1.5"></i> VIP განცხადება
+            </div>
+            
+            <h2 id="itemTitle" class="text-2xl font-black text-gray-900 leading-tight mb-4 italic">იტვირთება...</h2>
+            
+            <div class="flex items-center gap-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-8 pb-8 border-b border-gray-50">
+                <span class="flex items-center"><i class="far fa-calendar-alt mr-2 text-blue-500"></i> <span id="itemDate">--/--/--</span></span>
+                <span class="flex items-center"><i class="far fa-eye mr-2 text-blue-500"></i> ნახვა: <span id="viewCount">0</span></span>
+            </div>
+
+            <div class="mb-10">
+                <h4 class="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em] mb-4 flex items-center">
+                    <span class="w-2 h-2 bg-blue-600 rounded-full mr-2"></span> აღწერა
+                </h4>
+                <p id="itemDescription" class="text-gray-600 leading-relaxed text-sm whitespace-pre-wrap italic"></p>
+            </div>
+
+            <!-- AdSense რეკლამა განცხადების შიგნით -->
+            <div class="my-8 rounded-2xl overflow-hidden bg-gray-50 p-2 border border-gray-100 text-center text-[9px] text-gray-300 uppercase font-bold tracking-widest">
+                რეკლამა
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-2383560102633914"
+                     data-ad-slot="YOUR_AD_SLOT_ID"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+
+            <!-- კონტაქტის ღილაკი -->
+            <div class="sticky bottom-6 mt-10">
+                <a id="contactBtn" href="#" class="flex items-center justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-blue-200 transition active:scale-95">
+                    <i class="fab fa-facebook-messenger text-xl"></i> მფლობელთან დაკავშირება
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        import { getFirestore, doc, getDoc, updateDoc, increment } from "https://gstatic.com";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEUjh_mVRLTzUecRJbeG_K6gTp__FVft0",
+            authDomain: "://firebaseapp.com",
+            projectId: "swap-39e13",
+            storageBucket: "swap-39e13.firebasestorage.app",
+            messagingSenderId: "107187341554",
+            appId: "1:107187341554:web:75533a380b58a7a141286b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // პარამეტრების ამოღება URL-დან
+        const urlParams = new URLSearchParams(window.location.search);
+        const itemId = urlParams.get('id');
+
+        async function init() {
+            if (!itemId) { window.location.href = 'index.html'; return; }
+
+            try {
+                const docRef = doc(db, "ads", itemId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    
+                    // ნახვების მომატება
+                    await updateDoc(docRef, { views: increment(1) });
+
+                    // მონაცემების შევსება
+                    document.getElementById('itemTitle').innerText = data.title;
+                    document.getElementById('topTitle').innerText = data.title;
+                    document.getElementById('itemDescription').innerText = data.description;
+                    document.getElementById('itemDate').innerText = new Date(data.createdAt?.toDate()).toLocaleDateString('ka-GE');
+                    document.getElementById('viewCount').innerText = (data.views || 0) + 1;
+
+                    if(data.isVIP) document.getElementById('vipBadge').classList.remove('hidden');
+
+                    // გალერეის შევსება
+                    const gallery = document.getElementById('gallery');
+                    gallery.innerHTML = '';
+                    
+                    const images = Array.isArray(data.images) ? data.images : [data.images];
+                    images.forEach((img) => {
+                        gallery.innerHTML += `
+                            <div class="gallery-item flex items-center justify-center">
+                                <img src="${img}" class="w-full h-full object-cover">
+                            </div>
+                        `;
+                    });
+
+                    document.getElementById('photoCounter').innerText = `1 / ${images.length}`;
+
+                    // სქროლზე მრიცხველის ცვლილება
+                    gallery.addEventListener('scroll', () => {
+                        const idx = Math.round(gallery.scrollLeft / gallery.offsetWidth) + 1;
+                        document.getElementById('photoCounter').innerText = `${idx} / ${images.length}`;
+                    });
+
+                } else {
+                    alert("განცხადება ვერ მოიძებნა!");
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        window.shareLink = () => {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.getElementById('itemTitle').innerText,
+                    url: window.location.href
+                });
+            } else {
+                alert("ლინკი: " + window.location.href);
+            }
+        };
+
+        init();
+    </script>
+</body>
+</html>
