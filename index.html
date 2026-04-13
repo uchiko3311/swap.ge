@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAP.GE - გაცვალე ყველაფერი</title>
+    <script src="https://tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        @import url('https://googleapis.com');
+        body { font-family: 'Fira GO', sans-serif; scroll-behavior: smooth; }
+        .sidebar { transition: transform 0.3s ease-in-out; }
+        .hidden-sidebar { transform: translateX(-100%); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- გვერდითი მენიუ (როგორც სქრინზე გქონდათ) -->
+    <div id="sidebar" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-50" onclick="toggleMenu()"></div>
+        <div class="absolute left-0 top-0 h-full w-72 bg-white shadow-2xl p-5 overflow-y-auto">
+            <div class="flex justify-between items-center mb-6 border-b pb-3">
+                <h2 class="text-xl font-bold text-blue-600">მენიუ</h2>
+                <button onclick="toggleMenu()" class="text-2xl">&times;</button>
+            </div>
+            
+            <!-- მომხმარებლის ბლოკი -->
+            <div class="bg-blue-50 p-4 rounded-xl mb-4">
+                <p class="text-sm text-gray-500">ბალანსი</p>
+                <p class="text-lg font-bold text-blue-700">0.00 ₾</p>
+            </div>
+
+            <nav class="space-y-2 text-gray-600">
+                <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-lg"><i class="fa fa-plus-circle w-6"></i> განცხადების დამატება</a>
+                <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-lg"><i class="fa fa-list w-6"></i> ჩემი განცხადებები</a>
+                <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-lg"><i class="fa fa-heart w-6"></i> ფავორიტები</a>
+                <a href="#" class="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-lg"><i class="fa fa-wallet w-6"></i> ბალანსის შევსება</a>
+                <hr>
+                <a href="#about" class="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-lg"><i class="fa fa-info-circle w-6"></i> ჩვენს შესახებ</a>
+                <a href="#rules" class="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-lg"><i class="fa fa-gavel w-6"></i> წესები და პირობები</a>
+                <a href="#contact" class="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-lg"><i class="fa fa-envelope w-6"></i> კონტაქტი</a>
+                <hr>
+                <button onclick="showLogin()" class="w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg"><i class="fa fa-sign-in-alt w-6"></i> შესვლა / რეგისტრაცია</button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ნავიგაცია -->
+    <nav class="bg-white shadow-sm p-4 sticky top-0 z-40">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleMenu()" class="text-2xl"><i class="fa fa-bars"></i></button>
+                <h1 class="text-2xl font-bold text-blue-600">SWAP<span class="text-orange-500">.GE</span></h1>
+            </div>
+            <button onclick="showLogin()" class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded-full font-bold">შესვლა</button>
+        </div>
+    </nav>
+
+    <!-- მთავარი სექცია -->
+    <main class="container mx-auto p-4 space-y-10">
+        
+        <!-- ძებნა -->
+        <section class="bg-white p-6 rounded-2xl shadow-sm border text-center">
+            <h2 class="text-2xl font-bold mb-4">გაამარტივე გაცვლა</h2>
+            <div class="flex gap-2 max-w-lg mx-auto border rounded-full p-2 bg-gray-50">
+                <input type="text" placeholder="რას ეძებ?" class="w-full px-4 bg-transparent outline-none">
+                <button class="bg-orange-500 text-white p-3 rounded-full"><i class="fa fa-search"></i></button>
+            </div>
+        </section>
+
+        <!-- ჩვენს შესახებ -->
+        <section id="about" class="pt-10">
+            <h3 class="text-xl font-bold mb-4">ჩვენს შესახებ</h3>
+            <div class="bg-white p-6 rounded-2xl border leading-relaxed">
+                SWAP.GE არის ინოვაციური პლატფორმა საქართველოში, რომელიც საშუალებას გაძლევთ გაცვალოთ ნებისმიერი ნივთი: ბინა, ავტომობილი, ტექნიკა თუ აქსესუარები. ჩვენი მიზანია შევქმნათ უსაფრთხო ბარტერული გარემო.
+            </div>
+        </section>
+
+        <!-- კონტაქტი -->
+        <section id="contact" class="bg-blue-600 text-white p-8 rounded-3xl">
+            <h3 class="text-xl font-bold mb-4">კონტაქტი</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <p><i class="fa fa-phone mr-2"></i> +995 5XX XX XX XX</p>
+                    <p><i class="fa fa-envelope mr-2"></i> support@swap.ge</p>
+                </div>
+                <div class="space-y-3">
+                    <input type="text" placeholder="თქვენი სახელი" class="w-full p-3 rounded-lg text-black">
+                    <textarea placeholder="შეტყობინება" class="w-full p-3 rounded-lg text-black"></textarea>
+                    <button class="bg-orange-500 w-full py-3 rounded-lg font-bold">გაგზავნა</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ავტორიზაციის პოპაპი (Modal) -->
+    <div id="loginModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black bg-opacity-60" onclick="hideLogin()"></div>
+        <div class="bg-white w-full max-w-md p-8 rounded-3xl relative">
+            <h2 class="text-2xl font-bold mb-6">ავტორიზაცია</h2>
+            <div class="space-y-4">
+                <input type="email" placeholder="ელ-ფოსტა" class="w-full border p-4 rounded-xl">
+                <input type="password" placeholder="პაროლი" class="w-full border p-4 rounded-xl">
+                <button class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold">შესვლა</button>
+                <p class="text-center text-sm">არ გაქვს ანგარიში? <a href="#" class="text-blue-600">დარეგისტრირდი</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- სკრიპტები ინტერაქტივისთვის -->
+    <script>
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('hidden');
+        }
+        function showLogin() {
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+        function hideLogin() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+    </script>
+
+</body>
+</html>
