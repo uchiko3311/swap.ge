@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SWAP.GE - გაცვალე ყველაფერი</title>
+    
+    <style>
+        /* ფონტები და ბაზისური სტილები */
+        body { font-family: sans-serif; margin: 0; background-color: #f0f2f5; color: #1c1e21; padding-bottom: 80px; }
+        
+        /* კონტეინერი მობილურისთვის */
+        .app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; background: #f0f2f5; position: relative; }
+
+        /* ჰედერი */
+        header { background: #2563eb; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo { font-size: 22px; font-weight: bold; letter-spacing: -1px; }
+        .logo span { color: #f97316; }
+
+        /* ბარათები (სექციები) */
+        .card { background: white; margin: 15px; padding: 20px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
+        h2 { margin-top: 0; font-size: 18px; color: #1e40af; margin-bottom: 15px; }
+
+        /* ფორმის ელემენტები */
+        input, select, textarea { width: 100%; padding: 14px; margin-top: 8px; border: 1px solid #ddd; border-radius: 12px; font-size: 16px; box-sizing: border-box; outline: none; background: #f9fafb; }
+        input:focus { border-color: #2563eb; background: white; }
+
+        /* ღილაკები */
+        .btn-primary { background: #2563eb; color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 15px; cursor: pointer; transition: 0.3s; }
+        .btn-orange { background: #f97316; color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.2); }
+
+        /* ქვედა მენიუ */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 500px; margin: 0 auto; background: white; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 12px 0; z-index: 1000; }
+        .nav-item { color: #9ca3af; font-size: 24px; text-decoration: none; display: flex; flex-direction: column; align-items: center; }
+        .nav-item.active { color: #2563eb; }
+        .nav-add { background: #f97316; color: white !important; width: 50px; height: 50px; border-radius: 15px; display: flex; justify-content: center; align-items: center; margin-top: -30px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+        /* გვერდების მართვა */
+        .page { display: none; }
+        .page.active { display: block; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <header>
+        <div class="logo">SWAP<span>.GE</span></div>
+        <div style="font-size: 12px; font-weight: bold;">მენიუ ☰</div>
+    </header>
+
+    <!-- მთავარი გვერდი -->
+    <div id="home" class="page active">
+        <div class="card" style="background: #2563eb; color: white; text-align: center;">
+            <h2 style="color: white; margin-bottom: 10px;">რას ცვლი დღეს?</h2>
+            <input type="text" placeholder="ძებნა: ბინა, მანქანა..." style="background: white;">
+        </div>
+        
+        <div id="ads-list">
+            <p style="text-align: center; color: #9ca3af; margin-top: 50px; font-style: italic;">განცხადებები იტვირთება...</p>
+        </div>
+    </div>
+
+    <!-- დამატების გვერდი -->
+    <div id="add" class="page">
+        <div class="card">
+            <h2>ახალი განცხადება</h2>
+            <input id="ad-title" type="text" placeholder="ნივთის დასახელება">
+            <select id="ad-cat">
+                <option value="Real Estate">🏠 უძრავი ქონება</option>
+                <option value="Cars">🚗 ავტომობილები</option>
+                <option value="Tech">📱 ტექნიკა</option>
+            </select>
+            <input id="ad-price" type="number" placeholder="ფასი (₾)">
+            <textarea id="ad-swap" placeholder="აღწერეთ რაში ცვლით..." rows="4"></textarea>
+            <button class="btn-orange" onclick="postAd()">გამოქვეყნება</button>
+        </div>
+    </div>
+
+    <!-- კონტაქტი -->
+    <div id="contact" class="page">
+        <div class="card">
+            <h2>კონტაქტი</h2>
+            <p style="font-size: 14px; color: #666;">📧 info@swap.ge <br>📞 +995 5XX XX XX XX</p>
+            <input type="text" placeholder="თქვენი სახელი">
+            <textarea placeholder="შეტყობინება" rows="3"></textarea>
+            <button class="btn-primary">გაგზავნა</button>
+        </div>
+    </div>
+
+    <!-- ქვედა მენიუ -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" onclick="showPage('home')">🏠</a>
+        <a href="#" class="nav-item nav-add" onclick="showPage('add')">✚</a>
+        <a href="#" class="nav-item" onclick="showPage('contact')">👤</a>
+    </nav>
+
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://gstatic.com";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEUjh_mVRLTzUecRJbeG_K6gTp__FVft0",
+        authDomain: "://firebaseapp.com",
+        projectId: "swap-39e13",
+        storageBucket: "swap-39e13.firebasestorage.app",
+        messagingSenderId: "107187341554",
+        appId: "1:107187341554:web:75533a380b58a7a141286b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // გვერდების გადართვა
+    window.showPage = function(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        if(pageId === 'home') fetchAds();
+    }
+
+    // განცხადების დადება
+    window.postAd = async function() {
+        const title = document.getElementById('ad-title').value;
+        const cat = document.getElementById('ad-cat').value;
+        const price = document.getElementById('ad-price').value;
+        const swap = document.getElementById('ad-swap').value;
+
+        if(!title) return alert("შეავსეთ სათაური");
+
+        try {
+            await addDoc(collection(db, "ads"), {
+                title, cat, price, swap, date: new Date()
+            });
+            alert("წარმატებით დაემატა!");
+            showPage('home');
+        } catch (e) { alert("შეცდომა: " + e.message); }
+    }
+
+    // განცხადებების წამოღება
+    async function fetchAds() {
+        const q = query(collection(db, "ads"), orderBy("date", "desc"));
+        const snap = await getDocs(q);
+        const list = document.getElementById('ads-list');
+        list.innerHTML = '';
+        snap.forEach(doc => {
+            const data = doc.data();
+            list.innerHTML += `
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #2563eb; font-weight: bold;">
+                        <span>${data.cat}</span>
+                        <span>${data.price} ₾</span>
+                    </div>
+                    <h3 style="margin: 10px 0; font-size: 16px;">${data.title}</h3>
+                    <p style="font-size: 13px; color: #666; font-style: italic;">🔄 იცვლება: ${data.swap}</p>
+                </div>
+            `;
+        });
+    }
+
+    fetchAds();
+</script>
+
+</body>
+</html>
