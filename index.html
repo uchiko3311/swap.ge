@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAP.GE - გაცვალე ყველაფერი</title>
+    <script src="https://tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        @import url('https://googleapis.com');
+        body { font-family: 'Fira GO', sans-serif; background-color: #f8fafc; }
+        .tab-active { border-bottom: 3px solid #2563eb; color: #2563eb; }
+    </style>
+</head>
+<body class="pb-20">
+
+    <!-- ჰედერი -->
+    <header class="bg-white p-4 shadow-sm flex justify-between items-center sticky top-0 z-50">
+        <h1 class="text-2xl font-black text-blue-600 tracking-tighter">SWAP<span class="text-orange-500">.GE</span></h1>
+        <div class="flex gap-3">
+            <button onclick="toggleSection('auth-section')" class="text-gray-600 text-sm font-bold">შესვლა</button>
+            <button onclick="toggleMenu()" class="text-gray-600 text-xl"><i class="fa fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- გვერდითი მენიუ -->
+    <div id="sidebar" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/50" onclick="toggleMenu()"></div>
+        <div class="absolute right-0 top-0 h-full w-72 bg-white p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-8 border-b pb-4">
+                <h2 class="text-xl font-bold">მენიუ</h2>
+                <button onclick="toggleMenu()" class="text-2xl">&times;</button>
+            </div>
+            <div class="bg-blue-50 p-4 rounded-2xl mb-6">
+                <p class="text-[10px] text-gray-500 uppercase">ბალანსი</p>
+                <p id="user-balance" class="text-xl font-bold text-blue-700">0.00 ₾</p>
+            </div>
+            <nav class="space-y-2 text-gray-600">
+                <button onclick="toggleSection('add-post-section')" class="w-full text-left p-3 hover:bg-gray-100 rounded-xl flex items-center gap-3"><i class="fa fa-plus-circle text-orange-500"></i> განცხადების დამატება</button>
+                <button class="w-full text-left p-3 hover:bg-gray-100 rounded-xl flex items-center gap-3"><i class="fa fa-list"></i> ჩემი განცხადებები</button>
+                <button class="w-full text-left p-3 hover:bg-gray-100 rounded-xl flex items-center gap-3"><i class="fa fa-heart text-red-400"></i> ფავორიტები</button>
+                <hr>
+                <button onclick="toggleSection('about-section')" class="w-full text-left p-3 hover:bg-gray-100 rounded-xl flex items-center gap-3">ჩვენს შესახებ</button>
+                <button onclick="toggleSection('contact-section')" class="w-full text-left p-3 hover:bg-gray-100 rounded-xl flex items-center gap-3 font-bold text-blue-600">კონტაქტი</button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- მთავარი კონტენტი -->
+    <main id="main-content" class="p-4 max-w-lg mx-auto">
+        
+        <!-- ძებნის ბლოკი -->
+        <section id="home-section" class="space-y-6">
+            <div class="bg-blue-600 rounded-3xl p-6 shadow-xl text-center">
+                <h2 class="text-white font-bold mb-4">რას ცვლი დღეს?</h2>
+                <div class="relative">
+                    <input type="text" placeholder="ბინა, მანქანა, ტელეფონი..." class="w-full p-4 rounded-2xl outline-none text-sm shadow-inner">
+                    <button class="absolute right-2 top-2 bg-orange-500 text-white p-2 rounded-xl h-10 w-10"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            <div id="ads-container" class="grid gap-4 italic text-gray-400 text-center py-10">
+                განცხადებები იტვირთება...
+            </div>
+        </section>
+
+        <!-- განცხადების დამატება -->
+        <section id="add-post-section" class="hidden space-y-4 bg-white p-6 rounded-3xl shadow-sm border">
+            <h2 class="text-xl font-bold mb-4">ახალი განცხადება</h2>
+            <input id="ad-title" type="text" placeholder="სათაური" class="w-full p-4 bg-gray-50 rounded-xl outline-none border focus:border-blue-500">
+            <select id="ad-category" class="w-full p-4 bg-gray-50 rounded-xl border outline-none">
+                <option value="Real Estate">🏠 უძრავი ქონება</option>
+                <option value="Cars">🚗 ავტომობილები</option>
+                <option value="Tech">📱 ტექნიკა</option>
+            </select>
+            <input id="ad-price" type="number" placeholder="ფასი (₾)" class="w-full p-4 bg-gray-50 rounded-xl outline-none border focus:border-blue-500">
+            <textarea id="ad-swap" placeholder="რაში ცვლით?" class="w-full p-4 bg-gray-50 rounded-xl outline-none border focus:border-blue-500 h-24"></textarea>
+            <button onclick="handleUploadAd()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold">გამოქვეყნება</button>
+        </section>
+
+        <!-- ავტორიზაცია -->
+        <section id="auth-section" class="hidden space-y-4 bg-white p-8 rounded-3xl shadow-sm border">
+            <h2 class="text-2xl font-bold text-center mb-6">შესვლა</h2>
+            <input id="auth-email" type="email" placeholder="ელ-ფოსტა" class="w-full p-4 bg-gray-50 rounded-xl border">
+            <input id="auth-pass" type="password" placeholder="პაროლი" class="w-full p-4 bg-gray-50 rounded-xl border">
+            <button onclick="handleAuth()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold">შესვლა / რეგისტრაცია</button>
+        </section>
+
+        <!-- კონტაქტი -->
+        <section id="contact-section" class="hidden bg-white p-6 rounded-3xl border">
+            <h2 class="text-xl font-bold mb-4">კონტაქტი</h2>
+            <p class="text-gray-600 mb-4 text-sm">მოგვწერეთ ნებისმიერ დროს:</p>
+            <div class="space-y-3">
+                <div class="p-3 bg-gray-50 rounded-xl flex items-center gap-3"><i class="fa fa-phone text-blue-500"></i> +995 5XX XX XX XX</div>
+                <div class="p-3 bg-gray-50 rounded-xl flex items-center gap-3"><i class="fa fa-envelope text-orange-500"></i> support@swap.ge</div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ქვედა ნავიგაცია -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-4 z-50">
+        <button onclick="toggleSection('home-section')" class="text-blue-600 text-xl"><i class="fa fa-home"></i></button>
+        <button onclick="toggleSection('add-post-section')" class="bg-orange-500 text-white h-12 w-12 rounded-2xl flex items-center justify-center -mt-10 shadow-lg border-4 border-white"><i class="fa fa-plus"></i></button>
+        <button onclick="toggleMenu()" class="text-gray-400 text-xl"><i class="fa fa-user"></i></button>
+    </nav>
+
+    <!-- FIREBASE ლოგიკა -->
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://gstatic.com";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://gstatic.com";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEUjh_mVRLTzUecRJbeG_K6gTp__FVft0",
+            authDomain: "://firebaseapp.com",
+            databaseURL: "https://firebaseio.com",
+            projectId: "swap-39e13",
+            storageBucket: "swap-39e13.firebasestorage.app",
+            messagingSenderId: "107187341554",
+            appId: "1:107187341554:web:75533a380b58a7a141286b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // სექციების გადართვა
+        window.toggleSection = function(id) {
+            document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            if(id === 'home-section') loadAds();
+            document.getElementById('sidebar').classList.add('hidden');
+        }
+
+        window.toggleMenu = function() {
+            document.getElementById('sidebar').classList.toggle('hidden');
+        }
+
+        // ავტორიზაცია
+        window.handleAuth = async function() {
+            const email = document.getElementById('auth-email').value;
+            const pass = document.getElementById('auth-pass').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                alert("წარმატებით შეხვედით!");
+                toggleSection('home-section');
+            } catch (e) {
+                try {
+                    await createUserWithEmailAndPassword(auth, email, pass);
+                    alert("რეგისტრაცია წარმატებულია!");
+                    toggleSection('home-section');
+                } catch (err) { alert("შეცდომა: " + err.message); }
+            }
+        }
+
+        // განცხადების ატვირთვა
+        window.handleUploadAd = async function() {
+            const ad = {
+                title: document.getElementById('ad-title').value,
+                category: document.getElementById('ad-category').value,
+                price: document.getElementById('ad-price').value,
+                swap: document.getElementById('ad-swap').value,
+                createdAt: new Date()
+            };
+            try {
+                await addDoc(collection(db, "ads"), ad);
+                alert("განცხადება დაემატა!");
+                toggleSection('home-section');
+            } catch (e) { alert("შეცდომა: " + e.message); }
+        }
+
+        // განცხადებების წამოღება
+        async function loadAds() {
+            const q = query(collection(db, "ads"), orderBy("createdAt", "desc"));
+            const snapshot = await getDocs(q);
+            const container = document.getElementById('ads-container');
+            container.innerHTML = '';
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                container.innerHTML += `
+                    <div class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100 text-left">
+                        <div class="flex justify-between items-start">
+                            <span class="text-[10px] bg-blue-100 text-blue-600 px-2 py-1 rounded-full font-bold">${data.category}</span>
+                            <span class="text-blue-600 font-bold">${data.price} ₾</span>
+                        </div>
+                        <h3 class="font-bold mt-2">${data.title}</h3>
+                        <p class="text-xs text-gray-500 mt-1 italic">🔄 იცვლება: ${data.swap}</p>
+                    </div>
+                `;
+            });
+        }
+
+        loadAds();
+    </script>
+</body>
+</html>
