@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAP.GE - გაცვალე ყველაფერი</title>
+    <!-- Tailwind CSS პირდაპირი ლინკი - ეს აუცილებელია! -->
+    <script src="https://tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        @import url('https://googleapis.com');
+        body { font-family: 'Fira GO', sans-serif; background-color: #f8fafc; }
+        .sidebar-transition { transition: transform 0.3s ease-in-out; }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <!-- მთავარი ჰედერი -->
+    <header class="bg-white p-4 shadow-sm flex justify-between items-center sticky top-0 z-50">
+        <h1 class="text-2xl font-black text-blue-600">SWAP<span class="text-orange-500">.GE</span></h1>
+        <button onclick="toggleMenu()" class="p-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+            <i class="fa fa-bars text-xl"></i>
+        </button>
+    </header>
+
+    <!-- გვერდითი მენიუ (Sidebar) -->
+    <div id="sidebar" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleMenu()"></div>
+        <div class="absolute right-0 top-0 h-full w-72 bg-white shadow-2xl p-6 flex flex-col">
+            <div class="flex justify-between items-center mb-8 border-b pb-4">
+                <h2 class="text-xl font-bold text-gray-800">მენიუ</h2>
+                <button onclick="toggleMenu()" class="text-2xl text-gray-400">&times;</button>
+            </div>
+
+            <!-- მომხმარებლის ბლოკი -->
+            <div class="bg-blue-600 p-4 rounded-2xl text-white mb-6 shadow-lg shadow-blue-200">
+                <p class="text-[10px] uppercase opacity-80 mb-1 tracking-widest">ბალანსი</p>
+                <p class="text-2xl font-bold italic">0.00 ₾</p>
+            </div>
+
+            <nav class="flex-1 space-y-2">
+                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition">
+                    <i class="fa fa-plus-circle text-orange-500"></i> განცხადების დამატება
+                </a>
+                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 rounded-xl">
+                    <i class="fa fa-list"></i> ჩემი განცხადებები
+                </a>
+                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 rounded-xl">
+                    <i class="fa fa-heart text-red-400"></i> ფავორიტები
+                </a>
+                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 rounded-xl">
+                    <i class="fa fa-wallet"></i> ბალანსის შევსება
+                </a>
+                <hr class="my-4 opacity-50">
+                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-50 rounded-xl text-sm">ჩვენს შესახებ</a>
+                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-50 rounded-xl text-sm">წესები</a>
+                <a href="#" class="flex items-center gap-3 p-3 text-gray-600 hover:bg-gray-50 rounded-xl text-sm font-bold text-blue-600">კონტაქტი</a>
+            </nav>
+
+            <button class="w-full bg-slate-100 text-gray-700 py-3 rounded-xl font-bold mt-4 hover:bg-blue-600 hover:text-white transition">შესვლა</button>
+        </div>
+    </div>
+
+    <!-- მთავარი სექცია -->
+    <main class="p-4 space-y-6 max-w-lg mx-auto">
+        <!-- ძებნა -->
+        <div class="bg-blue-600 rounded-3xl p-6 shadow-xl shadow-blue-100 text-center">
+            <h2 class="text-white text-lg font-bold mb-4">გაამარტივე გაცვლა 🔄</h2>
+            <div class="relative">
+                <input type="text" placeholder="რას ეძებ?" class="w-full p-4 rounded-2xl border-none outline-none text-sm shadow-inner">
+                <button class="absolute right-2 top-2 bg-orange-500 text-white p-2 rounded-xl h-10 w-10">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- მაგალითი ბარათი -->
+        <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
+            <div class="h-48 bg-gray-200"></div>
+            <div class="p-4">
+                <span class="text-[10px] bg-green-100 text-green-600 px-2 py-1 rounded-full font-bold">იცვლება</span>
+                <h3 class="font-bold text-gray-800 mt-2">BMW 328i 2014</h3>
+                <p class="text-xs text-gray-500 mt-1 italic">"ვცვლი ბინაში თბილისში..."</p>
+                <div class="flex justify-between items-center mt-4">
+                    <span class="text-blue-600 font-black">7,500 $</span>
+                    <button class="text-gray-300"><i class="fa fa-heart"></i></button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ქვედა მენიუ -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t flex justify-around p-4 z-40">
+        <button class="text-blue-600"><i class="fa fa-home text-xl"></i></button>
+        <button class="text-gray-400"><i class="fa fa-search text-xl"></i></button>
+        <button class="bg-orange-500 text-white h-12 w-12 rounded-2xl flex items-center justify-center -mt-10 shadow-lg shadow-orange-200 border-4 border-white">
+            <i class="fa fa-plus text-xl"></i>
+        </button>
+        <button class="text-gray-400"><i class="fa fa-exchange-alt text-xl"></i></button>
+        <button onclick="toggleMenu()" class="text-gray-400"><i class="fa fa-user text-xl"></i></button>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('hidden');
+        }
+    </script>
+
+</body>
+</html>
