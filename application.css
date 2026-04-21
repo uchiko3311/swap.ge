@@ -1,0 +1,307 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+ .img-thumbnail-size {
+   height: 60px;
+   width: auto;
+ }
+
+.dropzone-upload {
+  display: flex;
+  align-items: center;
+}
+
+.FileUpload div {
+  width: 100%;
+  text-align: center;
+}
+
+.thumbnail-caption-top-right {
+  text-align: center;
+  color: white;
+  background-color: darkslategray;
+  padding: 0 5px 0 5px;
+  position: absolute !important;
+  top: 4px;
+  right: 4px;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+}
+
+.thumbnail-caption-top-left {
+  text-align: center;
+  color: white;
+  border-radius: 2px;
+  background-color: red;
+  padding: 0 5px 0 5px;
+  position: absolute !important;
+  top: 0;
+  left: 0;
+}
+
+ul.nav-tabs {
+  border-bottom: 0;
+}
+
+div.caption {
+  height: 296px;
+}
+
+div.caption h3, div.caption a.btn {
+  /*align-self: flex-end;*/
+}
+
+ul.nav {
+  position: relative;
+}
+
+.nav-button {
+  position: absolute;
+  right: 0;
+}
+
+.grid-bottom {
+  position: relative;
+  bottom: 10px;
+}
+
+.thumbnail a img {
+  width: 100%;
+  height: auto;
+}
+
+.thumbnail-post {
+  border-bottom: 3px solid lightseagreen;
+}
+
+.sort-by-panel {
+  position: relative;
+}
+
+.sort-by-panel button {
+  border: 0;
+  background-color: white;
+}
+
+.sort-by-panel button:focus, .sort-by-panel button:hover {
+  background-color: white !important;
+}
+
+.sort-by-panel .btn-group {
+  position: absolute;
+  right: 57px;
+  top: -46px;
+}
+
+.sort-by-panel a:hover {
+  cursor: pointer;
+}
+
+.pagination a {
+  cursor: pointer;
+}
+
+.bottom-margin-spacing {
+  margin-bottom: 10px;
+}
+
+.red {
+  color: red;
+}
+
+.label:first-of-type + span {
+  color: red;
+}
+
+.panel-title a:hover, .panel-title a:focus {
+  text-decoration: none;
+}
+
+/*fadein fadeout navbar*/
+#menu {
+  display: none;
+  position: fixed;
+	top: 0px;
+	width: 100%;
+	background-color: white;
+	z-index: 100;
+  height: 57px;
+  padding: 0;
+  padding-top: 5px;
+  box-shadow: 0 4px 4px rgba(0,0,0,0.06);
+}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+  background: white;
+}
+
+/*Post Detail*/
+
+#bookmark-btn {
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 768px) {
+  #detail-body {
+    height: 361px !important;
+  }
+
+  #post-detail-right-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  #detail-body {
+    height: 430px !important;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  #detail-body {
+    height: 500px !important;
+  }
+}
+
+/*my posts*/
+.disabled {
+  cursor: not-allowed !important;
+  background: #f9f9f9;
+  color: lightgrey;
+}
+
+#nav-tools {
+  height: 44px;
+  position: relative;
+}
+
+.search-icons {
+  position: absolute;
+  right: 0px;
+  bottom: 2px;
+  padding-right: 0px;
+}
+
+.search-icons > button > span {
+  font-size: 18px !important;
+}
+
+.search-icons > button {
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+@media screen and (max-width: 768px) {
+  #no-padding-left {
+    width: calc(100% - 10px);
+    padding-left: 20px !important;
+  }
+
+  #phone-search-nav {
+    width: calc(100% - 5px) !important;
+    padding: 10px 20px 10px 15px;
+  }
+}
+
+/*Loader*/
+.loading-grid-list {
+  height: 50vh;
+}
+
+.showbox {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 5%;
+}
+
+.loader {
+  position: relative;
+  margin: 0 auto;
+  width: 100px;
+  top: 50%;
+}
+.loader:before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+
+@media screen and (max-width: 450px) {
+  .circular {
+    width: 30% !important;
+  }
+}
+
+.circular {
+  animation: rotate 2s linear infinite;
+  height: 100%;
+  transform-origin: center center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.path {
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+  stroke-linecap: round;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+@keyframes color {
+  100%,
+  0% {
+    stroke: #d62d20;
+  }
+  40% {
+    stroke: #0057e7;
+  }
+  66% {
+    stroke: #008744;
+  }
+  80%,
+  90% {
+    stroke: #ffa700;
+  }
+}
